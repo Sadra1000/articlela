@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/domain/entities/article_entity.dart';
 import '../../features/about/presentation/views/about_screen.dart';
+import '../../features/article_details/presentation/viewmodels/article_details_viewmodel.dart';
+import '../../features/article_details/presentation/views/article_details_screen.dart';
 import '../../features/home/presentation/viewmodels/home_viewmodel.dart';
 import '../../features/home/presentation/views/home_screen.dart';
 import '../../features/keyword_config/domain/entities/search_filter_entity.dart';
@@ -23,10 +26,11 @@ class AppRouter {
   static const String settings = '/settings';
   static const String keywordConfig = '/keywords';
   static const String results = '/results';
+  static const String articleDetails = '/articleDetails';
 
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case AppRouter.onboarding:
+      case '/':
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => ChangeNotifierProvider(
@@ -37,7 +41,7 @@ class AppRouter {
             ),
           ),
         );
-      case AppRouter.home:
+      case '/home':
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => ChangeNotifierProvider(
@@ -49,7 +53,7 @@ class AppRouter {
             ),
           ),
         );
-      case AppRouter.about:
+      case '/about':
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => AppShell(
@@ -58,7 +62,7 @@ class AppRouter {
             child: const AboutScreen(),
           ),
         );
-      case AppRouter.settings:
+      case '/settings':
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => AppShell(
@@ -67,7 +71,7 @@ class AppRouter {
             child: const SettingsScreen(),
           ),
         );
-      case AppRouter.keywordConfig:
+      case '/keywords':
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => ChangeNotifierProvider(
@@ -79,7 +83,7 @@ class AppRouter {
             ),
           ),
         );
-      case AppRouter.results:
+      case '/results':
         final args = settings.arguments;
         if (args is! SearchFilterEntity) {
           return _errorRoute();
@@ -92,6 +96,22 @@ class AppRouter {
               preset: GradientPreset.results,
               titleBuilder: (l10n) => l10n.searchResultsTitle,
               child: SearchResultsScreen(filter: args),
+            ),
+          ),
+        );
+      case '/articleDetails':
+        final detailArgs = settings.arguments;
+        if (detailArgs is! ArticleEntity) {
+          return _errorRoute();
+        }
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => ChangeNotifierProvider(
+            create: (_) => getIt<ArticleDetailsViewModel>(),
+            child: AppShell(
+              preset: GradientPreset.results,
+              titleBuilder: (l10n) => l10n.articleDetailsTitle,
+              child: ArticleDetailsScreen(article: detailArgs),
             ),
           ),
         );

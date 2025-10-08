@@ -44,11 +44,11 @@ class CrossrefApiDatasource {
 
       final params = <String, dynamic>{
         'query': query,
-        'rows': AppConstants.pageSize,
+        'rows': AppConstants.crossrefPageSize,
         'cursor': cursor ?? '*',
         'sort': 'score',
         'order': 'desc',
-        'select': 'title,abstract,DOI,issued,type,link',
+        'select': 'title,DOI,issued,type,link',
         'filter': filters.join(','),
       };
 
@@ -63,16 +63,6 @@ class CrossrefApiDatasource {
       final results = <ArticleEntity>[];
 
       for (final item in items) {
-        final abstractRaw = item['abstract'] as String?;
-        if (abstractRaw == null || abstractRaw.isEmpty) {
-          continue;
-        }
-
-        final abstractText = _sanitizeAbstract(abstractRaw);
-        if (abstractText.isEmpty) {
-          continue;
-        }
-
         final titleList = item['title'] as List<dynamic>?;
         final title = (titleList != null && titleList.isNotEmpty) ? titleList.first as String : 'Untitled';
 
@@ -94,7 +84,7 @@ class CrossrefApiDatasource {
             title: title,
             publishedYear: year,
             doi: doi,
-            abstractText: abstractText,
+            abstractText: null,
             documentType: type,
             source: 'CROSSREF',
             link: link,
@@ -118,24 +108,5 @@ class CrossrefApiDatasource {
     } catch (error) {
       return ApiResult.failure(error.toString());
     }
-  }
-
-  String _sanitizeAbstract(String input) {
-    try {
-      final unescaped = htmlUnescape(input);
-      final stripped = unescaped.replaceAll(RegExp(r'<[^>]+>'), ' ');
-      return stripped.replaceAll(RegExp(r'\s+'), ' ').trim();
-    } catch (_) {
-      return input;
-    }
-  }
-
-  String htmlUnescape(String value) {
-    return value
-        .replaceAll('&lt;', '<')
-        .replaceAll('&gt;', '>')
-        .replaceAll('&amp;', '&')
-        .replaceAll('&quot;', '"')
-        .replaceAll('&apos;', "'");
   }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/data/models/api_result.dart';
+import '../../../../core/data/services/in_memory_article_cache.dart';
 import '../../../../core/domain/entities/article_entity.dart';
+import '../../../../core/domain/repositories/article_repository.dart' as repository;
 import '../../../keyword_config/domain/entities/search_filter_entity.dart';
 import '../../domain/usecases/export_articles_usecase.dart';
 import '../../domain/usecases/fetch_articles_usecase.dart';
@@ -19,108 +22,95 @@ class SearchResultsViewModel extends ChangeNotifier {
     required FetchArticlesUseCase fetchArticlesUseCase,
     required ExportArticlesUseCase exportArticlesUseCase,
   })  : _fetchArticlesUseCase = fetchArticlesUseCase,
-        _exportArticlesUseCase = exportArticlesUseCase;
+        _exportArticlesUseCase = exportArticlesUseCase,
+        _cache = fetchArticlesUseCase.cache;
 
   final FetchArticlesUseCase _fetchArticlesUseCase;
   final ExportArticlesUseCase _exportArticlesUseCase;
+  final InMemoryArticleCache _cache;
+  final Map<DataSource, repository.FetchProgress> _progress = {};
+  final List<ArticleEntity> _visibleArticles = [];
 
-  final List<ArticleEntity> _articles = [];
-
-  bool _isLoading = false;
-  bool _isLoadingMore = false;
+  bool _isFetching = false;
   bool _isExporting = false;
+  bool _ingestionComplete = false;
   String? _error;
-  bool _hasMore = false;
-
-  String? _nextCrossrefCursor;
-  int _nextScopusStart = 0;
   SearchFilterEntity? _currentFilter;
   SearchSortOption _sortOption = SearchSortOption.yearDesc;
+  int _visibleLimit = AppConstants.defaultVisibleLimit;
 
-  List<ArticleEntity> get articles => List.unmodifiable(_articles);
-  bool get isLoading => _isLoading;
-  bool get isLoadingMore => _isLoadingMore;
+  List<ArticleEntity> get articles => List.unmodifiable(_visibleArticles);
+  bool get isFetching => _isFetching;
   bool get isExporting => _isExporting;
+  bool get ingestionComplete => _ingestionComplete;
   String? get error => _error;
-  bool get hasMore => _hasMore;
   SearchSortOption get sortOption => _sortOption;
   SearchFilterEntity? get currentFilter => _currentFilter;
+  int get totalResults => _cache.length;
+  bool get canShowMore => _visibleLimit < _cache.length;
+  Iterable<repository.FetchProgress> get progress => _progress.values;
+  int get selectedSourceCount => _currentFilter?.sources.length ?? 0;
+  int get combinedFetched => _progress.values.fold(0, (sum, item) => sum + item.fetchedItems);
 
-  Future<void> fetchInitial(SearchFilterEntity filter) async {
+  Future<void> fetchAll(SearchFilterEntity filter) async {
     _currentFilter = filter;
-    _isLoading = true;
-    _isLoadingMore = false;
+    _isFetching = true;
+    _ingestionComplete = false;
+    _visibleLimit = AppConstants.defaultVisibleLimit;
+    _visibleArticles.clear();
+    _progress.clear();
+    _cache.clear();
     _error = null;
-    _articles.clear();
     notifyListeners();
 
-    final result = await _fetchArticlesUseCase(
+    final result = await _fetchArticlesUseCase.fetchAllToCache(
       filter,
-      crossrefCursor: null,
-      scopusStart: 0,
+      _handleProgress,
     );
 
     if (result.isSuccess && result.data != null) {
-      final payload = result.data!;
-      _mergeArticles(payload.articles, replace: true);
-      _nextCrossrefCursor = payload.nextCrossrefCursor;
-      _nextScopusStart = payload.nextScopusStart;
-      _hasMore = payload.hasMore;
-      _applySort();
+      _applySortOnCache();
+      _refreshVisibleArticles();
+      _ingestionComplete = true;
     } else {
       _error = result.message ?? 'Unknown error';
-      _hasMore = false;
     }
 
-    _isLoading = false;
+    _isFetching = false;
     notifyListeners();
   }
 
-  Future<void> loadMore() async {
-    if (_isLoadingMore || !_hasMore || _currentFilter == null) {
-      return;
-    }
-    _isLoadingMore = true;
-    notifyListeners();
-
-    final result = await _fetchArticlesUseCase(
-      _currentFilter!,
-      crossrefCursor: _nextCrossrefCursor,
-      scopusStart: _nextScopusStart,
-    );
-
-    if (result.isSuccess && result.data != null) {
-      final payload = result.data!;
-      _mergeArticles(payload.articles);
-      _nextCrossrefCursor = payload.nextCrossrefCursor;
-      _nextScopusStart = payload.nextScopusStart;
-      _hasMore = payload.hasMore;
-      _applySort();
-    } else {
-      _error = result.message ?? 'Unknown error';
-    }
-
-    _isLoadingMore = false;
+  void _handleProgress(repository.FetchProgress progress) {
+    _progress[progress.source] = progress;
     notifyListeners();
   }
 
   void sortBy(SearchSortOption option) {
     if (_sortOption == option) return;
     _sortOption = option;
-    _applySort();
+    _applySortOnCache();
+    _refreshVisibleArticles();
     notifyListeners();
   }
 
   Future<ApiResult<String>> exportCsv() async {
-    if (_articles.isEmpty) {
+    if (_cache.length == 0) {
       return ApiResult.failure('no_data');
     }
     _isExporting = true;
     notifyListeners();
-    final result = await _exportArticlesUseCase(_articles);
+    final allArticles = _cache.all();
+    final exportResult = await _exportArticlesUseCase(allArticles);
     _isExporting = false;
     notifyListeners();
-    return result;
+    return exportResult;
+  }
+
+  void showNextBatch() {
+    if (!canShowMore) return;
+    _visibleLimit += AppConstants.defaultVisibleLimit;
+    _refreshVisibleArticles();
+    notifyListeners();
   }
 
   void resetError() {
@@ -128,44 +118,40 @@ class SearchResultsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  String formattedCount() {
+  String formattedTotalCount() {
     final formatter = NumberFormat.decimalPattern();
-    return formatter.format(_articles.length);
+    return formatter.format(totalResults);
   }
 
-  void _applySort() {
+  String formattedVisibleCount() {
+    final formatter = NumberFormat.decimalPattern();
+    return formatter.format(_visibleArticles.length);
+  }
+
+  void _applySortOnCache() {
+    final sorted = _cache.all().toList();
     switch (_sortOption) {
       case SearchSortOption.nameAsc:
-        _articles.sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+        sorted.sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
         break;
       case SearchSortOption.nameDesc:
-        _articles.sort((a, b) => b.title.toLowerCase().compareTo(a.title.toLowerCase()));
+        sorted.sort((a, b) => b.title.toLowerCase().compareTo(a.title.toLowerCase()));
         break;
       case SearchSortOption.yearAsc:
-        _articles.sort((a, b) => (a.publishedYear ?? 0).compareTo(b.publishedYear ?? 0));
+        sorted.sort((a, b) => (a.publishedYear ?? 0).compareTo(b.publishedYear ?? 0));
         break;
       case SearchSortOption.yearDesc:
-        _articles.sort((a, b) => (b.publishedYear ?? 0).compareTo(a.publishedYear ?? 0));
+        sorted.sort((a, b) => (b.publishedYear ?? 0).compareTo(a.publishedYear ?? 0));
         break;
     }
+    _cache.replaceAll(sorted);
   }
 
-  void _mergeArticles(List<ArticleEntity> newArticles, {bool replace = false}) {
-    if (replace) {
-      _articles.clear();
-    }
-    final Map<String, ArticleEntity> merged = {
-      for (final article in _articles)
-        (article.doi?.toLowerCase() ?? '${article.title.toLowerCase()}_${article.publishedYear ?? 0}_${article.source}')
-            : article,
-    };
-    for (final article in newArticles) {
-      final key = article.doi?.toLowerCase() ??
-          '${article.title.toLowerCase()}_${article.publishedYear ?? 0}_${article.source}';
-      merged[key] = article;
-    }
-    _articles
+  void _refreshVisibleArticles() {
+    final end = _visibleLimit.clamp(0, _cache.length);
+    final nextSlice = _cache.slice(0, end);
+    _visibleArticles
       ..clear()
-      ..addAll(merged.values);
+      ..addAll(nextSlice);
   }
 }

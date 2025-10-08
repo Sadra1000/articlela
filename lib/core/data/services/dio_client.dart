@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 
-import 'env_config.dart';
+import 'key_store.dart';
 
 class DioClient {
-  DioClient(this._dio, this._envConfig) {
+  DioClient(this._dio, this._keyStore) {
     _dio.options = BaseOptions(
       connectTimeout: const Duration(seconds: 15),
       receiveTimeout: const Duration(seconds: 30),
@@ -16,27 +16,36 @@ class DioClient {
 
     _dio.interceptors.add(
       InterceptorsWrapper(
-        onRequest: (options, handler) {
-          final uri = options.uri.toString();
-          if (uri.contains('elsevier.com')) {
-            final apiKey = _envConfig.elsevierApiKey;
-            if (apiKey != null && apiKey.isNotEmpty) {
-              options.headers['X-ELS-APIKey'] = apiKey;
+        onRequest: (options, handler) async {
+          final host = options.uri.host;
+          final path = options.uri.toString();
+
+          if (host.contains('elsevier.com')) {
+            final scopusEnabled = await _keyStore.isScopusEnabled();
+            if (scopusEnabled) {
+              final apiKey = await _keyStore.getElsevierKey();
+              if (apiKey != null && apiKey.isNotEmpty) {
+                options.headers['X-ELS-APIKey'] = apiKey;
+              }
             }
           }
 
-          if (uri.contains('crossref.org')) {
-            final mailto = _envConfig.crossrefMailto;
+          if (host.contains('crossref.org')) {
+            final mailto = await _keyStore.getCrossrefMailto();
             if (mailto != null && mailto.isNotEmpty) {
               options.queryParameters.putIfAbsent('mailto', () => mailto);
-              final userAgent = 'ArticleLA/1.0 (mailto:$mailto)';
-              options.headers['User-Agent'] = userAgent;
+              options.headers['User-Agent'] = 'ArticleLA/1.0 (mailto:$mailto)';
+            } else {
+              options.headers['User-Agent'] = 'ArticleLA/1.0';
             }
-          } else {
-            options.headers.remove('User-Agent');
+          } else if (!options.headers.containsKey('User-Agent')) {
+            options.headers['User-Agent'] = 'ArticleLA/1.0';
           }
 
-          options.headers.putIfAbsent('User-Agent', () => 'ArticleLA/1.0');
+          if (path.contains('openalex.org')) {
+            options.headers['Accept'] = 'application/json';
+          }
+
           return handler.next(options);
         },
         onError: (error, handler) {
@@ -47,7 +56,7 @@ class DioClient {
   }
 
   final Dio _dio;
-  final EnvConfig _envConfig;
+  final KeyStore _keyStore;
 
   Future<Response<dynamic>> get(
     String path, {

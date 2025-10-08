@@ -31,7 +31,7 @@ class FileExporter {
       const bom = [0xEF, 0xBB, 0xBF];
       sink.add(bom);
 
-      sink.writeln('title,year,doi,document_type,source,abstract');
+      sink.writeln('title,year,doi,document_type,source,link');
 
       for (final article in items) {
         final row = [
@@ -40,7 +40,7 @@ class FileExporter {
           _escape(article.doi ?? ''),
           _escape(article.documentType),
           _escape(article.source),
-          _escape(article.abstractText?.replaceAll(RegExp(r'\s+'), ' ') ?? ''),
+          _escape(article.link ?? ''),
         ].join(',');
         sink.writeln(row);
       }

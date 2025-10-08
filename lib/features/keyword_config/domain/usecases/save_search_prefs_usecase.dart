@@ -16,6 +16,7 @@ class SaveSearchPrefsUseCase {
       'fromYear': filter.fromYear,
       'toYear': filter.toYear,
       'documentTypes': filter.documentTypes,
+      'sources': filter.sources.map((source) => source.name).toList(),
       'groups': filter.groups
           .map((group) => {
                 'id': group.id,
@@ -49,9 +50,23 @@ class SaveSearchPrefsUseCase {
         fromYear: decoded['fromYear'] as int,
         toYear: decoded['toYear'] as int,
         documentTypes: (decoded['documentTypes'] as List<dynamic>).cast<String>(),
+        sources: _decodeSources(decoded['sources']),
       );
     } catch (_) {
       return null;
     }
+  }
+
+  Set<DataSource> _decodeSources(dynamic raw) {
+    if (raw is List) {
+      return raw
+          .whereType<String>()
+          .map((name) => DataSource.values.firstWhere(
+                (element) => element.name == name,
+                orElse: () => DataSource.crossref,
+              ))
+          .toSet();
+    }
+    return {DataSource.crossref, DataSource.openalex};
   }
 }

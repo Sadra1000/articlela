@@ -1,11 +1,22 @@
-﻿{
+{
   "@@locale": "fa",
-  "appTitle": "ArticleLA",
+  "appTitle": "آرتیکل‌اِل‌ای",
   "appTagline": "کشف هوشمند برای تیم‌های پژوهشی.",
   "onboardingHeadline": "سریع‌تر به منبع بعدی برسید.",
-  "onboardingDescription": "زبان را تنظیم کنید و جستجوهای ترکیبی کراس‌رف و اسکوپوس را آماده سازید.",
+  "onboardingDescription": "زبان را تنظیم کنید و جستجوهای ترکیبی کراس‌رف، اسکوپوس و اوپن‌الکس را آماده سازید.",
   "onboardingSelectLanguage": "زبان خود را انتخاب کنید",
   "onboardingContinue": "ادامه",
+  "onboardingKeysTitle": "اتصال به منابع داده",
+  "onboardingKeysDescription": "برای جستجوی مودبانه چندمنبعی، در صورت تمایل اطلاعات را وارد کنید.",
+  "onboardingScopusToggle": "فعال‌سازی اسکوپوس (نیازمند کلید الزویر)",
+  "onboardingScopusHint": "در صورت غیرفعال بودن، جستجوی اسکوپوس انجام نمی‌شود.",
+  "onboardingElsevierLabel": "کلید API الزویر",
+  "onboardingElsevierHint": "کلید الزویر را وارد کنید",
+  "onboardingElsevierHelper": "این کلید فقط روی همین دستگاه ذخیره می‌شود.",
+  "onboardingScopusDisabledHelper": "اسکوپوس غیرفعال است. بعداً از طریق بازنشانی آن‌بوردینگ می‌توانید کلید اضافه کنید.",
+  "onboardingCrossrefLabel": "ایمیل تماس کراس‌رف",
+  "onboardingFinish": "شروع جستجو",
+  "onboardingCompleteMessage": "اطلاعات ذخیره شد. بعداً در تنظیمات قابل تغییر است.",
   "languageEnglish": "انگلیسی",
   "languagePersian": "فارسی",
   "homeTitle": "خانه",
@@ -15,7 +26,7 @@
   "homeSettings": "تنظیمات",
   "aboutTitle": "درباره",
   "aboutParagraphOne": "ArticleLA روند مرور ادبیات را با جستجو، فیلتر و خروجی گرفتن از چندین منبع تسریع می‌کند.",
-  "aboutParagraphTwo": "کراس‌رف و اسکوپوس را متصل کنید، گروه‌های کلیدواژه بسازید و تیم خود را با تازه‌ترین مقالات همسو نگه دارید.",
+  "aboutParagraphTwo": "کراس‌رف، اسکوپوس و اوپن‌الکس را متصل کنید، گروه‌های کلیدواژه بسازید و تیم خود را با تازه‌ترین مقالات همسو نگه دارید.",
   "aboutContact": "ارتباط با ما",
   "aboutSupport": "خرید یک قهوه",
   "settingsTitle": "تنظیمات",
@@ -28,9 +39,16 @@
   "settingsCrossrefMailto": "ایمیل تماس کراس‌رف",
   "settingsCrossrefMailtoHint": "name@example.com",
   "settingsElsevierKey": "کلید API الزویر",
-  "settingsElsevierKeyHint": "کلید خود را وارد کنید",
+  "settingsElsevierKeyHint": "کلید را وارد کنید",
   "settingsSave": "ذخیره تغییرات",
   "settingsSavedMessage": "تنظیمات با موفقیت ذخیره شد.",
+  "settingsScopusStatus": "وضعیت اسکوپوس",
+  "settingsScopusEnabled": "فعال",
+  "settingsScopusDisabled": "غیرفعال",
+  "settingsValueNotSet": "تعریف نشده",
+  "settingsApiHint": "برای تغییر اطلاعات API، آن‌بوردینگ را بازنشانی کنید.",
+  "settingsResetOnboarding": "بازنشانی آن‌بوردینگ",
+  "settingsResetOnboardingMessage": "آن‌بوردینگ در اجرای بعدی دوباره نمایش داده می‌شود.",
   "keywordConfigTitle": "سازنده کلیدواژه",
   "keywordConfigSubtitle": "گروه‌های کلیدواژه بسازید و با منطق AND/OR ترکیب کنید.",
   "keywordConfigAddGroup": "افزودن گروه",
@@ -41,16 +59,34 @@
   "keywordConfigKeywordHint": "کلیدواژه",
   "keywordConfigYearRange": "بازه سال انتشار",
   "keywordConfigDocTypes": "نوع سند",
+  "keywordConfigSources": "منابع",
   "keywordConfigNext": "جستجو",
   "keywordConfigErrorEmpty": "در هر گروه دست‌کم یک کلیدواژه اضافه کنید.",
   "keywordConfigErrorNoGroups": "پیش از جستجو حداقل یک گروه بسازید.",
+  "keywordConfigErrorNoSources": "حداقل یک منبع را انتخاب کنید.",
+  "keywordConfigScopusDisabledHint": "پس از افزودن کلید الزویر، آن‌بوردینگ را برای فعال‌سازی اسکوپوس بازنشانی کنید.",
+  "keywordConfigSourceOpenAlex": "اوپن‌الکس",
   "keywordConfigGroupName": "گروه {index}",
+  "@keywordConfigGroupName": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
   "searchResultsTitle": "نتایج",
   "searchResultsEmpty": "هنوز مقاله‌ای یافت نشده است. جستجوی جدیدی انجام دهید.",
+  "searchResultsEmptyAfterFetch": "مقاله‌ای با فیلترهای شما یافت نشد.",
   "searchResultsLoading": "در حال دریافت مقالات...",
-  "searchResultsLoadMore": "موارد بیشتر",
   "searchResultsExport": "خروجی CSV",
   "searchResultsTotal": "{count} مقاله",
+  "@searchResultsTotal": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "searchResultsSort": "مرتب‌سازی",
   "searchResultsSortNameAsc": "نام (الف تا ی)",
   "searchResultsSortNameDesc": "نام (ی تا الف)",
@@ -59,11 +95,65 @@
   "searchResultsDocumentType": "نوع سند",
   "searchResultsSource": "منبع",
   "searchResultsYear": "سال",
-  "searchResultsAbstract": "چکیده",
   "searchResultsOpenLink": "باز کردن لینک",
+  "searchResultsOpenDoi": "باز کردن DOI",
   "searchResultsNoAbstract": "چکیده موجود نیست.",
   "searchResultsSourceCrossref": "کراس‌رف",
   "searchResultsSourceScopus": "اسکوپوس",
+  "searchResultsCombinedProgress": "تا این لحظه {count} مقاله دریافت شد",
+  "@searchResultsCombinedProgress": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "searchResultsFetching": "در حال دریافت...",
+  "searchResultsSourceProgress": "{source}: {count} مقاله (در {pages} صفحه)",
+  "@searchResultsSourceProgress": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "pages": {
+        "type": "int"
+      }
+    }
+  },
+  "searchResultsSourceStatus": "{completed} از {total} منبع کامل شد",
+  "@searchResultsSourceStatus": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "searchResultsShowMore": "نمایش {count} مورد بعدی",
+  "@searchResultsShowMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchResultsShowingLimited": "{visible} مورد از {total} مورد نمایش داده شده است. برای مشاهده چکیده‌ها وارد صفحه جزئیات شوید.",
+  "@searchResultsShowingLimited": {
+    "placeholders": {
+      "visible": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "searchResultsExportHint": "چکیده‌ها در صفحه جزئیات مقاله قابل مشاهده هستند.",
   "errorGeneric": "خطایی رخ داد. دوباره تلاش کنید.",
   "errorMissingKeys": "برای ادامه کلیدهای API را در تنظیمات وارد کنید.",
   "retry": "تلاش دوباره",
@@ -81,20 +171,32 @@
   "docTypeThesis": "پایان‌نامه",
   "docTypeOther": "سایر",
   "versionLabel": "نسخه {version}",
-  "settingsSourceEnv": "بارگیری شده از .env",
-  "@keywordConfigGroupName": {
-    "placeholders": {
-      "index": {}
-    }
-  },
-  "@searchResultsTotal": {
-    "placeholders": {
-      "count": {}
-    }
-  },
   "@versionLabel": {
     "placeholders": {
-      "version": {}
+      "version": {
+        "type": "String"
+      }
     }
-  }
+  },
+  "settingsSourceEnv": "بارگیری شده از .env",
+  "articleDetailsTitle": "جزئیات مقاله",
+  "articleDetailsOpenDoi": "باز کردن DOI",
+  "articleDetailsCopyLink": "کپی لینک",
+  "articleDetailsCopied": "لینک در حافظه کپی شد.",
+  "articleDetailsMissingDoi": "برای این مقاله DOI موجود نیست.",
+  "articleDetailsNoAbstract": "چکیده‌ای از سوی ارائه‌دهندگان در دسترس نیست.",
+  "articleDetailsAbstractLabel": "منبع چکیده: {source}",
+  "@articleDetailsAbstractLabel": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "articleDetailsSourceSemanticScholar": "Semantic Scholar",
+  "articleDetailsSourceOpenAlex": "OpenAlex",
+  "articleDetailsSourceCrossref": "Crossref",
+  "articleDetailsSourceNone": "نامشخص",
+  "articleDetailsAuthors": "نویسندگان",
+  "articleDetailsVenue": "محل انتشار"
 }

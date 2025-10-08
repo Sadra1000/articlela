@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../app/l10n/app_localizations.dart';
+import '../../../../core/constants/app_constants.dart';
+import '../../../../core/domain/entities/article_entity.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/loading_indicator.dart';
 import '../../../keyword_config/domain/entities/search_filter_entity.dart';
 import '../viewmodels/search_results_viewmodel.dart';
+import '../../../../app/navigation/app_router.dart';
 
 class SearchResultsScreen extends StatefulWidget {
   const SearchResultsScreen({super.key, required this.filter});
@@ -25,166 +27,193 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      context.read<SearchResultsViewModel>().fetchInitial(widget.filter);
+      context.read<SearchResultsViewModel>().fetchAll(widget.filter);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     final viewModel = context.watch<SearchResultsViewModel>();
+    final l10n = context.l10n;
+
+    return  SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _Header(viewModel: viewModel),
+            SizedBox(height: 16.h),
+            _ProgressPanel(viewModel: viewModel),
+            SizedBox(height: 16.h),
+            if (viewModel.error != null)
+              _ErrorBanner(message: viewModel.error!)
+            else if (viewModel.ingestionComplete && viewModel.articles.isEmpty)
+              _EmptyPlaceholder(l10n: l10n)
+            else
+              Expanded(
+                child: viewModel.isFetching && viewModel.articles.isEmpty
+                    ? const Center(child: LoadingIndicator())
+                    : _ResultsList(viewModel: viewModel),
+              ),
+            SizedBox(height: 16.h),
+            if (viewModel.ingestionComplete && viewModel.totalResults > 0)
+              _Footer(viewModel: viewModel),
+          ],
+        ),
+    );
+    
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header({required this.viewModel});
+
+  final SearchResultsViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final titleStyle = Theme.of(context).textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        );
+    final subtitleStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white70);
+
+    final subtitle = viewModel.ingestionComplete
+        ? l10n.searchResultsTotal(viewModel.formattedTotalCount())
+        : l10n.searchResultsCombinedProgress(viewModel.combinedFetched.toString());
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.searchResultsTitle,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                  ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    viewModel.isLoading
-                        ? l10n.searchResultsLoading
-                        : l10n.searchResultsTotal(viewModel.formattedCount()),
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white70),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 160.h,
-              child: Lottie.asset('assets/lottie/results.json'),
-            ),
-          ],
-        ),
-        SizedBox(height: 16.h),
-        _ActionRow(viewModel: viewModel),
-        SizedBox(height: 16.h),
-        if (viewModel.isLoading)
-          const Center(child: LoadingIndicator())
-        else if (viewModel.error != null)
-          _ErrorBanner(message: viewModel.error!)
-        else if (viewModel.articles.isEmpty)
-          _EmptyPlaceholder(l10n: l10n)
-        else
-          _ResultsList(viewModel: viewModel),
-        if (viewModel.hasMore) ...[
-          SizedBox(height: 24.h),
-          Align(
-            alignment: Alignment.center,
-            child: CustomButton(
-              label: l10n.searchResultsLoadMore,
-              onPressed: viewModel.isLoadingMore ? null : viewModel.loadMore,
-              icon: viewModel.isLoadingMore ? const LoadingIndicator(size: 20) : null,
-            ),
-          ),
-        ],
+        Text(l10n.searchResultsTitle, style: titleStyle),
+        SizedBox(height: 8.h),
+        Text(subtitle, style: subtitleStyle),
       ],
     );
   }
 }
 
-class _ActionRow extends StatelessWidget {
-  const _ActionRow({required this.viewModel});
+class _ProgressPanel extends StatelessWidget {
+  const _ProgressPanel({required this.viewModel});
 
   final SearchResultsViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    if (viewModel.progress.isEmpty && !viewModel.isFetching) {
+      return const SizedBox.shrink();
+    }
+
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 12.h),
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 16.h),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(20.r),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            l10n.searchResultsTotal(viewModel.formattedCount()),
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
-          ),
-          const Spacer(),
-          _SortMenu(viewModel: viewModel),
-          SizedBox(width: 16.w),
-          CustomButton(
-            label: l10n.searchResultsExport,
-            isPrimary: viewModel.articles.isNotEmpty,
-            onPressed: viewModel.articles.isEmpty || viewModel.isExporting
-                ? null
-                : () async {
-                    final result = await viewModel.exportCsv();
-                    if (!context.mounted) return;
-                    if (result.isSuccess) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(l10n.csvExportSuccess)),
-                      );
-                    } else {
-                      final message = result.message == 'no_data' ? l10n.searchResultsEmpty : l10n.csvExportFailure;
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(message)),
-                      );
-                    }
-                  },
-            icon: viewModel.isExporting ? const LoadingIndicator(size: 20) : null,
+          if (viewModel.isFetching && !viewModel.ingestionComplete)
+            Padding(
+              padding: EdgeInsets.only(bottom: 8.h),
+              child: Text(
+                l10n.searchResultsFetching,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
+              ),
+            ),
+          if (viewModel.selectedSourceCount > 0)
+            Padding(
+              padding: EdgeInsets.only(bottom: 8.h),
+              child: Text(
+                l10n.searchResultsSourceStatus(
+                  viewModel.progress.length,
+                  viewModel.selectedSourceCount,
+                ),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white60),
+              ),
+            ),
+          ...viewModel.progress.map(
+            (progress) => Padding(
+              padding: EdgeInsets.symmetric(vertical: 6.h),
+              child: Row(
+                children: [
+                  _SourceChip(source: progress.source),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Text(
+                      l10n.searchResultsSourceProgress(
+                        _sourceLabel(context, progress.source),
+                        progress.fetchedItems,
+                        progress.fetchedPages,
+                      ),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white70),
+                    ),
+                  ),
+                  if (progress.done)
+                    Icon(Icons.check_circle, color: Colors.greenAccent, size: 18.w)
+                  else
+                    const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: LoadingIndicator(size: 20),
+                    ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
     );
   }
+
+  String _sourceLabel(BuildContext context, DataSource source) {
+    final l10n = context.l10n;
+    switch (source) {
+      case DataSource.crossref:
+        return l10n.searchResultsSourceCrossref;
+      case DataSource.scopus:
+        return l10n.searchResultsSourceScopus;
+      case DataSource.openalex:
+        return l10n.keywordConfigSourceOpenAlex;
+    }
+  }
 }
 
-class _SortMenu extends StatelessWidget {
-  const _SortMenu({required this.viewModel});
+class _SourceChip extends StatelessWidget {
+  const _SourceChip({required this.source});
 
-  final SearchResultsViewModel viewModel;
+  final DataSource source;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return PopupMenuButton<SearchSortOption>(
-      tooltip: l10n.searchResultsSort,
-      initialValue: viewModel.sortOption,
-      onSelected: viewModel.sortBy,
-      itemBuilder: (context) => [
-        PopupMenuItem<SearchSortOption>(
-          value: SearchSortOption.nameAsc,
-          child: Text(l10n.searchResultsSortNameAsc),
-        ),
-        PopupMenuItem<SearchSortOption>(
-          value: SearchSortOption.nameDesc,
-          child: Text(l10n.searchResultsSortNameDesc),
-        ),
-        PopupMenuItem<SearchSortOption>(
-          value: SearchSortOption.yearAsc,
-          child: Text(l10n.searchResultsSortYearAsc),
-        ),
-        PopupMenuItem<SearchSortOption>(
-          value: SearchSortOption.yearDesc,
-          child: Text(l10n.searchResultsSortYearDesc),
-        ),
-      ],
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.sort, color: Colors.white, size: 20.w),
-          SizedBox(width: 8.w),
-          Text(
-            l10n.searchResultsSort,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
-          ),
-        ],
+    final label = _label(context);
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(16.r),
+      ),
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white),
       ),
     );
+  }
+
+  String _label(BuildContext context) {
+    final l10n = context.l10n;
+    switch (source) {
+      case DataSource.crossref:
+        return l10n.searchResultsSourceCrossref;
+      case DataSource.scopus:
+        return l10n.searchResultsSourceScopus;
+      case DataSource.openalex:
+        return l10n.keywordConfigSourceOpenAlex;
+    }
   }
 }
 
@@ -195,86 +224,89 @@ class _ResultsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return Column(
-      children: viewModel.articles
-          .map(
-            (article) => Container(
-              margin: EdgeInsets.only(bottom: 16.h),
-              padding: EdgeInsets.all(16.w),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(16.r),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    article.title,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                  ),
-                  SizedBox(height: 8.h),
-                  Wrap(
-                    spacing: 12.w,
-                    runSpacing: 8.h,
-                    children: [
-                      _Badge(label: '${l10n.searchResultsYear}: ${article.publishedYear ?? '-'}'),
-                      _Badge(label: '${l10n.searchResultsSource}: ${article.source}'),
-                      _Badge(label: '${l10n.searchResultsDocumentType}: ${_resolveDocType(l10n, article.documentType)}'),
-                    ],
-                  ),
-                  if (article.doi != null) ...[
-                    SizedBox(height: 8.h),
-                    Text(
-                      'DOI: ${article.doi}',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70),
-                    ),
-                  ],
-                  SizedBox(height: 12.h),
-                  ExpansionTile(
-                    title: Text(
-                      l10n.searchResultsAbstract,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(color: Colors.white),
-                    ),
-                    collapsedIconColor: Colors.white,
-                    iconColor: Colors.white,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(8.w),
-                        child: Text(
-                          article.abstractText ?? l10n.searchResultsNoAbstract,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white70),
-                        ),
-                      ),
-                      if (article.link != null)
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () => _launch(article.link!),
-                            child: Text(l10n.searchResultsOpenLink),
-                          ),
-                        ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          )
-          .toList(),
+    return ListView.separated(
+      itemCount: viewModel.articles.length,
+      separatorBuilder: (_, __) => SizedBox(height: 12.h),
+      itemBuilder: (context, index) {
+        final article = viewModel.articles[index];
+        return _ResultTile(article: article);
+      },
     );
+  }
 }
 
-  Future<void> _launch(String link) async {
-    final uri = Uri.parse(link);
-    if (!await launchUrl(uri)) {
-      // ignore failure silently
-    }
+class _ResultTile extends StatelessWidget {
+  const _ResultTile({required this.article});
+
+  final ArticleEntity article;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final metadataStyle = Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70);
+    final titleStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        );
+
+    return InkWell(
+      onTap: () => Navigator.of(context).pushNamed(
+        AppRouter.articleDetails,
+        arguments: article,
+      ),
+      child: Container(
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(16.r),
+          border: Border.all(color: Colors.white10),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(article.title, style: titleStyle),
+            SizedBox(height: 8.h),
+            Wrap(
+              spacing: 12.w,
+              runSpacing: 8.h,
+              children: [
+                _InfoBadge(label: '${l10n.searchResultsYear}: ${article.publishedYear ?? '-'}'),
+                _InfoBadge(label: '${l10n.searchResultsSource}: ${article.source}'),
+                _InfoBadge(label: '${l10n.searchResultsDocumentType}: ${_docTypeLabel(l10n, article.documentType)}'),
+              ],
+            ),
+            if (article.doi != null) ...[
+              SizedBox(height: 8.h),
+              Text('DOI: ${article.doi}', style: metadataStyle),
+              TextButton(
+                onPressed: () => _openDoi(article.doi!),
+                child: Text(l10n.searchResultsOpenDoi),
+              ),
+            ],
+            if (article.link != null) ...[
+              SizedBox(height: 4.h),
+              TextButton(
+                onPressed: () => _launch(article.link!),
+                child: Text(l10n.searchResultsOpenLink),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
   }
 
-  String _resolveDocType(AppLocalizations l10n, String value) {
+  void _openDoi(String doi) {
+    final uri = Uri.parse('https://doi.org/$doi');
+    launchUrl(uri);
+  }
+
+  Future<void> _launch(String url) async {
+    final uri = Uri.parse(url);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  String _docTypeLabel(AppLocalizations l10n, String value) {
     switch (value.toLowerCase()) {
       case 'journal-article':
       case 'ar':
@@ -299,6 +331,112 @@ class _ResultsList extends StatelessWidget {
       default:
         return l10n.docTypeOther;
     }
+  }
+}
+
+class _Footer extends StatelessWidget {
+  const _Footer({required this.viewModel});
+
+  final SearchResultsViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return SizedBox(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.searchResultsShowingLimited(
+              viewModel.formattedVisibleCount(),
+              viewModel.formattedTotalCount(),
+            ),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70),
+          ),
+          SizedBox(height: 12.h),
+          Row(
+            children: [
+              _SortMenu(viewModel: viewModel),
+              SizedBox(width: 16.w),
+              CustomButton(
+                label: l10n.searchResultsExport,
+                onPressed: viewModel.totalResults == 0 || viewModel.isExporting
+                    ? null
+                    : () async {
+                        final result = await viewModel.exportCsv();
+                        if (!context.mounted) return;
+                        final messenger = ScaffoldMessenger.of(context);
+                        if (result.isSuccess) {
+                          messenger.showSnackBar(SnackBar(content: Text(l10n.csvExportSuccess)));
+                        } else {
+                          messenger.showSnackBar(SnackBar(content: Text(l10n.csvExportFailure)));
+                        }
+                      },
+                icon: viewModel.isExporting ? const LoadingIndicator(size: 20) : null,
+              ),
+              if (viewModel.canShowMore) ...[
+                SizedBox(width: 16.w),
+                CustomButton(
+                  label: l10n.searchResultsShowMore(AppConstants.defaultVisibleLimit),
+                  isPrimary: false,
+                  onPressed: viewModel.showNextBatch,
+                ),
+              ],
+            ],
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            l10n.searchResultsExportHint,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white54),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SortMenu extends StatelessWidget {
+  const _SortMenu({required this.viewModel});
+
+  final SearchResultsViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return PopupMenuButton<SearchSortOption>(
+      tooltip: l10n.searchResultsSort,
+      initialValue: viewModel.sortOption,
+      onSelected: viewModel.sortBy,
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: SearchSortOption.nameAsc,
+          child: Text(l10n.searchResultsSortNameAsc),
+        ),
+        PopupMenuItem(
+          value: SearchSortOption.nameDesc,
+          child: Text(l10n.searchResultsSortNameDesc),
+        ),
+        PopupMenuItem(
+          value: SearchSortOption.yearAsc,
+          child: Text(l10n.searchResultsSortYearAsc),
+        ),
+        PopupMenuItem(
+          value: SearchSortOption.yearDesc,
+          child: Text(l10n.searchResultsSortYearDesc),
+        ),
+      ],
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.sort, color: Colors.white, size: 20.w),
+          SizedBox(width: 8.w),
+          Text(
+            l10n.searchResultsSort,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -331,25 +469,20 @@ class _EmptyPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 180.h,
-          child: Lottie.asset('assets/lottie/loading.json'),
-        ),
-        SizedBox(height: 16.h),
-        Text(
-          l10n.searchResultsEmpty,
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 24.h),
+      child: Center(
+        child: Text(
+          l10n.searchResultsEmptyAfterFetch,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white70),
-          textAlign: TextAlign.center,
         ),
-      ],
+      ),
     );
   }
 }
 
-class _Badge extends StatelessWidget {
-  const _Badge({required this.label});
+class _InfoBadge extends StatelessWidget {
+  const _InfoBadge({required this.label});
 
   final String label;
 

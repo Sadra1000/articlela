@@ -8,6 +8,7 @@ import '../../../../app/navigation/app_router.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../domain/entities/keyword_group_entity.dart';
+import '../../domain/entities/search_filter_entity.dart';
 import '../viewmodels/keyword_config_viewmodel.dart';
 
 class KeywordConfigScreen extends StatelessWidget {
@@ -83,6 +84,12 @@ class KeywordConfigScreen extends StatelessWidget {
     if (validation == 'empty_keywords') {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l10n.keywordConfigErrorEmpty)),
+      );
+      return;
+    }
+    if (validation == 'no_sources') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.keywordConfigErrorNoSources)),
       );
       return;
     }
@@ -236,6 +243,29 @@ class _FiltersSection extends StatelessWidget {
         _YearRangeSlider(viewModel: viewModel),
         SizedBox(height: 24.h),
         Text(
+          l10n.keywordConfigSources,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
+        ),
+        SizedBox(height: 12.h),
+        Wrap(
+          spacing: 12.w,
+          runSpacing: 12.h,
+          children: DataSource.values.map((source) {
+            final enabled = source != DataSource.scopus || viewModel.scopusAvailable;
+            final chip = FilterChip(
+              label: Text(_sourceLabel(l10n, source)),
+              selected: viewModel.selectedSources.contains(source),
+              onSelected: enabled ? (_) => viewModel.toggleSource(source) : null,
+            );
+            if (enabled) return chip;
+            return Tooltip(
+              message: l10n.keywordConfigScopusDisabledHint,
+              child: chip,
+            );
+          }).toList(),
+        ),
+        SizedBox(height: 24.h),
+        Text(
           l10n.keywordConfigDocTypes,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
         ),
@@ -272,6 +302,17 @@ class _FiltersSection extends StatelessWidget {
         return l10n.docTypeThesis;
       default:
         return l10n.docTypeOther;
+    }
+  }
+
+  String _sourceLabel(AppLocalizations l10n, DataSource source) {
+    switch (source) {
+      case DataSource.crossref:
+        return l10n.searchResultsSourceCrossref;
+      case DataSource.scopus:
+        return l10n.searchResultsSourceScopus;
+      case DataSource.openalex:
+        return l10n.keywordConfigSourceOpenAlex;
     }
   }
 }
@@ -331,3 +372,5 @@ class _YearRangeSliderState extends State<_YearRangeSlider> {
     );
   }
 }
+
+

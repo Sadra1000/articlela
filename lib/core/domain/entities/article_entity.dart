@@ -17,21 +17,3 @@ class ArticleEntity {
   final String source;
   final String? link;
 }
-
-class ArticlePage {
-  const ArticlePage({
-    required this.articles,
-    required this.nextCrossrefCursor,
-    required this.hasMoreCrossref,
-    required this.nextScopusStart,
-    required this.hasMoreScopus,
-  });
-
-  final List<ArticleEntity> articles;
-  final String? nextCrossrefCursor;
-  final bool hasMoreCrossref;
-  final int nextScopusStart;
-  final bool hasMoreScopus;
-
-  bool get hasMore => hasMoreCrossref || hasMoreScopus;
-}

@@ -39,12 +39,27 @@ class AppLocalizations {
 
   String get appTitle => _strings['appTitle'] ?? '';
   String get appTagline => _strings['appTagline'] ?? '';
+
+  // Onboarding
   String get onboardingHeadline => _strings['onboardingHeadline'] ?? '';
   String get onboardingDescription => _strings['onboardingDescription'] ?? '';
   String get onboardingSelectLanguage => _strings['onboardingSelectLanguage'] ?? '';
   String get onboardingContinue => _strings['onboardingContinue'] ?? '';
+  String get onboardingKeysTitle => _strings['onboardingKeysTitle'] ?? '';
+  String get onboardingKeysDescription => _strings['onboardingKeysDescription'] ?? '';
+  String get onboardingScopusToggle => _strings['onboardingScopusToggle'] ?? '';
+  String get onboardingScopusHint => _strings['onboardingScopusHint'] ?? '';
+  String get onboardingElsevierLabel => _strings['onboardingElsevierLabel'] ?? '';
+  String get onboardingElsevierHint => _strings['onboardingElsevierHint'] ?? '';
+  String get onboardingElsevierHelper => _strings['onboardingElsevierHelper'] ?? '';
+  String get onboardingScopusDisabledHelper => _strings['onboardingScopusDisabledHelper'] ?? '';
+  String get onboardingCrossrefLabel => _strings['onboardingCrossrefLabel'] ?? '';
+  String get onboardingFinish => _strings['onboardingFinish'] ?? '';
+  String get onboardingCompleteMessage => _strings['onboardingCompleteMessage'] ?? '';
   String get languageEnglish => _strings['languageEnglish'] ?? '';
   String get languagePersian => _strings['languagePersian'] ?? '';
+
+  // Home & About
   String get homeTitle => _strings['homeTitle'] ?? '';
   String get homeSubtitle => _strings['homeSubtitle'] ?? '';
   String get homeStart => _strings['homeStart'] ?? '';
@@ -55,6 +70,8 @@ class AppLocalizations {
   String get aboutParagraphTwo => _strings['aboutParagraphTwo'] ?? '';
   String get aboutContact => _strings['aboutContact'] ?? '';
   String get aboutSupport => _strings['aboutSupport'] ?? '';
+
+  // Settings
   String get settingsTitle => _strings['settingsTitle'] ?? '';
   String get settingsLanguageSection => _strings['settingsLanguageSection'] ?? '';
   String get settingsApiSection => _strings['settingsApiSection'] ?? '';
@@ -68,6 +85,15 @@ class AppLocalizations {
   String get settingsElsevierKeyHint => _strings['settingsElsevierKeyHint'] ?? '';
   String get settingsSave => _strings['settingsSave'] ?? '';
   String get settingsSavedMessage => _strings['settingsSavedMessage'] ?? '';
+  String get settingsScopusStatus => _strings['settingsScopusStatus'] ?? '';
+  String get settingsScopusEnabled => _strings['settingsScopusEnabled'] ?? '';
+  String get settingsScopusDisabled => _strings['settingsScopusDisabled'] ?? '';
+  String get settingsValueNotSet => _strings['settingsValueNotSet'] ?? '';
+  String get settingsApiHint => _strings['settingsApiHint'] ?? '';
+  String get settingsResetOnboarding => _strings['settingsResetOnboarding'] ?? '';
+  String get settingsResetOnboardingMessage => _strings['settingsResetOnboardingMessage'] ?? '';
+
+  // Keyword config
   String get keywordConfigTitle => _strings['keywordConfigTitle'] ?? '';
   String get keywordConfigSubtitle => _strings['keywordConfigSubtitle'] ?? '';
   String get keywordConfigAddGroup => _strings['keywordConfigAddGroup'] ?? '';
@@ -78,18 +104,23 @@ class AppLocalizations {
   String get keywordConfigKeywordHint => _strings['keywordConfigKeywordHint'] ?? '';
   String get keywordConfigYearRange => _strings['keywordConfigYearRange'] ?? '';
   String get keywordConfigDocTypes => _strings['keywordConfigDocTypes'] ?? '';
+  String get keywordConfigSources => _strings['keywordConfigSources'] ?? '';
   String get keywordConfigNext => _strings['keywordConfigNext'] ?? '';
   String get keywordConfigErrorEmpty => _strings['keywordConfigErrorEmpty'] ?? '';
   String get keywordConfigErrorNoGroups => _strings['keywordConfigErrorNoGroups'] ?? '';
+  String get keywordConfigErrorNoSources => _strings['keywordConfigErrorNoSources'] ?? '';
+  String get keywordConfigScopusDisabledHint => _strings['keywordConfigScopusDisabledHint'] ?? '';
+  String get keywordConfigSourceOpenAlex => _strings['keywordConfigSourceOpenAlex'] ?? '';
   String keywordConfigGroupName(int index) {
     final template = _strings['keywordConfigGroupName'] ?? 'Group {index}';
     return template.replaceAll('{index}', index.toString());
   }
 
+  // Search results
   String get searchResultsTitle => _strings['searchResultsTitle'] ?? '';
   String get searchResultsEmpty => _strings['searchResultsEmpty'] ?? '';
+  String get searchResultsEmptyAfterFetch => _strings['searchResultsEmptyAfterFetch'] ?? '';
   String get searchResultsLoading => _strings['searchResultsLoading'] ?? '';
-  String get searchResultsLoadMore => _strings['searchResultsLoadMore'] ?? '';
   String get searchResultsExport => _strings['searchResultsExport'] ?? '';
   String searchResultsTotal(String count) {
     final template = _strings['searchResultsTotal'] ?? '{count}';
@@ -104,11 +135,45 @@ class AppLocalizations {
   String get searchResultsDocumentType => _strings['searchResultsDocumentType'] ?? '';
   String get searchResultsSource => _strings['searchResultsSource'] ?? '';
   String get searchResultsYear => _strings['searchResultsYear'] ?? '';
-  String get searchResultsAbstract => _strings['searchResultsAbstract'] ?? '';
   String get searchResultsOpenLink => _strings['searchResultsOpenLink'] ?? '';
+  String get searchResultsOpenDoi => _strings['searchResultsOpenDoi'] ?? '';
   String get searchResultsNoAbstract => _strings['searchResultsNoAbstract'] ?? '';
   String get searchResultsSourceCrossref => _strings['searchResultsSourceCrossref'] ?? '';
   String get searchResultsSourceScopus => _strings['searchResultsSourceScopus'] ?? '';
+  String searchResultsCombinedProgress(String count) {
+    final template = _strings['searchResultsCombinedProgress'] ?? '{count}';
+    return template.replaceAll('{count}', count);
+  }
+
+  String get searchResultsFetching => _strings['searchResultsFetching'] ?? '';
+  String searchResultsSourceProgress(String source, int count, int pages) {
+    final template = _strings['searchResultsSourceProgress'] ?? '{source}: {count} ({pages})';
+    return template
+        .replaceAll('{source}', source)
+        .replaceAll('{count}', count.toString())
+        .replaceAll('{pages}', pages.toString());
+  }
+
+  String searchResultsSourceStatus(int completed, int total) {
+    final template = _strings['searchResultsSourceStatus'] ?? '{completed}/{total}';
+    return template
+        .replaceAll('{completed}', completed.toString())
+        .replaceAll('{total}', total.toString());
+  }
+
+  String searchResultsShowMore(int count) {
+    final template = _strings['searchResultsShowMore'] ?? 'Show next {count}';
+    return template.replaceAll('{count}', count.toString());
+  }
+
+  String searchResultsShowingLimited(String visible, String total) {
+    final template = _strings['searchResultsShowingLimited'] ?? '{visible}/{total}';
+    return template.replaceAll('{visible}', visible).replaceAll('{total}', total);
+  }
+
+  String get searchResultsExportHint => _strings['searchResultsExportHint'] ?? '';
+
+  // Common messages
   String get errorGeneric => _strings['errorGeneric'] ?? '';
   String get errorMissingKeys => _strings['errorMissingKeys'] ?? '';
   String get retry => _strings['retry'] ?? '';
@@ -118,6 +183,8 @@ class AppLocalizations {
   String get snackbarSettingsSaved => _strings['snackbarSettingsSaved'] ?? '';
   String get csvExportSuccess => _strings['csvExportSuccess'] ?? '';
   String get csvExportFailure => _strings['csvExportFailure'] ?? '';
+
+  // Document types
   String get docTypeJournalArticle => _strings['docTypeJournalArticle'] ?? '';
   String get docTypeReview => _strings['docTypeReview'] ?? '';
   String get docTypeBook => _strings['docTypeBook'] ?? '';
@@ -125,12 +192,33 @@ class AppLocalizations {
   String get docTypeReport => _strings['docTypeReport'] ?? '';
   String get docTypeThesis => _strings['docTypeThesis'] ?? '';
   String get docTypeOther => _strings['docTypeOther'] ?? '';
+
   String versionLabel(String version) {
     final template = _strings['versionLabel'] ?? 'Version {version}';
     return template.replaceAll('{version}', version);
   }
 
   String get settingsSourceEnv => _strings['settingsSourceEnv'] ?? '';
+
+  // Article details
+  String get articleDetailsTitle => _strings['articleDetailsTitle'] ?? '';
+  String get articleDetailsOpenDoi => _strings['articleDetailsOpenDoi'] ?? '';
+  String get articleDetailsCopyLink => _strings['articleDetailsCopyLink'] ?? '';
+  String get articleDetailsCopied => _strings['articleDetailsCopied'] ?? '';
+  String get articleDetailsMissingDoi => _strings['articleDetailsMissingDoi'] ?? '';
+  String get articleDetailsNoAbstract => _strings['articleDetailsNoAbstract'] ?? '';
+  String articleDetailsAbstractLabel(String source) {
+    final template = _strings['articleDetailsAbstractLabel'] ?? 'Abstract source: {source}';
+    return template.replaceAll('{source}', source);
+  }
+
+  String get articleDetailsSourceSemanticScholar =>
+      _strings['articleDetailsSourceSemanticScholar'] ?? '';
+  String get articleDetailsSourceOpenAlex => _strings['articleDetailsSourceOpenAlex'] ?? '';
+  String get articleDetailsSourceCrossref => _strings['articleDetailsSourceCrossref'] ?? '';
+  String get articleDetailsSourceNone => _strings['articleDetailsSourceNone'] ?? '';
+  String get articleDetailsAuthors => _strings['articleDetailsAuthors'] ?? '';
+  String get articleDetailsVenue => _strings['articleDetailsVenue'] ?? '';
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

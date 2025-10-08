@@ -42,33 +42,22 @@ class ScopusApiDatasource {
 
       final params = <String, dynamic>{
         'query': combinedQuery,
-        'httpAccept': 'application/json',
-        'view': 'COMPLETE',
         'count': AppConstants.scopusPageSize,
         'start': start,
+        'httpAccept': 'application/json',
+        'view': 'COMPLETE',
       };
 
       final response = await _client.get(
         '${AppConstants.scopusBaseUrl}/content/search/scopus',
         queryParameters: params,
       );
-
       final data = response.data as Map<String, dynamic>;
       final searchResults = data['search-results'] as Map<String, dynamic>;
       final entries = (searchResults['entry'] as List<dynamic>?)?.cast<Map<String, dynamic>>() ?? <Map<String, dynamic>>[];
       final results = <ArticleEntity>[];
 
       for (final entry in entries) {
-        final rawAbstract = entry['dc:description'] as String?;
-        if (rawAbstract == null || rawAbstract.trim().isEmpty) {
-          continue;
-        }
-
-        final abstractText = _stripTags(rawAbstract);
-        if (abstractText.isEmpty) {
-          continue;
-        }
-
         final title = (entry['dc:title'] as String?)?.trim() ?? 'Untitled';
         final doi = (entry['prism:doi'] as String?)?.trim();
         final date = entry['prism:coverDate'] as String?;
@@ -86,7 +75,7 @@ class ScopusApiDatasource {
             title: title,
             publishedYear: year,
             doi: doi,
-            abstractText: abstractText,
+            abstractText: null,
             documentType: docType,
             source: 'SCOPUS',
             link: linkHref,
@@ -119,10 +108,5 @@ class ScopusApiDatasource {
     }
     final clauses = documentTypes.map((type) => 'DOCTYPE(${type.toUpperCase()})').join(' OR ');
     return '($clauses)';
-  }
-
-  String _stripTags(String input) {
-    final withoutTags = input.replaceAll(RegExp(r'<[^>]+>'), ' ');
-    return withoutTags.replaceAll(RegExp(r'\s+'), ' ').trim();
   }
 }

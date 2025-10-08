@@ -5,12 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../app/app_state.dart';
+import '../../../../app/di/service_locator.dart';
 import '../../../../app/l10n/app_localizations.dart';
 import '../../../../core/constants/app_constants.dart';
-import '../../../../core/data/services/env_config.dart';
+import '../../../../core/data/services/key_store.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/loading_indicator.dart';
-import '../../../../app/di/service_locator.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -20,61 +20,40 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final _crossrefController = TextEditingController();
-  final _elsevierController = TextEditingController();
-
-  bool _mailtoFromEnv = false;
-  bool _apiKeyFromEnv = false;
   bool _isSaving = false;
+  bool _isLoadingKeys = true;
   late String _languageCode;
   late ThemeMode _themeMode;
+  bool _scopusEnabled = false;
+  String? _elsevierKey;
+  String? _crossrefMailto;
 
   @override
   void initState() {
     super.initState();
-    _initialize();
-  }
-
-  void _initialize() {
-    final prefs = getIt<SharedPreferences>();
-    final env = getIt<EnvConfig>();
     final appState = context.read<AppStateNotifier>();
-
     _languageCode = appState.locale.languageCode;
     _themeMode = appState.themeMode;
-
-    final storedMailto = prefs.getString(AppConstants.crossrefMailtoKey);
-    final storedApiKey = prefs.getString(AppConstants.elsevierApiKey);
-
-    final envMailto = env.crossrefMailto;
-    final envApiKey = env.elsevierApiKey;
-
-    if (storedMailto != null && storedMailto.isNotEmpty) {
-      _crossrefController.text = storedMailto;
-    } else if (envMailto != null && envMailto.isNotEmpty) {
-      _crossrefController.text = envMailto;
-      _mailtoFromEnv = true;
-    }
-
-    if (storedApiKey != null && storedApiKey.isNotEmpty) {
-      _elsevierController.text = storedApiKey;
-    } else if (envApiKey != null && envApiKey.isNotEmpty) {
-      _elsevierController.text = envApiKey;
-      _apiKeyFromEnv = true;
-    }
+    _loadApiState();
   }
 
-  @override
-  void dispose() {
-    _crossrefController.dispose();
-    _elsevierController.dispose();
-    super.dispose();
+  Future<void> _loadApiState() async {
+    final keyStore = getIt<KeyStore>();
+    final key = await keyStore.getElsevierKey();
+    final mailto = await keyStore.getCrossrefMailto();
+    final scopusEnabled = await keyStore.isScopusEnabled();
+    if (!mounted) return;
+    setState(() {
+      _elsevierKey = key;
+      _crossrefMailto = mailto;
+      _scopusEnabled = scopusEnabled;
+      _isLoadingKeys = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 24.h),
@@ -84,7 +63,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Center(
               child: SizedBox(
                 height: 220.h,
-                child: Lottie.asset('assets/lottie/settings.json'),
+                child: Lottie.asset('assets/lottie/coding.json'),
               ),
             ),
             SizedBox(height: 24.h),
@@ -131,41 +110,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SizedBox(height: 24.h),
             _buildSectionTitle(l10n.settingsApiSection),
             SizedBox(height: 12.h),
-            TextField(
-              controller: _crossrefController,
-              decoration: InputDecoration(
-                labelText: l10n.settingsCrossrefMailto,
-                hintText: l10n.settingsCrossrefMailtoHint,
-                helperText: _mailtoFromEnv ? l10n.settingsSourceEnv : null,
-              ),
-              onChanged: (_) {
-                if (_mailtoFromEnv) {
-                  setState(() => _mailtoFromEnv = false);
-                }
-              },
+            _isLoadingKeys
+                ? const Padding(
+                    padding: EdgeInsets.all(12),
+                    child: LoadingIndicator(size: 28),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _InfoTile(
+                        title: l10n.settingsScopusStatus,
+                        value: _scopusEnabled ? l10n.settingsScopusEnabled : l10n.settingsScopusDisabled,
+                        icon: _scopusEnabled ? Icons.verified_outlined : Icons.visibility_off_outlined,
+                      ),
+                      SizedBox(height: 12.h),
+                      _InfoTile(
+                        title: l10n.settingsElsevierKey,
+                        value: _maskKey(_elsevierKey, l10n),
+                        icon: Icons.key_outlined,
+                      ),
+                      SizedBox(height: 12.h),
+                      _InfoTile(
+                        title: l10n.settingsCrossrefMailto,
+                        value: _crossrefMailto ?? l10n.settingsValueNotSet,
+                        icon: Icons.email_outlined,
+                      ),
+                      SizedBox(height: 16.h),
+                      Text(
+                        l10n.settingsApiHint,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70),
+                      ),
+                    ],
+                  ),
+            SizedBox(height: 32.h),
+            CustomButton(
+              label: l10n.settingsSave,
+              onPressed: _isSaving ? null : () => _save(context),
+              icon: _isSaving ? const LoadingIndicator(size: 22) : null,
             ),
             SizedBox(height: 16.h),
-            TextField(
-              controller: _elsevierController,
-              decoration: InputDecoration(
-                labelText: l10n.settingsElsevierKey,
-                hintText: l10n.settingsElsevierKeyHint,
-                helperText: _apiKeyFromEnv ? l10n.settingsSourceEnv : null,
-              ),
-              onChanged: (_) {
-                if (_apiKeyFromEnv) {
-                  setState(() => _apiKeyFromEnv = false);
-                }
-              },
-            ),
-            SizedBox(height: 32.h),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: CustomButton(
-                label: l10n.settingsSave,
-                onPressed: _isSaving ? null : () => _save(context),
-                icon: _isSaving ? const LoadingIndicator(size: 22) : null,
-              ),
+            TextButton(
+              onPressed: _resetOnboarding,
+              child: Text(l10n.settingsResetOnboarding),
             ),
           ],
         ),
@@ -184,28 +170,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _save(BuildContext context) async {
-    final l10n = context.l10n;
     final prefs = getIt<SharedPreferences>();
     final appState = context.read<AppStateNotifier>();
     final messenger = ScaffoldMessenger.of(context);
-    final successMessage = l10n.snackbarSettingsSaved;
+    final l10n = context.l10n;
 
     setState(() => _isSaving = true);
-
-    final mailto = _crossrefController.text.trim();
-    final apiKey = _elsevierController.text.trim();
-
-    if (mailto.isEmpty) {
-      await prefs.remove(AppConstants.crossrefMailtoKey);
-    } else {
-      await prefs.setString(AppConstants.crossrefMailtoKey, mailto);
-    }
-
-    if (apiKey.isEmpty) {
-      await prefs.remove(AppConstants.elsevierApiKey);
-    } else {
-      await prefs.setString(AppConstants.elsevierApiKey, apiKey);
-    }
 
     await prefs.setString(AppConstants.languageKey, _languageCode);
     await prefs.setString(AppConstants.themeModeKey, _themeMode.name);
@@ -215,9 +185,74 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     if (!mounted) return;
     setState(() => _isSaving = false);
+    messenger.showSnackBar(SnackBar(content: Text(l10n.snackbarSettingsSaved)));
+  }
 
-    messenger.showSnackBar(
-      SnackBar(content: Text(successMessage)),
+  Future<void> _resetOnboarding() async {
+    final keyStore = getIt<KeyStore>();
+    await keyStore.resetOnboarding();
+    await _loadApiState();
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(context.l10n.settingsResetOnboardingMessage)),
+    );
+  }
+
+  String _maskKey(String? key, AppLocalizations l10n) {
+    if (key == null || key.isEmpty) {
+      return l10n.settingsValueNotSet;
+    }
+    if (key.length <= 4) {
+      return '****';
+    }
+    final prefix = key.substring(0, 2);
+    final suffix = key.substring(key.length - 2);
+    return '$prefix••••$suffix';
+  }
+}
+
+class _InfoTile extends StatelessWidget {
+  const _InfoTile({
+    required this.title,
+    required this.value,
+    required this.icon,
+  });
+
+  final String title;
+  final String value;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(18.r),
+        border: Border.all(color: Colors.white12),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: Colors.white70),
+          SizedBox(width: 14.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white70),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  value,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
