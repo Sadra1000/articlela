@@ -163,6 +163,7 @@
   "snackbarSettingsSaved": "تنظیمات ذخیره شد.",
   "csvExportSuccess": "فایل CSV در پوشه Downloads ذخیره شد.",
   "csvExportFailure": "خروجی CSV انجام نشد. دسترسی ذخیره‌سازی را بررسی کنید.",
+  "docTypePrePrint": "پیش انتشار",
   "docTypeJournalArticle": "مقاله مجله",
   "docTypeReview": "مرور",
   "docTypeBook": "کتاب",

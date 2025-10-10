@@ -123,6 +123,7 @@ class _AppTitleBarState extends State<AppTitleBar> with WindowListener {
               onPressed: windowManager.close,
               isDestructive: true,
             ),
+            Expanded(child: MoveWindow())
           ],
         ),
       ),

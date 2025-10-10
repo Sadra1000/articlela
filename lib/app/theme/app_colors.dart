@@ -38,7 +38,7 @@ class AppColors {
         );
       case GradientPreset.keyword:
         return const LinearGradient(
-          colors: [Color(0xFFFB8500), Color(0xFF3A86FF)],
+          colors: [Color(0xFFFB0000), Color(0xFF3A86FF)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         );

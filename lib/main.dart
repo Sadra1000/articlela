@@ -25,8 +25,8 @@ Future<void> main() async {
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     await windowManager.ensureInitialized();
     const windowOptions = WindowOptions(
-      size: Size(1200, 780),
-      minimumSize: Size(1100, 700),
+      size: Size(810, 500),
+      minimumSize: Size(810, 500),
       backgroundColor: Colors.transparent,
       skipTaskbar: false,
       title: AppConstants.appName,

@@ -185,6 +185,7 @@ class AppLocalizations {
   String get csvExportFailure => _strings['csvExportFailure'] ?? '';
 
   // Document types
+  String get docTypeJournalPrePrint => _strings['docTypePrePrint'] ?? '';
   String get docTypeJournalArticle => _strings['docTypeJournalArticle'] ?? '';
   String get docTypeReview => _strings['docTypeReview'] ?? '';
   String get docTypeBook => _strings['docTypeBook'] ?? '';

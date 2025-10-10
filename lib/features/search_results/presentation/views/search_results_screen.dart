@@ -308,8 +308,11 @@ class _ResultTile extends StatelessWidget {
 
   String _docTypeLabel(AppLocalizations l10n, String value) {
     switch (value.toLowerCase()) {
+      case 'preprint':
+      return l10n.docTypeJournalPrePrint;
       case 'journal-article':
       case 'ar':
+      case 'article':
         return l10n.docTypeJournalArticle;
       case 'review':
       case 're':

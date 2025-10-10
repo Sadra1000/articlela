@@ -25,7 +25,6 @@ class SearchFilterEntity {
 class DocumentTypeMapper {
   static const Map<String, String> _crossref = {
     'journal_article': 'journal-article',
-    // 'review': '',
     'book': 'book',
     'conference': 'proceedings-article',
     'report': 'report',
@@ -44,8 +43,7 @@ class DocumentTypeMapper {
   };
 
   static const Map<String, String> _openAlex = {
-    'journal_article': 'journal-article',
-    'review': 'journal-article',
+    'journal_article': 'article',
     'book': 'book',
     'conference': 'proceedings-article',
     'report': 'report',
@@ -62,6 +60,8 @@ class DocumentTypeMapper {
   }
 
   static List<String> openAlexCodes(List<String> ids) {
+    
+    print(ids);
     return ids.map((id) => _openAlex[id]).whereType<String>().toList();
   }
 }

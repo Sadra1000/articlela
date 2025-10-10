@@ -37,19 +37,12 @@ class OpenAlexApiDatasource {
         'from_publication_date:$fromYear-01-01',
         'to_publication_date:$toYear-12-31',
         'has_doi:true',
+        'type:${documentTypes.join('|')}'
       ];
-
-      if (documentTypes.isNotEmpty) {
-        final mapped = DocumentTypeMapper.openAlexCodes(documentTypes);
-        if (mapped.isNotEmpty) {
-          filters.add('type:${mapped.join('|')}');
-        }
-      }
-
       final params = <String, dynamic>{
         'search': searchClause.isEmpty ? null : searchClause,
         'filter': filters.join(','),
-        'per-page': 200,
+        'per-page': 355,
         'cursor': cursor ?? '*',
         'select': 'title,doi,publication_year,type,primary_location',
       }..removeWhere((_, value) => value == null);

@@ -163,6 +163,7 @@
   "snackbarSettingsSaved": "Settings saved.",
   "csvExportSuccess": "CSV exported to Downloads.",
   "csvExportFailure": "Could not export CSV. Check storage permissions.",
+  "docTypePrePrint": "preprint",
   "docTypeJournalArticle": "Journal article",
   "docTypeReview": "Review",
   "docTypeBook": "Book",
