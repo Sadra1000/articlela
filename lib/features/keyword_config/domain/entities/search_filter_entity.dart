@@ -61,7 +61,6 @@ class DocumentTypeMapper {
 
   static List<String> openAlexCodes(List<String> ids) {
     
-    print(ids);
     return ids.map((id) => _openAlex[id]).whereType<String>().toList();
   }
 }

@@ -47,9 +47,9 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
             Text(
               article.title,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
             SizedBox(height: 12.h),
             Wrap(
@@ -75,7 +75,10 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
             if (article.link != null) ...[
               SizedBox(height: 8.h),
               TextButton(
-                onPressed: () => launchUrl(Uri.parse(article.link!), mode: LaunchMode.externalApplication),
+                onPressed: () => launchUrl(
+                  Uri.parse(article.link!),
+                  mode: LaunchMode.externalApplication,
+                ),
                 child: Text(l10n.searchResultsOpenLink),
               ),
             ],
@@ -103,14 +106,17 @@ class _DoiActions extends StatelessWidget {
         Expanded(
           child: Text(
             'DOI: $doi',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white70),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
           ),
         ),
         SizedBox(width: 12.w),
         CustomButton(
           label: l10n.articleDetailsOpenDoi,
           isPrimary: false,
-          onPressed: () => launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
+          onPressed: () =>
+              launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
         ),
         SizedBox(width: 12.w),
         CustomButton(
@@ -141,7 +147,9 @@ class _AbstractSection extends StatelessWidget {
     if (doi == null || doi.isEmpty) {
       return Text(
         l10n.articleDetailsMissingDoi,
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white70),
+        style: Theme.of(
+          context,
+        ).textTheme.bodyLarge?.copyWith(color: Colors.white70),
       );
     }
 
@@ -155,47 +163,103 @@ class _AbstractSection extends StatelessWidget {
     if (viewModel.error != null) {
       return Text(
         viewModel.error!,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.redAccent),
+        style: Theme.of(
+          context,
+        ).textTheme.bodyMedium?.copyWith(color: Colors.redAccent),
       );
     }
 
     final result = viewModel.result;
-    if (result == null || (result.abstractText == null || result.abstractText!.isEmpty)) {
+    if (result == null ||
+        (result.abstractText == null || result.abstractText!.isEmpty)) {
       return Text(
         l10n.articleDetailsNoAbstract,
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white70),
+        style: Theme.of(
+          context,
+        ).textTheme.bodyLarge?.copyWith(color: Colors.white70),
       );
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          l10n.articleDetailsAbstractLabel(_resolveSourceLabel(l10n, result.resolutionSource)),
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Text(
+                l10n.articleDetailsAbstractLabel(
+                  _resolveSourceLabel(l10n, result.resolutionSource),
+                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(color: Colors.white),
+              ),
+            ),
+            SizedBox(width: 12.w),
+            _TranslateButton(viewModel: viewModel),
+          ],
         ),
         SizedBox(height: 12.h),
         Text(
           result.abstractText!,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white70, height: 1.4),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyLarge?.copyWith(color: Colors.white70, height: 1.4),
         ),
+        if (viewModel.translationError != null &&
+            !viewModel.hasTranslation) ...[
+          SizedBox(height: 12.h),
+          Text(
+            l10n.articleDetailsTranslationError,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.redAccent),
+          ),
+        ],
+        if (viewModel.hasTranslation) ...[
+          SizedBox(height: 20.h),
+          Text(
+            l10n.articleDetailsTranslationLabel,
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(color: Colors.white),
+          ),
+          SizedBox(height: 8.h),
+          Directionality(
+            textDirection: TextDirection.rtl,
+            child: Text(
+              viewModel.translatedAbstract!,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: Colors.white70,
+                height: 1.6,
+              ),
+            ),
+          ),
+        ],
         if (result.authors.isNotEmpty) ...[
           SizedBox(height: 16.h),
           Text(
             l10n.articleDetailsAuthors,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(color: Colors.white),
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(color: Colors.white),
           ),
           SizedBox(height: 6.h),
           Text(
             result.authors.join(', '),
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white70),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
           ),
         ],
         if (result.venue != null && result.venue!.isNotEmpty) ...[
           SizedBox(height: 12.h),
           Text(
             '${l10n.articleDetailsVenue}: ${result.venue}',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.white70),
           ),
         ],
       ],
@@ -216,6 +280,36 @@ class _AbstractSection extends StatelessWidget {
   }
 }
 
+class _TranslateButton extends StatelessWidget {
+  const _TranslateButton({required this.viewModel});
+
+  final ArticleDetailsViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    final canTranslate = (viewModel.result?.abstractText ?? '')
+        .trim()
+        .isNotEmpty;
+
+    if (viewModel.isTranslating) {
+      return SizedBox(
+        height: 28.h,
+        width: 28.h,
+        child: const CircularProgressIndicator(strokeWidth: 2),
+      );
+    }
+
+    return TextButton.icon(
+      onPressed: canTranslate ? () => viewModel.translateAbstract() : null,
+      icon: const Icon(Icons.translate, size: 18),
+      label: Text(l10n.articleDetailsTranslate),
+      style: TextButton.styleFrom(foregroundColor: theme.colorScheme.secondary),
+    );
+  }
+}
+
 class _InfoChip extends StatelessWidget {
   const _InfoChip({required this.label, required this.value});
 
@@ -232,7 +326,9 @@ class _InfoChip extends StatelessWidget {
       ),
       child: Text(
         '$label: $value',
-        style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white),
+        style: Theme.of(
+          context,
+        ).textTheme.labelMedium?.copyWith(color: Colors.white),
       ),
     );
   }

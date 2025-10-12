@@ -14,6 +14,7 @@ import '../../features/keyword_config/presentation/viewmodels/keyword_config_vie
 import '../../features/onboarding/domain/usecases/set_language_usecase.dart';
 import '../../features/onboarding/presentation/viewmodels/onboarding_viewmodel.dart';
 import '../../features/article_details/data/services/abstract_fetcher.dart';
+import '../../features/article_details/data/services/google_translate_service.dart';
 import '../../features/article_details/presentation/viewmodels/article_details_viewmodel.dart';
 import '../../features/search_results/data/datasources/crossref_api_datasource.dart';
 import '../../features/search_results/data/datasources/openalex_api_datasource.dart';
@@ -36,6 +37,7 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<FileExporter>(FileExporter.new);
   getIt.registerLazySingleton<InMemoryArticleCache>(InMemoryArticleCache.new);
   getIt.registerLazySingleton<IAbstractFetcher>(() => AbstractFetcher(getIt<DioClient>()));
+  getIt.registerLazySingleton<ArticleTranslator>(() => GoogleTranslateService(getIt<DioClient>()));
 
   getIt.registerLazySingleton<CrossrefApiDatasource>(
     () => CrossrefApiDatasource(getIt<DioClient>()),
@@ -74,5 +76,5 @@ Future<void> setupServiceLocator() async {
       exportArticlesUseCase: getIt<ExportArticlesUseCase>(),
     ),
   );
-  getIt.registerFactory(() => ArticleDetailsViewModel(getIt<IAbstractFetcher>()));
+  getIt.registerFactory(() => ArticleDetailsViewModel(getIt<IAbstractFetcher>(), getIt<ArticleTranslator>()));
 }

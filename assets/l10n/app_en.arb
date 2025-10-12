@@ -194,6 +194,9 @@
       }
     }
   },
+  "articleDetailsTranslate": "Translate to Persian",
+  "articleDetailsTranslationLabel": "Persian translation",
+  "articleDetailsTranslationError": "We couldn't translate the abstract. Try again in a bit.",
   "articleDetailsSourceSemanticScholar": "Semantic Scholar",
   "articleDetailsSourceOpenAlex": "OpenAlex",
   "articleDetailsSourceCrossref": "Crossref",

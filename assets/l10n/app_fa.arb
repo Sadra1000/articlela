@@ -194,6 +194,9 @@
       }
     }
   },
+  "articleDetailsTranslate": "ترجمه به فارسی",
+  "articleDetailsTranslationLabel": "ترجمه فارسی",
+  "articleDetailsTranslationError": "امکان ترجمه چکیده وجود ندارد. لطفاً بعداً دوباره تلاش کنید.",
   "articleDetailsSourceSemanticScholar": "Semantic Scholar",
   "articleDetailsSourceOpenAlex": "OpenAlex",
   "articleDetailsSourceCrossref": "Crossref",
