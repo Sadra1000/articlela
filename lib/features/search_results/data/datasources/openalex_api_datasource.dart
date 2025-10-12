@@ -39,10 +39,11 @@ class OpenAlexApiDatasource {
         'has_doi:true',
         'type:${documentTypes.join('|')}'
       ];
+
       final params = <String, dynamic>{
         'search': searchClause.isEmpty ? null : searchClause,
         'filter': filters.join(','),
-        'per-page': 355,
+        'per-page': 200,
         'cursor': cursor ?? '*',
         'select': 'title,doi,publication_year,type,primary_location',
       }..removeWhere((_, value) => value == null);
