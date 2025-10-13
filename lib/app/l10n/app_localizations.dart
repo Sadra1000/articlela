@@ -211,6 +211,36 @@ class AppLocalizations {
   String get searchResultsExportHint =>
       _strings['searchResultsExportHint'] ?? '';
 
+  // Stage review
+  String get stageReviewButton => _strings['stageReview.button'] ?? '';
+  String get stageReviewBack => _strings['stageReview.back'] ?? '';
+  String get stageReviewNextRemove => _strings['stageReview.nextRemove'] ?? '';
+  String get stageReviewNextAdd => _strings['stageReview.nextAdd'] ?? '';
+  String stageReviewProgress(int current, int total) {
+    final template = _strings['stageReview.progress'] ?? '{current} / {total}';
+    return template
+        .replaceAll('{current}', current.toString())
+        .replaceAll('{total}', total.toString());
+  }
+
+  String get stageReviewSummaryTitle =>
+      _strings['stageReview.summary.title'] ?? '';
+  String stageReviewSummarySelected(int count) {
+    final template =
+        _strings['stageReview.summary.selected'] ??
+        '{count} selected for export';
+    return template.replaceAll('{count}', count.toString());
+  }
+
+  String get stageReviewSummaryExport =>
+      _strings['stageReview.summary.export'] ?? '';
+  String get stageReviewSummaryRestart =>
+      _strings['stageReview.summary.restart'] ?? '';
+  String get stageReviewSummaryClose =>
+      _strings['stageReview.summary.close'] ?? '';
+  String get stageReviewSummaryNoneSelected =>
+      _strings['stageReview.summary.noneSelected'] ?? '';
+
   // Common messages
   String get errorGeneric => _strings['errorGeneric'] ?? '';
   String get errorMissingKeys => _strings['errorMissingKeys'] ?? '';

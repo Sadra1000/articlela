@@ -14,8 +14,12 @@ import '../../features/onboarding/presentation/viewmodels/onboarding_viewmodel.d
 import '../../features/onboarding/presentation/views/onboarding_screen.dart';
 import '../../features/search_results/presentation/viewmodels/search_results_viewmodel.dart';
 import '../../features/search_results/presentation/views/search_results_screen.dart';
+import '../../features/search_results/domain/usecases/export_articles_usecase.dart';
 import '../../features/settings/presentation/views/settings_screen.dart';
 import '../../features/shell/presentation/views/app_shell.dart';
+import '../../features/review/navigation/review_routes.dart';
+import '../../features/review/presentation/stage_review_page.dart';
+import '../../features/review/presentation/viewmodel/stage_review_viewmodel.dart';
 import '../di/service_locator.dart';
 import '../theme/app_colors.dart';
 
@@ -27,7 +31,7 @@ class AppRouter {
   static const String keywordConfig = '/keywords';
   static const String results = '/results';
   static const String articleDetails = '/articleDetails';
-
+  static const String stageReview = '/stageReview';
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
@@ -115,6 +119,26 @@ class AppRouter {
             ),
           ),
         );
+      case "/stageReview":
+        final reviewArgs = settings.arguments;
+        if (reviewArgs is! StageReviewArguments) {
+          return _errorRoute();
+        }
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => ChangeNotifierProvider(
+            create: (_) => StageReviewViewModel(
+              items: reviewArgs.items,
+              exportArticlesUseCase: getIt<ExportArticlesUseCase>(),
+              initialState: reviewArgs.initialState,
+            ),
+            child: AppShell(
+              preset: GradientPreset.results,
+              titleBuilder: (l10n) => l10n.stageReviewButton,
+              child: const StageReviewPage(),
+            ),
+          ),
+        );
       default:
         return _errorRoute();
     }
@@ -122,11 +146,8 @@ class AppRouter {
 
   Route<dynamic> _errorRoute() {
     return MaterialPageRoute(
-      builder: (_) => const Scaffold(
-        body: Center(
-          child: Text('Route not found'),
-        ),
-      ),
+      builder: (_) =>
+          const Scaffold(body: Center(child: Text('Route not found'))),
     );
   }
 }

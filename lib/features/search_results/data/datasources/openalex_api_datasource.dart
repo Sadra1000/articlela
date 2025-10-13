@@ -5,7 +5,6 @@ import '../../../../core/data/models/api_result.dart';
 import '../../../../core/data/services/dio_client.dart';
 import '../../../../core/domain/entities/article_entity.dart';
 import '../../../../core/utils/query_builder.dart';
-import '../../../keyword_config/domain/entities/search_filter_entity.dart';
 
 class OpenAlexResponse {
   const OpenAlexResponse({
@@ -37,7 +36,7 @@ class OpenAlexApiDatasource {
         'from_publication_date:$fromYear-01-01',
         'to_publication_date:$toYear-12-31',
         'has_doi:true',
-        'type:${documentTypes.join('|')}'
+        'type:${documentTypes.join('|')}',
       ];
 
       final params = <String, dynamic>{
@@ -54,7 +53,8 @@ class OpenAlexApiDatasource {
       );
 
       final data = response.data as Map<String, dynamic>;
-      final results = (data['results'] as List<dynamic>).cast<Map<String, dynamic>>();
+      final results = (data['results'] as List<dynamic>)
+          .cast<Map<String, dynamic>>();
       final articles = results
           .map(_mapArticle)
           .where((article) => article.doi != null && article.doi!.isNotEmpty)
@@ -81,11 +81,15 @@ class OpenAlexApiDatasource {
   ArticleEntity _mapArticle(Map<String, dynamic> json) {
     final rawDoi = json['doi'] as String?;
     final normalizedDoi = _normalizeDoi(rawDoi);
-    final hostVenue = json['host_venue'] as Map<String, dynamic>? ?? <String, dynamic>{};
-    final primary = json['primary_location'] as Map<String, dynamic>? ?? <String, dynamic>{};
+    final hostVenue =
+        json['host_venue'] as Map<String, dynamic>? ?? <String, dynamic>{};
+    final primary =
+        json['primary_location'] as Map<String, dynamic>? ??
+        <String, dynamic>{};
 
     final primarySource = primary['source'] as Map<String, dynamic>?;
-    final link = primary['landing_page_url'] as String? ??
+    final link =
+        primary['landing_page_url'] as String? ??
         primarySource?['url'] as String? ??
         hostVenue['url'] as String?;
 

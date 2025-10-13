@@ -154,6 +154,34 @@
     }
   },
   "searchResultsExportHint": "Abstracts are available from the article details page.",
+  "stageReview.button": "Stage-by-Stage Review",
+  "stageReview.back": "Back",
+  "stageReview.nextRemove": "Next & Remove",
+  "stageReview.nextAdd": "Next & Add",
+  "stageReview.progress": "{current} / {total}",
+  "@stageReview.progress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stageReview.summary.title": "Review Summary",
+  "stageReview.summary.selected": "{count} selected for export",
+  "@stageReview.summary.selected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "stageReview.summary.export": "Export",
+  "stageReview.summary.restart": "Restart Review",
+  "stageReview.summary.close": "Close",
+  "stageReview.summary.noneSelected": "Select at least one article to export.",
   "errorGeneric": "Something went wrong. Please try again.",
   "errorMissingKeys": "Add API credentials in Settings to continue.",
   "retry": "Retry",

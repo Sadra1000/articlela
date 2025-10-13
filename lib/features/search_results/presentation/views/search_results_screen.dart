@@ -9,8 +9,10 @@ import '../../../../core/domain/entities/article_entity.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/loading_indicator.dart';
 import '../../../keyword_config/domain/entities/search_filter_entity.dart';
-import '../viewmodels/search_results_viewmodel.dart';
+import '../../../review/navigation/review_routes.dart';
+import '../../../review/presentation/viewmodel/stage_review_viewmodel.dart';
 import '../../../../app/navigation/app_router.dart';
+import '../viewmodels/search_results_viewmodel.dart';
 
 class SearchResultsScreen extends StatefulWidget {
   const SearchResultsScreen({super.key, required this.filter});
@@ -22,6 +24,8 @@ class SearchResultsScreen extends StatefulWidget {
 }
 
 class _SearchResultsScreenState extends State<SearchResultsScreen> {
+  bool _emptyToastShown = false;
+
   @override
   void initState() {
     super.initState();
@@ -36,33 +40,50 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
     final viewModel = context.watch<SearchResultsViewModel>();
     final l10n = context.l10n;
 
-    return  SizedBox(
+    if (!_emptyToastShown &&
+        viewModel.ingestionComplete &&
+        viewModel.totalResults == 0) {
+      _emptyToastShown = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.searchResultsEmptyAfterFetch)),
+        );
+      });
+    }
+
+    if (viewModel.totalResults > 0 && _emptyToastShown) {
+      _emptyToastShown = false;
+    }
+
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _Header(viewModel: viewModel),
-            SizedBox(height: 16.h),
-            _ProgressPanel(viewModel: viewModel),
-            SizedBox(height: 16.h),
-            if (viewModel.error != null)
-              _ErrorBanner(message: viewModel.error!)
-            else if (viewModel.ingestionComplete && viewModel.articles.isEmpty)
-              _EmptyPlaceholder(l10n: l10n)
-            else
-              Expanded(
-                child: viewModel.isFetching && viewModel.articles.isEmpty
-                    ? const Center(child: LoadingIndicator())
-                    : _ResultsList(viewModel: viewModel),
-              ),
-            SizedBox(height: 16.h),
-            if (viewModel.ingestionComplete && viewModel.totalResults > 0)
-              _Footer(viewModel: viewModel),
-          ],
-        ),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _Header(viewModel: viewModel),
+          SizedBox(height: 12.h),
+          _StageReviewButton(viewModel: viewModel),
+          SizedBox(height: 16.h),
+          _ProgressPanel(viewModel: viewModel),
+          SizedBox(height: 16.h),
+          if (viewModel.error != null)
+            _ErrorBanner(message: viewModel.error!)
+          else if (viewModel.ingestionComplete && viewModel.articles.isEmpty)
+            _EmptyPlaceholder(l10n: l10n)
+          else
+            Expanded(
+              child: viewModel.isFetching && viewModel.articles.isEmpty
+                  ? const Center(child: LoadingIndicator())
+                  : _ResultsList(viewModel: viewModel),
+            ),
+          SizedBox(height: 16.h),
+          if (viewModel.ingestionComplete && viewModel.totalResults > 0)
+            _Footer(viewModel: viewModel),
+        ],
+      ),
     );
-    
   }
 }
 
@@ -75,14 +96,18 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final titleStyle = Theme.of(context).textTheme.headlineSmall?.copyWith(
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        );
-    final subtitleStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white70);
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    );
+    final subtitleStyle = Theme.of(
+      context,
+    ).textTheme.bodyLarge?.copyWith(color: Colors.white70);
 
     final subtitle = viewModel.ingestionComplete
         ? l10n.searchResultsTotal(viewModel.formattedTotalCount())
-        : l10n.searchResultsCombinedProgress(viewModel.combinedFetched.toString());
+        : l10n.searchResultsCombinedProgress(
+            viewModel.combinedFetched.toString(),
+          );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,6 +116,46 @@ class _Header extends StatelessWidget {
         SizedBox(height: 8.h),
         Text(subtitle, style: subtitleStyle),
       ],
+    );
+  }
+}
+
+class _StageReviewButton extends StatelessWidget {
+  const _StageReviewButton({required this.viewModel});
+
+  final SearchResultsViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: CustomButton(
+        label: l10n.stageReviewButton,
+        onPressed: viewModel.totalResults == 0
+            ? null
+            : () async {
+                final items = viewModel.allArticles;
+                if (items.isEmpty) {
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(l10n.searchResultsEmptyAfterFetch)),
+                  );
+                  return;
+                }
+                final result = await Navigator.of(context).pushNamed(
+                  AppRouter.stageReview,
+                  arguments: StageReviewArguments(
+                    items: items,
+                    initialState: viewModel.stageReviewState,
+                  ),
+                );
+                if (!context.mounted) return;
+                if (result is StageReviewState) {
+                  viewModel.updateStageReviewState(result);
+                }
+              },
+      ),
     );
   }
 }
@@ -122,7 +187,9 @@ class _ProgressPanel extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 8.h),
               child: Text(
                 l10n.searchResultsFetching,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(color: Colors.white),
               ),
             ),
           if (viewModel.selectedSourceCount > 0)
@@ -133,7 +200,9 @@ class _ProgressPanel extends StatelessWidget {
                   viewModel.progress.length,
                   viewModel.selectedSourceCount,
                 ),
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white60),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: Colors.white60),
               ),
             ),
           ...viewModel.progress.map(
@@ -150,11 +219,17 @@ class _ProgressPanel extends StatelessWidget {
                         progress.fetchedItems,
                         progress.fetchedPages,
                       ),
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white70),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
                     ),
                   ),
                   if (progress.done)
-                    Icon(Icons.check_circle, color: Colors.greenAccent, size: 18.w)
+                    Icon(
+                      Icons.check_circle,
+                      color: Colors.greenAccent,
+                      size: 18.w,
+                    )
                   else
                     const SizedBox(
                       height: 20,
@@ -199,7 +274,9 @@ class _SourceChip extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white),
+        style: Theme.of(
+          context,
+        ).textTheme.labelMedium?.copyWith(color: Colors.white),
       ),
     );
   }
@@ -243,17 +320,18 @@ class _ResultTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final metadataStyle = Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70);
+    final metadataStyle = Theme.of(
+      context,
+    ).textTheme.bodySmall?.copyWith(color: Colors.white70);
     final titleStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
-          color: Colors.white,
-          fontWeight: FontWeight.w600,
-        );
+      color: Colors.white,
+      fontWeight: FontWeight.w600,
+    );
 
     return InkWell(
-      onTap: () => Navigator.of(context).pushNamed(
-        AppRouter.articleDetails,
-        arguments: article,
-      ),
+      onTap: () => Navigator.of(
+        context,
+      ).pushNamed(AppRouter.articleDetails, arguments: article),
       child: Container(
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
@@ -270,9 +348,17 @@ class _ResultTile extends StatelessWidget {
               spacing: 12.w,
               runSpacing: 8.h,
               children: [
-                _InfoBadge(label: '${l10n.searchResultsYear}: ${article.publishedYear ?? '-'}'),
-                _InfoBadge(label: '${l10n.searchResultsSource}: ${article.source}'),
-                _InfoBadge(label: '${l10n.searchResultsDocumentType}: ${_docTypeLabel(l10n, article.documentType)}'),
+                _InfoBadge(
+                  label:
+                      '${l10n.searchResultsYear}: ${article.publishedYear ?? '-'}',
+                ),
+                _InfoBadge(
+                  label: '${l10n.searchResultsSource}: ${article.source}',
+                ),
+                _InfoBadge(
+                  label:
+                      '${l10n.searchResultsDocumentType}: ${_docTypeLabel(l10n, article.documentType)}',
+                ),
               ],
             ),
             if (article.doi != null) ...[
@@ -309,7 +395,7 @@ class _ResultTile extends StatelessWidget {
   String _docTypeLabel(AppLocalizations l10n, String value) {
     switch (value.toLowerCase()) {
       case 'preprint':
-      return l10n.docTypeJournalPrePrint;
+        return l10n.docTypeJournalPrePrint;
       case 'journal-article':
       case 'ar':
       case 'article':
@@ -354,7 +440,9 @@ class _Footer extends StatelessWidget {
               viewModel.formattedVisibleCount(),
               viewModel.formattedTotalCount(),
             ),
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.white70),
           ),
           SizedBox(height: 12.h),
           Row(
@@ -370,17 +458,25 @@ class _Footer extends StatelessWidget {
                         if (!context.mounted) return;
                         final messenger = ScaffoldMessenger.of(context);
                         if (result.isSuccess) {
-                          messenger.showSnackBar(SnackBar(content: Text(l10n.csvExportSuccess)));
+                          messenger.showSnackBar(
+                            SnackBar(content: Text(l10n.csvExportSuccess)),
+                          );
                         } else {
-                          messenger.showSnackBar(SnackBar(content: Text(l10n.csvExportFailure)));
+                          messenger.showSnackBar(
+                            SnackBar(content: Text(l10n.csvExportFailure)),
+                          );
                         }
                       },
-                icon: viewModel.isExporting ? const LoadingIndicator(size: 20) : null,
+                icon: viewModel.isExporting
+                    ? const LoadingIndicator(size: 20)
+                    : null,
               ),
               if (viewModel.canShowMore) ...[
                 SizedBox(width: 16.w),
                 CustomButton(
-                  label: l10n.searchResultsShowMore(AppConstants.defaultVisibleLimit),
+                  label: l10n.searchResultsShowMore(
+                    AppConstants.defaultVisibleLimit,
+                  ),
                   isPrimary: false,
                   onPressed: viewModel.showNextBatch,
                 ),
@@ -390,7 +486,9 @@ class _Footer extends StatelessWidget {
           SizedBox(height: 8.h),
           Text(
             l10n.searchResultsExportHint,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white54),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.white54),
           ),
         ],
       ),
@@ -435,7 +533,9 @@ class _SortMenu extends StatelessWidget {
           SizedBox(width: 8.w),
           Text(
             l10n.searchResultsSort,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: Colors.white),
           ),
         ],
       ),
@@ -459,7 +559,9 @@ class _ErrorBanner extends StatelessWidget {
       ),
       child: Text(
         message,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
+        style: Theme.of(
+          context,
+        ).textTheme.bodyMedium?.copyWith(color: Colors.white),
       ),
     );
   }
@@ -477,7 +579,9 @@ class _EmptyPlaceholder extends StatelessWidget {
       child: Center(
         child: Text(
           l10n.searchResultsEmptyAfterFetch,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white70),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(color: Colors.white70),
         ),
       ),
     );
@@ -499,7 +603,9 @@ class _InfoBadge extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white),
+        style: Theme.of(
+          context,
+        ).textTheme.labelMedium?.copyWith(color: Colors.white),
       ),
     );
   }
