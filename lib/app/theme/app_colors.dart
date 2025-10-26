@@ -7,6 +7,7 @@ enum GradientPreset {
   results,
   about,
   settings,
+  reader,
 }
 
 class AppColors {
@@ -32,13 +33,13 @@ class AppColors {
         );
       case GradientPreset.home:
         return const LinearGradient(
-          colors: [Color(0xFF219EBC), Color(0xFF023047)],
+          colors: [Color(0xFF219EBC), Color(0xFF024730)],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         );
       case GradientPreset.keyword:
         return const LinearGradient(
-          colors: [Color(0xFFFB0000), Color(0xFF3A86FF)],
+          colors: [Color.fromARGB(255, 9, 153, 21), Color(0xFF3A86FF)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         );
@@ -59,6 +60,12 @@ class AppColors {
           colors: [Color(0xFF06D6A0), Color(0xFF118AB2)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
+        );
+      case GradientPreset.reader:
+        return const LinearGradient(
+          colors: [Color(0xFF0C2340), Color(0xFF3A86FF)],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
         );
     }
   }

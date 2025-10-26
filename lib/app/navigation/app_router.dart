@@ -12,6 +12,8 @@ import '../../features/keyword_config/presentation/viewmodels/keyword_config_vie
 import '../../features/keyword_config/presentation/views/keyword_config_screen.dart';
 import '../../features/onboarding/presentation/viewmodels/onboarding_viewmodel.dart';
 import '../../features/onboarding/presentation/views/onboarding_screen.dart';
+import '../../features/pdf_reader/presentation/viewmodels/pdf_reader_viewmodel.dart';
+import '../../features/pdf_reader/presentation/views/pdf_reader_screen.dart';
 import '../../features/search_results/presentation/viewmodels/search_results_viewmodel.dart';
 import '../../features/search_results/presentation/views/search_results_screen.dart';
 import '../../features/search_results/domain/usecases/export_articles_usecase.dart';
@@ -22,6 +24,7 @@ import '../../features/review/presentation/stage_review_page.dart';
 import '../../features/review/presentation/viewmodel/stage_review_viewmodel.dart';
 import '../di/service_locator.dart';
 import '../theme/app_colors.dart';
+import '../../features/article_details/data/services/google_translate_service.dart';
 
 class AppRouter {
   static const String onboarding = '/';
@@ -32,6 +35,7 @@ class AppRouter {
   static const String results = '/results';
   static const String articleDetails = '/articleDetails';
   static const String stageReview = '/stageReview';
+  static const String pdfReader = '/pdfReader';
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
@@ -136,6 +140,18 @@ class AppRouter {
               preset: GradientPreset.results,
               titleBuilder: (l10n) => l10n.stageReviewButton,
               child: const StageReviewPage(),
+            ),
+          ),
+        );
+      case pdfReader:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => ChangeNotifierProvider(
+            create: (_) => PdfReaderViewModel(getIt<ArticleTranslator>()),
+            child: AppShell(
+              preset: GradientPreset.reader,
+              titleBuilder: (l10n) => l10n.pdfReaderTitle,
+              child: const PdfReaderScreen(),
             ),
           ),
         );

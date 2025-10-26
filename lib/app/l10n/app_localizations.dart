@@ -72,6 +72,43 @@ class AppLocalizations {
   String get homeStart => _strings['homeStart'] ?? '';
   String get homeAbout => _strings['homeAbout'] ?? '';
   String get homeSettings => _strings['homeSettings'] ?? '';
+  String get homePdfReader =>
+      _strings['homePdfReader'] ?? 'Article Reader';
+  String get pdfReaderTitle => _strings['pdfReaderTitle'] ?? 'Article Reader';
+  String get pdfReaderSelectFile =>
+      _strings['pdfReaderSelectFile'] ?? 'Select PDF';
+  String get pdfReaderPickAnother =>
+      _strings['pdfReaderPickAnother'] ?? 'Change PDF';
+  String get pdfReaderEmptyTitle =>
+      _strings['pdfReaderEmptyTitle'] ?? 'Choose a PDF to start';
+  String get pdfReaderEmptyDescription =>
+      _strings['pdfReaderEmptyDescription'] ??
+      'Open a PDF document to read it here, translate words, and follow reference links instantly.';
+  String pdfReaderSelectedFile(String name) {
+    final template =
+        _strings['pdfReaderSelectedFile'] ?? 'Selected file: {name}';
+    return template.replaceAll('{name}', name);
+  }
+
+  String get pdfReaderReferenceHint =>
+      _strings['pdfReaderReferenceHint'] ??
+      'Tap reference links to open them in your browser.';
+  String get pdfReaderTranslationTitle =>
+      _strings['pdfReaderTranslationTitle'] ?? 'Translation';
+  String get pdfReaderTranslationWord =>
+      _strings['pdfReaderTranslationWord'] ?? 'Selected word';
+  String get pdfReaderTranslationLoading =>
+      _strings['pdfReaderTranslationLoading'] ?? 'Translating…';
+  String get pdfReaderTranslationError =>
+      _strings['pdfReaderTranslationError'] ??
+      "We couldn't translate this selection. Try again.";
+  String get pdfReaderCloseTranslation =>
+      _strings['pdfReaderCloseTranslation'] ?? 'Close';
+  String get pdfReaderFileOpenError =>
+      _strings['pdfReaderFileOpenError'] ??
+      "We couldn't open that PDF. Please choose another file.";
+  String get pdfReaderLinkError =>
+      _strings['pdfReaderLinkError'] ?? 'Unable to open this link.';
   String get aboutTitle => _strings['aboutTitle'] ?? '';
   String get aboutParagraphOne => _strings['aboutParagraphOne'] ?? '';
   String get aboutParagraphTwo => _strings['aboutParagraphTwo'] ?? '';

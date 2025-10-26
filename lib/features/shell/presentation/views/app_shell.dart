@@ -68,6 +68,8 @@ class AppShell extends StatelessWidget {
         return GradientPreset.keyword;
       case '/results':
         return GradientPreset.results;
+      case '/pdfReader':
+        return GradientPreset.reader;
       default:
         return GradientPreset.home;
     }

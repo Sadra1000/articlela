@@ -94,7 +94,7 @@ class AbstractFetcher implements IAbstractFetcher {
       final response = await _client.get(
         url,
         queryParameters: const {
-          'select': 'title,abstract_inverted_index,publication_year,host_venue,authorships',
+          'select': 'title,abstract_inverted_index,publication_year,authorships',
         },
       );
       final data = response.data as Map<String, dynamic>;

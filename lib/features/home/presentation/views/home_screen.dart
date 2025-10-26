@@ -25,16 +25,16 @@ class HomeScreen extends StatelessWidget {
           Text(
             l10n.homeTitle,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
           SizedBox(height: 8.h),
           Text(
             l10n.homeSubtitle,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Colors.white70,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: Colors.white70),
           ),
           SizedBox(height: 32.h),
           Expanded(
@@ -67,7 +67,9 @@ class HomeScreen extends StatelessWidget {
                       SizedBox(height: 24.h),
                       Text(
                         l10n.versionLabel(homeVm.version),
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white54),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.labelLarge?.copyWith(color: Colors.white54),
                       ),
                     ],
                   ],
@@ -94,7 +96,14 @@ class _HomeActions extends StatelessWidget {
       children: [
         CustomButton(
           label: l10n.homeStart,
-          onPressed: () => Navigator.of(context).pushNamed(AppRouter.keywordConfig),
+          onPressed: () =>
+              Navigator.of(context).pushNamed(AppRouter.keywordConfig),
+        ),
+        SizedBox(height: 16.h),
+        CustomButton(
+          label: l10n.homePdfReader,
+          isPrimary: false,
+          onPressed: () => Navigator.of(context).pushNamed(AppRouter.pdfReader),
         ),
         SizedBox(height: 16.h),
         CustomButton(
