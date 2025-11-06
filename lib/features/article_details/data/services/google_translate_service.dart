@@ -5,8 +5,6 @@ import '../../../../core/data/services/dio_client.dart';
 abstract class ArticleTranslator {
   Future<String> translate({
     required String text,
-    String sourceLanguage = 'en',
-    String targetLanguage = 'fa',
   });
 }
 
@@ -18,8 +16,6 @@ class GoogleTranslateService implements ArticleTranslator {
   @override
   Future<String> translate({
     required String text,
-    String sourceLanguage = 'en',
-    String targetLanguage = 'fa',
   }) async {
     final trimmed = text.trim();
     if (trimmed.isEmpty) {
@@ -31,8 +27,8 @@ class GoogleTranslateService implements ArticleTranslator {
         'https://translate.googleapis.com/translate_a/single',
         queryParameters: <String, dynamic>{
           'client': 'gtx',
-          'sl': sourceLanguage,
-          'tl': targetLanguage,
+          'sl': "en",
+          'tl': "fa",
           'dt': 't',
           'q': trimmed,
         },

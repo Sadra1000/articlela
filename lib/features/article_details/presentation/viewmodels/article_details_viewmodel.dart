@@ -57,8 +57,6 @@ class ArticleDetailsViewModel extends ChangeNotifier {
     try {
       final translated = await _translator.translate(
         text: abstract,
-        sourceLanguage: sourceLanguage,
-        targetLanguage: targetLanguage,
       );
       _translatedAbstract = translated;
     } on ArgumentError {

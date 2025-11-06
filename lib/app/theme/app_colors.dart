@@ -33,9 +33,10 @@ class AppColors {
         );
       case GradientPreset.home:
         return const LinearGradient(
-          colors: [Color(0xFF219EBC), Color(0xFF024730)],
+          colors: [Color.fromARGB(255, 115, 3, 243), Color.fromARGB(255, 0, 0, 0)],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
+          tileMode: TileMode.mirror
         );
       case GradientPreset.keyword:
         return const LinearGradient(
@@ -51,7 +52,7 @@ class AppColors {
         );
       case GradientPreset.about:
         return const LinearGradient(
-          colors: [Color(0xFFff6f91), Color(0xFFff9671)],
+          colors: [Color.fromARGB(255, 196, 250, 110), Color.fromARGB(255, 2, 41, 56)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         );

@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -93,15 +93,26 @@ class AppLocalizations {
   String get pdfReaderReferenceHint =>
       _strings['pdfReaderReferenceHint'] ??
       'Tap reference links to open them in your browser.';
+  String get pdfReaderDropHint =>
+      _strings['pdfReaderDropHint'] ??
+      'Drag & drop a PDF anywhere on this window to open it instantly.';
   String get pdfReaderTranslationTitle =>
       _strings['pdfReaderTranslationTitle'] ?? 'Translation';
   String get pdfReaderTranslationWord =>
       _strings['pdfReaderTranslationWord'] ?? 'Selected word';
   String get pdfReaderTranslationLoading =>
-      _strings['pdfReaderTranslationLoading'] ?? 'Translating…';
+      _strings['pdfReaderTranslationLoading'] ?? 'Translatingâ€¦';
   String get pdfReaderTranslationError =>
       _strings['pdfReaderTranslationError'] ??
       "We couldn't translate this selection. Try again.";
+  String get pdfReaderTranslationShortcut =>
+      _strings['pdfReaderTranslationShortcut'] ??
+      'Select text, then press Ctrl + T or use the context menu to translate.';
+  String get pdfReaderTranslationPrompt =>
+      _strings['pdfReaderTranslationPrompt'] ??
+      'Select text and translate when you are ready.';
+  String get pdfReaderContextTranslate =>
+      _strings['pdfReaderContextTranslate'] ?? 'Translate selection';
   String get pdfReaderCloseTranslation =>
       _strings['pdfReaderCloseTranslation'] ?? 'Close';
   String get pdfReaderFileOpenError =>
@@ -366,3 +377,4 @@ extension AppLocalizationsExtension on BuildContext {
       Localizations.of<AppLocalizations>(this, AppLocalizations)!;
   bool get isRtl => l10n.isRtl;
 }
+

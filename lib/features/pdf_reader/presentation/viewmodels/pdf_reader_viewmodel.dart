@@ -15,17 +15,12 @@ class PdfReaderViewModel extends ChangeNotifier {
   bool _isPickingFile = false;
   bool _isTranslating = false;
   String? _selectedText;
-  String? _translation;
-  String? _translationError;
-  int _requestId = 0;
 
   File? get document => _document;
   bool get hasDocument => _document != null;
   bool get isPickingFile => _isPickingFile;
   bool get isTranslating => _isTranslating;
   String? get selectedText => _selectedText;
-  String? get translation => _translation;
-  String? get translationError => _translationError;
   bool get showTranslationSheet => (_selectedText ?? '').isNotEmpty;
 
   String? get fileName {
@@ -58,10 +53,8 @@ class PdfReaderViewModel extends ChangeNotifier {
         return false;
       }
 
-      _document = File(filePath);
-      _clearTranslationState();
-      notifyListeners();
-      return true;
+      final succeeded = await openDocument(filePath);
+      return succeeded;
     } catch (error) {
       return false;
     } finally {
@@ -70,70 +63,52 @@ class PdfReaderViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> handleSelection(
-    String? selection, {
-    required String targetLanguage,
-  }) async {
+  Future<bool> openDocument(String filePath) async {
+    final normalized = filePath.trim();
+    if (normalized.isEmpty) {
+      return false;
+    }
+    final lowerCasePath = normalized.toLowerCase();
+    if (!lowerCasePath.endsWith('.pdf')) {
+      return false;
+    }
+    final file = File(normalized);
+    final exists = await file.exists();
+    if (!exists) {
+      return false;
+    }
+
+    _document = file;
+    _clearTranslationState();
+    notifyListeners();
+    return true;
+  }
+
+  void updateSelection(String? selection) {
     final cleaned = _sanitizeSelection(selection);
     if (cleaned == null) {
       clearSelection();
       return;
     }
 
-    if (cleaned == _selectedText && _translation != null) {
-      _translationError = null;
-      _isTranslating = false;
-      notifyListeners();
-      return;
-    }
+    
 
     _selectedText = cleaned;
-    _translation = null;
-    _translationError = null;
-    _isTranslating = true;
-    final currentRequest = ++_requestId;
+    _isTranslating = false;
     notifyListeners();
-
-    try {
-      final translated = await _translator.translate(
-        text: cleaned,
-        sourceLanguage: 'auto',
-        targetLanguage: targetLanguage.isNotEmpty ? targetLanguage : 'fa',
-      );
-
-      if (_requestId != currentRequest) {
-        return;
-      }
-
-      _translation = translated;
-    } catch (error) {
-      if (_requestId != currentRequest) {
-        return;
-      }
-      _translationError = error.toString();
-    } finally {
-      if (_requestId == currentRequest) {
-        _isTranslating = false;
-        notifyListeners();
-      }
-    }
   }
+
+  bool get hasSelection => (_selectedText ?? '').isNotEmpty;
 
   void clearSelection() {
     _selectedText = null;
-    _translation = null;
-    _translationError = null;
     _isTranslating = false;
-    _requestId++;
     notifyListeners();
   }
 
   void _clearTranslationState() {
     _selectedText = null;
-    _translation = null;
-    _translationError = null;
     _isTranslating = false;
-    _requestId++;
   }
 
   String? _sanitizeSelection(String? raw) {
@@ -149,4 +124,5 @@ class PdfReaderViewModel extends ChangeNotifier {
     }
     return normalized.length > 120 ? normalized.substring(0, 120) : normalized;
   }
+
 }

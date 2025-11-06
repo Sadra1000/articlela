@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,27 +24,17 @@ Future<void> main() async {
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     await windowManager.ensureInitialized();
     const windowOptions = WindowOptions(
-      size: Size(810, 500),
-      minimumSize: Size(810, 500),
-      backgroundColor: Colors.transparent,
-      skipTaskbar: false,
-      title: AppConstants.appName,
-      center: true,
+    minimumSize: Size(800, 600),
+    center: true,
+    backgroundColor: Colors.transparent,
+    skipTaskbar: false,
+    titleBarStyle: TitleBarStyle.hidden,
     );
     await windowManager.waitUntilReadyToShow(windowOptions, () async {
-      await windowManager.show();
-      await windowManager.focus();
-      await windowManager.setTitleBarStyle(TitleBarStyle.hidden, windowButtonVisibility: false);
+    await windowManager.show();
     });
 
-    doWhenWindowReady(() {
-      final initialSize = const Size(1200, 780);
-      appWindow
-        ..size = initialSize
-        ..minSize = const Size(1100, 700)
-        ..title = AppConstants.appName
-        ..show();
-    });
+ 
   }
 
   final env = getIt<EnvConfig>();

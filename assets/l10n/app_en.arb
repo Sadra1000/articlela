@@ -1,234 +1,239 @@
-{
-  "@@locale": "en",
-  "appTitle": "ArticleLA",
-  "appTagline": "Smarter discovery for research teams.",
-  "onboardingHeadline": "Find your next citation faster.",
-  "onboardingDescription": "Configure language preferences and prepare tailored searches across Crossref, Scopus, and OpenAlex.",
-  "onboardingSelectLanguage": "Select your language",
-  "onboardingContinue": "Continue",
-  "onboardingKeysTitle": "Connect your data sources",
-  "onboardingKeysDescription": "Enter optional credentials to unlock polite multi-source searches.",
-  "onboardingScopusToggle": "Enable Scopus (Elsevier API key required)",
-  "onboardingScopusHint": "When disabled, Scopus queries are skipped.",
-  "onboardingElsevierLabel": "Elsevier (Scopus) API key",
-  "onboardingElsevierHint": "Enter your Elsevier key",
-  "onboardingElsevierHelper": "We store the key securely on this device only.",
-  "onboardingScopusDisabledHelper": "Scopus disabled. You can add a key later from onboarding reset.",
-  "onboardingCrossrefLabel": "Crossref contact email",
-  "onboardingFinish": "Start exploring",
-  "onboardingCompleteMessage": "Credentials saved. You can update them later from Settings.",
-  "languageEnglish": "English",
-  "languagePersian": "Persian",
-  "homeTitle": "Home",
-  "homeSubtitle": "Start building multi-source article searches.",
-  "homeStart": "Start",
-  "homeAbout": "About",
-  "homeSettings": "Settings",
-  "aboutTitle": "About",
-  "aboutParagraphOne": "ArticleLA accelerates literature reviews with powerful multi-source searching, filtering, and export tools.",
-  "aboutParagraphTwo": "Connect Crossref, Scopus, and OpenAlex, build reusable keyword groups, and keep your team aligned on the latest publications.",
-  "aboutContact": "Contact us",
-  "aboutSupport": "Buy me a coffee",
-  "settingsTitle": "Settings",
-  "settingsLanguageSection": "Language",
-  "settingsApiSection": "API credentials",
-  "settingsThemeSection": "Theme",
-  "settingsThemeLight": "Light",
-  "settingsThemeDark": "Dark",
-  "settingsThemeSystem": "System",
-  "settingsCrossrefMailto": "Crossref contact email",
-  "settingsCrossrefMailtoHint": "name@example.com",
-  "settingsElsevierKey": "Elsevier API key",
-  "settingsElsevierKeyHint": "Enter your key",
-  "settingsSave": "Save changes",
-  "settingsSavedMessage": "Settings updated successfully.",
-  "settingsScopusStatus": "Scopus status",
-  "settingsScopusEnabled": "Enabled",
-  "settingsScopusDisabled": "Disabled",
-  "settingsValueNotSet": "Not set",
-  "settingsApiHint": "Reset onboarding to change stored API credentials.",
-  "settingsResetOnboarding": "Reset onboarding",
-  "settingsResetOnboardingMessage": "Onboarding will run again on next launch.",
-  "keywordConfigTitle": "Keyword Builder",
-  "keywordConfigSubtitle": "Create keyword groups to combine with AND/OR logic.",
-  "keywordConfigAddGroup": "Add group",
-  "keywordConfigRenameGroup": "Rename",
-  "keywordConfigRemoveGroup": "Delete",
-  "keywordConfigAddKeyword": "Add keyword",
-  "keywordConfigRemoveKeyword": "Remove",
-  "keywordConfigKeywordHint": "Keyword",
-  "keywordConfigYearRange": "Publication year range",
-  "keywordConfigDocTypes": "Document types",
-  "keywordConfigSources": "Sources",
-  "keywordConfigNext": "Search",
-  "keywordConfigErrorEmpty": "Add at least one keyword inside each group.",
-  "keywordConfigErrorNoGroups": "Create at least one group before searching.",
-  "keywordConfigErrorNoSources": "Select at least one source.",
-  "keywordConfigScopusDisabledHint": "Enable Scopus in onboarding after adding an Elsevier key.",
-  "keywordConfigSourceOpenAlex": "OpenAlex",
-  "keywordConfigGroupName": "Group {index}",
-  "@keywordConfigGroupName": {
-    "placeholders": {
-      "index": {
-        "type": "int"
-      }
-    }
-  },
-  "searchResultsTitle": "Results",
-  "searchResultsEmpty": "No articles yet. Start a new search.",
-  "searchResultsEmptyAfterFetch": "No articles matched your query.",
-  "searchResultsLoading": "Fetching articles...",
-  "searchResultsExport": "Export CSV",
-  "searchResultsTotal": "{count} articles",
-  "@searchResultsTotal": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      }
-    }
-  },
-  "searchResultsSort": "Sort",
-  "searchResultsSortNameAsc": "Name A-Z",
-  "searchResultsSortNameDesc": "Name Z-A",
-  "searchResultsSortYearAsc": "Year ↑",
-  "searchResultsSortYearDesc": "Year ↓",
-  "searchResultsDocumentType": "Document type",
-  "searchResultsSource": "Source",
-  "searchResultsYear": "Year",
-  "searchResultsOpenLink": "Open link",
-  "searchResultsOpenDoi": "Open DOI",
-  "searchResultsNoAbstract": "Abstract unavailable.",
-  "searchResultsSourceCrossref": "Crossref",
-  "searchResultsSourceScopus": "Scopus",
-  "searchResultsCombinedProgress": "Fetched {count} articles so far",
-  "@searchResultsCombinedProgress": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      }
-    }
-  },
-  "searchResultsFetching": "Fetching in progress...",
-  "searchResultsSourceProgress": "{source}: {count} articles ({pages} pages)",
-  "@searchResultsSourceProgress": {
-    "placeholders": {
-      "source": {
-        "type": "String"
-      },
-      "count": {
-        "type": "int"
-      },
-      "pages": {
-        "type": "int"
-      }
-    }
-  },
-  "searchResultsSourceStatus": "{completed} of {total} sources complete",
-  "@searchResultsSourceStatus": {
-    "placeholders": {
-      "completed": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
-  "searchResultsShowMore": "Show next {count}",
-  "@searchResultsShowMore": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "searchResultsShowingLimited": "Showing {visible} of {total}. Use filters or open details to view abstracts.",
-  "@searchResultsShowingLimited": {
-    "placeholders": {
-      "visible": {
-        "type": "String"
-      },
-      "total": {
-        "type": "String"
-      }
-    }
-  },
-  "searchResultsExportHint": "Abstracts are available from the article details page.",
-  "stageReview.button": "Stage-by-Stage Review",
-  "stageReview.back": "Back",
-  "stageReview.nextRemove": "Next & Remove",
-  "stageReview.nextAdd": "Next & Add",
-  "stageReview.progress": "{current} / {total}",
-  "@stageReview.progress": {
-    "placeholders": {
-      "current": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
-  "stageReview.summary.title": "Review Summary",
-  "stageReview.summary.selected": "{count} selected for export",
-  "@stageReview.summary.selected": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "stageReview.summary.export": "Export",
-  "stageReview.summary.restart": "Restart Review",
-  "stageReview.summary.close": "Close",
-  "stageReview.summary.noneSelected": "Select at least one article to export.",
-  "errorGeneric": "Something went wrong. Please try again.",
-  "errorMissingKeys": "Add API credentials in Settings to continue.",
-  "retry": "Retry",
-  "back": "Back",
-  "themeAutoLabel": "Follow system",
-  "snackbarLanguageSaved": "Language updated.",
-  "snackbarSettingsSaved": "Settings saved.",
-  "csvExportSuccess": "CSV exported to Downloads.",
-  "csvExportFailure": "Could not export CSV. Check storage permissions.",
-  "docTypePrePrint": "preprint",
-  "docTypeJournalArticle": "Journal article",
-  "docTypeReview": "Review",
-  "docTypeBook": "Book",
-  "docTypeConference": "Conference proceeding",
-  "docTypeReport": "Report",
-  "docTypeThesis": "Thesis",
-  "docTypeOther": "Other",
-  "versionLabel": "Version {version}",
-  "@versionLabel": {
-    "placeholders": {
-      "version": {
-        "type": "String"
-      }
-    }
-  },
-  "settingsSourceEnv": "Loaded from .env",
-  "articleDetailsTitle": "Article details",
-  "articleDetailsOpenDoi": "Open DOI",
-  "articleDetailsCopyLink": "Copy link",
-  "articleDetailsCopied": "Link copied to clipboard.",
-  "articleDetailsMissingDoi": "No DOI available for this article.",
-  "articleDetailsNoAbstract": "Abstract not available from providers.",
-  "articleDetailsAbstractLabel": "Abstract source: {source}",
-  "@articleDetailsAbstractLabel": {
-    "placeholders": {
-      "source": {
-        "type": "String"
-      }
-    }
-  },
-  "articleDetailsTranslate": "Translate to Persian",
-  "articleDetailsTranslationLabel": "Persian translation",
-  "articleDetailsTranslationError": "We couldn't translate the abstract. Try again in a bit.",
-  "articleDetailsSourceSemanticScholar": "Semantic Scholar",
-  "articleDetailsSourceOpenAlex": "OpenAlex",
-  "articleDetailsSourceCrossref": "Crossref",
-  "articleDetailsSourceNone": "Unavailable",
-  "articleDetailsAuthors": "Authors",
-  "articleDetailsVenue": "Venue"
+﻿{
+    "@@locale":  "en",
+    "appTitle":  "ArticleLA",
+    "appTagline":  "Smarter discovery for research teams.",
+    "onboardingHeadline":  "Find your next citation faster.",
+    "onboardingDescription":  "Configure language preferences and prepare tailored searches across Crossref, Scopus, and OpenAlex.",
+    "onboardingSelectLanguage":  "Select your language",
+    "onboardingContinue":  "Continue",
+    "onboardingKeysTitle":  "Connect your data sources",
+    "onboardingKeysDescription":  "Enter optional credentials to unlock polite multi-source searches.",
+    "onboardingScopusToggle":  "Enable Scopus (Elsevier API key required)",
+    "onboardingScopusHint":  "When disabled, Scopus queries are skipped.",
+    "onboardingElsevierLabel":  "Elsevier (Scopus) API key",
+    "onboardingElsevierHint":  "Enter your Elsevier key",
+    "onboardingElsevierHelper":  "We store the key securely on this device only.",
+    "onboardingScopusDisabledHelper":  "Scopus disabled. You can add a key later from onboarding reset.",
+    "onboardingCrossrefLabel":  "Crossref contact email",
+    "onboardingFinish":  "Start exploring",
+    "onboardingCompleteMessage":  "Credentials saved. You can update them later from Settings.",
+    "languageEnglish":  "English",
+    "languagePersian":  "Persian",
+    "homeTitle":  "Home",
+    "homeSubtitle":  "Start building multi-source article searches.",
+    "homeStart":  "Start",
+    "homeAbout":  "About",
+    "homeSettings":  "Settings",
+    "homePdfReader":  "Article reader",
+    "pdfReaderDropHint":  "Drag \u0026 drop a PDF anywhere on this window to open it instantly.",
+    "pdfReaderTranslationShortcut":  "Select text, then press Ctrl + T or use the context menu to translate.",
+    "pdfReaderContextTranslate":  "Translate selection",
+    "pdfReaderTranslationPrompt":  "Select text and translate when you are ready.",
+    "aboutTitle":  "About",
+    "aboutParagraphOne":  "ArticleLA accelerates literature reviews with powerful multi-source searching, filtering, and export tools.",
+    "aboutParagraphTwo":  "Connect Crossref, Scopus, and OpenAlex, build reusable keyword groups, and keep your team aligned on the latest publications.",
+    "aboutContact":  "Contact us",
+    "aboutSupport":  "Buy me a coffee",
+    "settingsTitle":  "Settings",
+    "settingsLanguageSection":  "Language",
+    "settingsApiSection":  "API credentials",
+    "settingsThemeSection":  "Theme",
+    "settingsThemeLight":  "Light",
+    "settingsThemeDark":  "Dark",
+    "settingsThemeSystem":  "System",
+    "settingsCrossrefMailto":  "Crossref contact email",
+    "settingsCrossrefMailtoHint":  "name@example.com",
+    "settingsElsevierKey":  "Elsevier API key",
+    "settingsElsevierKeyHint":  "Enter your key",
+    "settingsSave":  "Save changes",
+    "settingsSavedMessage":  "Settings updated successfully.",
+    "settingsScopusStatus":  "Scopus status",
+    "settingsScopusEnabled":  "Enabled",
+    "settingsScopusDisabled":  "Disabled",
+    "settingsValueNotSet":  "Not set",
+    "settingsApiHint":  "Reset onboarding to change stored API credentials.",
+    "settingsResetOnboarding":  "Reset onboarding",
+    "settingsResetOnboardingMessage":  "Onboarding will run again on next launch.",
+    "keywordConfigTitle":  "Keyword Builder",
+    "keywordConfigSubtitle":  "Create keyword groups to combine with AND/OR logic.",
+    "keywordConfigAddGroup":  "Add group",
+    "keywordConfigRenameGroup":  "Rename",
+    "keywordConfigRemoveGroup":  "Delete",
+    "keywordConfigAddKeyword":  "Add keyword",
+    "keywordConfigRemoveKeyword":  "Remove",
+    "keywordConfigKeywordHint":  "Keyword",
+    "keywordConfigYearRange":  "Publication year range",
+    "keywordConfigDocTypes":  "Document types",
+    "keywordConfigSources":  "Sources",
+    "keywordConfigNext":  "Search",
+    "keywordConfigErrorEmpty":  "Add at least one keyword inside each group.",
+    "keywordConfigErrorNoGroups":  "Create at least one group before searching.",
+    "keywordConfigErrorNoSources":  "Select at least one source.",
+    "keywordConfigScopusDisabledHint":  "Enable Scopus in onboarding after adding an Elsevier key.",
+    "keywordConfigSourceOpenAlex":  "OpenAlex",
+    "keywordConfigGroupName":  "Group {index}",
+    "@keywordConfigGroupName":  {
+                                    "placeholders":  {
+                                                         "index":  {
+                                                                       "type":  "int"
+                                                                   }
+                                                     }
+                                },
+    "searchResultsTitle":  "Results",
+    "searchResultsEmpty":  "No articles yet. Start a new search.",
+    "searchResultsEmptyAfterFetch":  "No articles matched your query.",
+    "searchResultsLoading":  "Fetching articles...",
+    "searchResultsExport":  "Export CSV",
+    "searchResultsTotal":  "{count} articles",
+    "@searchResultsTotal":  {
+                                "placeholders":  {
+                                                     "count":  {
+                                                                   "type":  "String"
+                                                               }
+                                                 }
+                            },
+    "searchResultsSort":  "Sort",
+    "searchResultsSortNameAsc":  "Name A-Z",
+    "searchResultsSortNameDesc":  "Name Z-A",
+    "searchResultsSortYearAsc":  "Year â†‘",
+    "searchResultsSortYearDesc":  "Year â†“",
+    "searchResultsDocumentType":  "Document type",
+    "searchResultsSource":  "Source",
+    "searchResultsYear":  "Year",
+    "searchResultsOpenLink":  "Open link",
+    "searchResultsOpenDoi":  "Open DOI",
+    "searchResultsNoAbstract":  "Abstract unavailable.",
+    "searchResultsSourceCrossref":  "Crossref",
+    "searchResultsSourceScopus":  "Scopus",
+    "searchResultsCombinedProgress":  "Fetched {count} articles so far",
+    "@searchResultsCombinedProgress":  {
+                                           "placeholders":  {
+                                                                "count":  {
+                                                                              "type":  "String"
+                                                                          }
+                                                            }
+                                       },
+    "searchResultsFetching":  "Fetching in progress...",
+    "searchResultsSourceProgress":  "{source}: {count} articles ({pages} pages)",
+    "@searchResultsSourceProgress":  {
+                                         "placeholders":  {
+                                                              "source":  {
+                                                                             "type":  "String"
+                                                                         },
+                                                              "count":  {
+                                                                            "type":  "int"
+                                                                        },
+                                                              "pages":  {
+                                                                            "type":  "int"
+                                                                        }
+                                                          }
+                                     },
+    "searchResultsSourceStatus":  "{completed} of {total} sources complete",
+    "@searchResultsSourceStatus":  {
+                                       "placeholders":  {
+                                                            "completed":  {
+                                                                              "type":  "int"
+                                                                          },
+                                                            "total":  {
+                                                                          "type":  "int"
+                                                                      }
+                                                        }
+                                   },
+    "searchResultsShowMore":  "Show next {count}",
+    "@searchResultsShowMore":  {
+                                   "placeholders":  {
+                                                        "count":  {
+                                                                      "type":  "int"
+                                                                  }
+                                                    }
+                               },
+    "searchResultsShowingLimited":  "Showing {visible} of {total}. Use filters or open details to view abstracts.",
+    "@searchResultsShowingLimited":  {
+                                         "placeholders":  {
+                                                              "visible":  {
+                                                                              "type":  "String"
+                                                                          },
+                                                              "total":  {
+                                                                            "type":  "String"
+                                                                        }
+                                                          }
+                                     },
+    "searchResultsExportHint":  "Abstracts are available from the article details page.",
+    "stageReview.button":  "Stage-by-Stage Review",
+    "stageReview.back":  "Back",
+    "stageReview.nextRemove":  "Next \u0026 Remove",
+    "stageReview.nextAdd":  "Next \u0026 Add",
+    "stageReview.progress":  "{current} / {total}",
+    "@stageReview.progress":  {
+                                  "placeholders":  {
+                                                       "current":  {
+                                                                       "type":  "int"
+                                                                   },
+                                                       "total":  {
+                                                                     "type":  "int"
+                                                                 }
+                                                   }
+                              },
+    "stageReview.summary.title":  "Review Summary",
+    "stageReview.summary.selected":  "{count} selected for export",
+    "@stageReview.summary.selected":  {
+                                          "placeholders":  {
+                                                               "count":  {
+                                                                             "type":  "int"
+                                                                         }
+                                                           }
+                                      },
+    "stageReview.summary.export":  "Export",
+    "stageReview.summary.restart":  "Restart Review",
+    "stageReview.summary.close":  "Close",
+    "stageReview.summary.noneSelected":  "Select at least one article to export.",
+    "errorGeneric":  "Something went wrong. Please try again.",
+    "errorMissingKeys":  "Add API credentials in Settings to continue.",
+    "retry":  "Retry",
+    "back":  "Back",
+    "themeAutoLabel":  "Follow system",
+    "snackbarLanguageSaved":  "Language updated.",
+    "snackbarSettingsSaved":  "Settings saved.",
+    "csvExportSuccess":  "CSV exported to Downloads.",
+    "csvExportFailure":  "Could not export CSV. Check storage permissions.",
+    "docTypePrePrint":  "preprint",
+    "docTypeJournalArticle":  "Journal article",
+    "docTypeReview":  "Review",
+    "docTypeBook":  "Book",
+    "docTypeConference":  "Conference proceeding",
+    "docTypeReport":  "Report",
+    "docTypeThesis":  "Thesis",
+    "docTypeOther":  "Other",
+    "versionLabel":  "Version {version}",
+    "@versionLabel":  {
+                          "placeholders":  {
+                                               "version":  {
+                                                               "type":  "String"
+                                                           }
+                                           }
+                      },
+    "settingsSourceEnv":  "Loaded from .env",
+    "articleDetailsTitle":  "Article details",
+    "articleDetailsOpenDoi":  "Open DOI",
+    "articleDetailsCopyLink":  "Copy link",
+    "articleDetailsCopied":  "Link copied to clipboard.",
+    "articleDetailsMissingDoi":  "No DOI available for this article.",
+    "articleDetailsNoAbstract":  "Abstract not available from providers.",
+    "articleDetailsAbstractLabel":  "Abstract source: {source}",
+    "@articleDetailsAbstractLabel":  {
+                                         "placeholders":  {
+                                                              "source":  {
+                                                                             "type":  "String"
+                                                                         }
+                                                          }
+                                     },
+    "articleDetailsTranslate":  "Translate to Persian",
+    "articleDetailsTranslationLabel":  "Persian translation",
+    "articleDetailsTranslationError":  "We couldn\u0027t translate the abstract. Try again in a bit.",
+    "articleDetailsSourceSemanticScholar":  "Semantic Scholar",
+    "articleDetailsSourceOpenAlex":  "OpenAlex",
+    "articleDetailsSourceCrossref":  "Crossref",
+    "articleDetailsSourceNone":  "Unavailable",
+    "articleDetailsAuthors":  "Authors",
+    "articleDetailsVenue":  "Venue"
 }

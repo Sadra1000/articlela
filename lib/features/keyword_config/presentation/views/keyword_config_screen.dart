@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../app/l10n/app_localizations.dart';
@@ -46,15 +45,7 @@ class KeywordConfigScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: SizedBox(
-                  child: Lottie.asset('assets/lottie/keyword.json'),
-                ),
-              ),
-            ),
-          ],
+           ],
         ),
         SizedBox(height: 24.h),
         _GroupList(viewModel: viewModel),
