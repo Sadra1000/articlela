@@ -1,3 +1,4 @@
+import 'dart:async';
 
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/material.dart';
@@ -44,63 +45,55 @@ class _PdfReaderScreenState extends State<PdfReaderScreen> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return Actions(
-      actions: {},
-       child: Focus(
-        focusNode: _focusNode,
-        autofocus: true,
-        child: DropTarget(
-          onDragEntered: (_) => _setDragging(true),
-          onDragUpdated: (_) => _setDragging(true),
-          onDragExited: (_) => _setDragging(false),
-          onDragDone: _handleDrop,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _Header(onPickPdf: _pickPdf),
-                     SizedBox(height: 16.h),
-                    Expanded(
-                      child: Consumer<PdfReaderViewModel>(
-                        builder: (context, viewModel, _) {
-                          if (!viewModel.hasDocument) {
-                            return _EmptyState(
-                              title: l10n.pdfReaderEmptyTitle,
-                              description: l10n.pdfReaderEmptyDescription,
-                              dropHint: l10n.pdfReaderDropHint,
-                              isHovering: _isDragHovering,
-                            );
-                          }
-                          return _buildViewer(
-                            context,
-                            viewModel,
+    return Focus(
+      focusNode: _focusNode,
+      autofocus: true,
+      onKeyEvent: _handleKeyEvent,
+      child: DropTarget(
+        onDragEntered: (_) => _setDragging(true),
+        onDragUpdated: (_) => _setDragging(true),
+        onDragExited: (_) => _setDragging(false),
+        onDragDone: _handleDrop,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _Header(onPickPdf: _pickPdf),
+                  SizedBox(height: 16.h),
+                  Expanded(
+                    child: Consumer<PdfReaderViewModel>(
+                      builder: (context, viewModel, _) {
+                        if (!viewModel.hasDocument) {
+                          return _EmptyState(
+                            title: l10n.pdfReaderEmptyTitle,
+                            description: l10n.pdfReaderEmptyDescription,
+                            dropHint: l10n.pdfReaderDropHint,
+                            isHovering: _isDragHovering,
                           );
-                        },
-                      ),
+                        }
+                        return _buildViewer(context, viewModel);
+                      },
                     ),
-                  ],
-                ),
-              );
-            },
-          ),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget _buildViewer(
-    BuildContext context,
-    PdfReaderViewModel viewModel,
-  ) {
+  Widget _buildViewer(BuildContext context, PdfReaderViewModel viewModel) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
     final gradient = LinearGradient(
       colors: [
-        theme.colorScheme.surfaceVariant.withValues(alpha: 0.85),
+        theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.85),
         theme.colorScheme.surface.withValues(alpha: 0.95),
       ],
       begin: Alignment.topLeft,
@@ -110,18 +103,17 @@ class _PdfReaderScreenState extends State<PdfReaderScreen> {
     return Stack(
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(24.r),
+          borderRadius: BorderRadius.circular(16.r),
           child: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: gradient,
-            ),
+            decoration: BoxDecoration(gradient: gradient),
             child: Material(
               color: Colors.white,
               child: Listener(
                 onPointerDown: (_) => _focusNode.requestFocus(),
                 child: GestureDetector(
                   behavior: HitTestBehavior.translucent,
-                  onSecondaryTapUp: (details) => _showContextMenu(context, details),
+                  onSecondaryTapUp: (details) =>
+                      _showContextMenu(context, details),
                   child: Stack(
                     children: [
                       SfPdfViewer.file(
@@ -151,7 +143,6 @@ class _PdfReaderScreenState extends State<PdfReaderScreen> {
             ),
           ),
         ),
-          
       ],
     );
   }
@@ -165,6 +156,23 @@ class _PdfReaderScreenState extends State<PdfReaderScreen> {
     });
   }
 
+  KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
+    if (event is! KeyDownEvent) {
+      return KeyEventResult.ignored;
+    }
+    final keysPressed = HardwareKeyboard.instance.logicalKeysPressed;
+    final hasModifier =
+        keysPressed.contains(LogicalKeyboardKey.controlLeft) ||
+        keysPressed.contains(LogicalKeyboardKey.controlRight) ||
+        keysPressed.contains(LogicalKeyboardKey.metaLeft) ||
+        keysPressed.contains(LogicalKeyboardKey.metaRight);
+    if (event.logicalKey == LogicalKeyboardKey.keyT && hasModifier) {
+      unawaited(_translateSelection());
+      return KeyEventResult.handled;
+    }
+    return KeyEventResult.ignored;
+  }
+
   Future<void> _handleDrop(DropDoneDetails details) async {
     _setDragging(false);
     if (!mounted || details.files.isEmpty) {
@@ -174,7 +182,7 @@ class _PdfReaderScreenState extends State<PdfReaderScreen> {
     String? filePath;
     for (final file in details.files) {
       final path = file.path;
-      if (  path.toLowerCase().endsWith('.pdf')) {
+      if (path.toLowerCase().endsWith('.pdf')) {
         filePath = path;
         break;
       }
@@ -198,8 +206,6 @@ class _PdfReaderScreenState extends State<PdfReaderScreen> {
 
     _focusNode.requestFocus();
   }
-
- 
 
   Future<void> _showContextMenu(
     BuildContext context,
@@ -236,7 +242,9 @@ class _PdfReaderScreenState extends State<PdfReaderScreen> {
     );
 
     switch (selected) {
-      
+      case 'translate':
+        await _translateSelection();
+        break;
       case 'copy':
         final text = viewModel.selectedText;
         if (text != null && text.isNotEmpty) {
@@ -250,6 +258,88 @@ class _PdfReaderScreenState extends State<PdfReaderScreen> {
       default:
         break;
     }
+  }
+
+  Future<void> _translateSelection() async {
+    final viewModel = context.read<PdfReaderViewModel>();
+    final l10n = context.l10n;
+    if (!viewModel.hasSelection) {
+      _showSnack(l10n.pdfReaderTranslationPrompt);
+      return;
+    }
+    if (viewModel.isTranslating) {
+      return;
+    }
+
+    try {
+      final translation = await viewModel.translateSelection();
+      if (!mounted) {
+        return;
+      }
+      if (translation.isEmpty) {
+        _showSnack(l10n.pdfReaderTranslationError);
+        return;
+      }
+      final original = viewModel.selectedText ?? '';
+      _focusNode.requestFocus();
+      unawaited(
+        _showTranslationSheet(translation: translation, original: original),
+      );
+    } on StateError {
+      if (!mounted) {
+        return;
+      }
+      _showSnack(l10n.pdfReaderTranslationPrompt);
+    } on UnsupportedError {
+      if (!mounted) {
+        return;
+      }
+      _showSnack(l10n.pdfReaderTranslationError);
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      _showSnack(l10n.pdfReaderTranslationError);
+    }
+  }
+
+  Future<void> _showTranslationSheet({
+    required String translation,
+    required String original,
+  }) async {
+    if (!mounted) {
+      return;
+    }
+    final l10n = context.l10n;
+    await showGeneralDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: l10n.pdfReaderTranslationTitle,
+      barrierColor: Colors.black.withValues(alpha: 0.45),
+      pageBuilder: (dialogContext, animation, secondaryAnimation) {
+        return _TranslationTopSheet(
+          translation: translation,
+          original: original,
+        );
+      },
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        final curved = CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutCubic,
+          reverseCurve: Curves.easeInCubic,
+        );
+        return FadeTransition(
+          opacity: curved,
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, -0.12),
+              end: Offset.zero,
+            ).animate(curved),
+            child: child,
+          ),
+        );
+      },
+    );
   }
 
   void _showSnack(String message) {
@@ -331,7 +421,9 @@ class _Header extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(20.r),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.35)),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.35),
+                  ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -359,6 +451,183 @@ class _Header extends StatelessWidget {
             ),
           ),
       ],
+    );
+  }
+}
+
+class _TranslationTopSheet extends StatelessWidget {
+  const _TranslationTopSheet({
+    required this.translation,
+    required this.original,
+  });
+
+  final String translation;
+  final String original;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = context.l10n;
+    final media = MediaQuery.of(context);
+    final maxHeight = media.size.height * 0.7;
+    final copyLabel = MaterialLocalizations.of(context).copyButtonLabel;
+    final closeLabel = MaterialLocalizations.of(context).closeButtonLabel;
+    final isDark = theme.brightness == Brightness.dark;
+
+    final originalBackground = theme.colorScheme.surfaceContainerHighest
+        .withValues(alpha: isDark ? 0.45 : 0.75);
+    final translationBackground = theme.colorScheme.primaryContainer.withValues(
+      alpha: isDark ? 0.85 : 0.95,
+    );
+    final translationTextColor = theme.colorScheme.onPrimaryContainer;
+    final borderColor = theme.dividerColor.withValues(alpha: 0.28);
+
+    return SafeArea(
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: EdgeInsets.only(top: 24.h, left: 24.w, right: 24.w),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 520.w, maxHeight: maxHeight),
+            child: Material(
+              color: theme.colorScheme.surface,
+              elevation: 18,
+              shadowColor: theme.colorScheme.shadow.withValues(alpha: 0.18),
+              borderRadius: BorderRadius.circular(28.r),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(28.r),
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 24.w,
+                    vertical: 20.h,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.translate,
+                            size: 24.w,
+                            color: theme.colorScheme.primary,
+                          ),
+                          SizedBox(width: 12.w),
+                          Expanded(
+                            child: Text(
+                              l10n.pdfReaderTranslationTitle,
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            tooltip: closeLabel,
+                            onPressed: () => Navigator.of(context).pop(),
+                            icon: const Icon(Icons.close),
+                          ),
+                        ],
+                      ),
+                      if (original.isNotEmpty) ...[
+                        SizedBox(height: 18.h),
+                        Text(
+                          l10n.pdfReaderTranslationWord,
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        _TranslationTextBlock(
+                          text: original,
+                          background: originalBackground,
+                          borderColor: borderColor,
+                          textStyle: theme.textTheme.bodyMedium,
+                        ),
+                      ],
+                      SizedBox(height: 20.h),
+                      Text(
+                        l10n.pdfReaderTranslationTitle,
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      _TranslationTextBlock(
+                        text: translation,
+                        background: translationBackground,
+                        borderColor: theme.colorScheme.primary.withValues(
+                          alpha: 0.35,
+                        ),
+                        textStyle: theme.textTheme.bodyMedium?.copyWith(
+                          color: translationTextColor,
+                          height: 1.4,
+                        ),
+                      ),
+                      SizedBox(height: 24.h),
+                      Row(
+                        children: [
+                          TextButton.icon(
+                            onPressed: () {
+                              Clipboard.setData(
+                                ClipboardData(text: translation),
+                              );
+                              final messenger = ScaffoldMessenger.of(context);
+                              messenger.hideCurrentSnackBar();
+                              messenger.showSnackBar(
+                                SnackBar(
+                                  content: Text(copyLabel),
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.copy),
+                            label: Text(copyLabel),
+                          ),
+                          const Spacer(),
+                          FilledButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: Text(l10n.pdfReaderCloseTranslation),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TranslationTextBlock extends StatelessWidget {
+  const _TranslationTextBlock({
+    required this.text,
+    required this.background,
+    required this.borderColor,
+    required this.textStyle,
+  });
+
+  final String text;
+  final Color background;
+  final Color borderColor;
+  final TextStyle? textStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 14.h),
+      decoration: BoxDecoration(
+        color: background,
+        borderRadius: BorderRadius.circular(22.r),
+        border: Border.all(color: borderColor, width: 1),
+      ),
+      child: SelectableText(text, style: textStyle),
     );
   }
 }
@@ -423,7 +692,7 @@ class _EmptyState extends StatelessWidget {
                   context,
                 ).textTheme.titleMedium?.copyWith(color: Colors.black54),
               ),
-           ],
+            ],
           ),
         ),
       ),
@@ -448,10 +717,7 @@ class _DropOverlay extends StatelessWidget {
             decoration: BoxDecoration(
               color: theme.colorScheme.surface.withValues(alpha: 0.92),
               borderRadius: BorderRadius.circular(24.r),
-              border: Border.all(
-                color: theme.colorScheme.primary,
-                width: 1.6,
-              ),
+              border: Border.all(color: theme.colorScheme.primary, width: 1.6),
               boxShadow: [
                 BoxShadow(
                   color: theme.colorScheme.primary.withValues(alpha: 0.18),

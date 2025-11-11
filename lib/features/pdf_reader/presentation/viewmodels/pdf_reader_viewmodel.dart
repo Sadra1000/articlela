@@ -91,8 +91,6 @@ class PdfReaderViewModel extends ChangeNotifier {
       return;
     }
 
-    
-
     _selectedText = cleaned;
     _isTranslating = false;
     notifyListeners();
@@ -104,6 +102,27 @@ class PdfReaderViewModel extends ChangeNotifier {
     _selectedText = null;
     _isTranslating = false;
     notifyListeners();
+  }
+
+  Future<String> translateSelection() async {
+    final text = _selectedText;
+    if (text == null || text.isEmpty) {
+      throw StateError('No selection available for translation');
+    }
+    if (_isTranslating) {
+      throw StateError('Translation already in progress');
+    }
+
+    _isTranslating = true;
+    notifyListeners();
+
+    try {
+      final translated = await _translator.translate(text: text);
+      return translated.trim();
+    } finally {
+      _isTranslating = false;
+      notifyListeners();
+    }
   }
 
   void _clearTranslationState() {
@@ -124,5 +143,4 @@ class PdfReaderViewModel extends ChangeNotifier {
     }
     return normalized.length > 120 ? normalized.substring(0, 120) : normalized;
   }
-
 }
