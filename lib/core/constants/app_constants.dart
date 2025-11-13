@@ -10,6 +10,7 @@ class AppConstants {
   static const String searchPrefsKey = 'search_prefs';
   static const String languageKey = 'app_language';
   static const String themeModeKey = 'app_theme_mode';
+  static const String translationProviderKey = 'translation_provider';
   static const String crossrefMailtoKey = 'crossref_mailto';
   static const String elsevierApiKey = 'elsevier_api_key';
   static const String onboardingCompletedKey = 'onboarding_completed';

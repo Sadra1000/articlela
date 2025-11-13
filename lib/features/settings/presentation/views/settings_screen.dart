@@ -1,6 +1,6 @@
+import 'package:articlela/core/data/services/google_translate_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,6 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _isLoadingKeys = true;
   late String _languageCode;
   late ThemeMode _themeMode;
+  late TranslationProvider _translationProvider;
   bool _scopusEnabled = false;
   String? _elsevierKey;
   String? _crossrefMailto;
@@ -34,6 +35,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final appState = context.read<AppStateNotifier>();
     _languageCode = appState.locale.languageCode;
     _themeMode = appState.themeMode;
+    final prefs = getIt<SharedPreferences>();
+    _translationProvider = translationProviderFromName(
+      prefs.getString(AppConstants.translationProviderKey),
+    );
     _loadApiState();
   }
 
@@ -55,106 +60,129 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 24.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: SizedBox(
-                height: 220.h,
-                child: Lottie.asset('assets/lottie/coding.json'),
+      padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 24.h),
+      
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          
+          SizedBox(height: 24.h),
+          _buildSectionTitle(l10n.settingsLanguageSection),
+          SizedBox(height: 12.h),
+          Wrap(
+            spacing: 12.w,
+            children: [
+              ChoiceChip(
+                label: Text(l10n.languageEnglish),
+                selected: _languageCode == 'en',
+                onSelected: (_) => setState(() => _languageCode = 'en'),
               ),
-            ),
-            SizedBox(height: 24.h),
-            _buildSectionTitle(l10n.settingsLanguageSection),
-            SizedBox(height: 12.h),
-            Wrap(
-              spacing: 12.w,
-              children: [
-                ChoiceChip(
-                  label: Text(l10n.languageEnglish),
-                  selected: _languageCode == 'en',
-                  onSelected: (_) => setState(() => _languageCode = 'en'),
+              ChoiceChip(
+                label: Text(l10n.languagePersian),
+                selected: _languageCode == 'fa',
+                onSelected: (_) => setState(() => _languageCode = 'fa'),
+              ),
+            ],
+          ),
+          SizedBox(height: 24.h),
+          _buildSectionTitle(l10n.settingsThemeSection),
+          SizedBox(height: 12.h),
+          Wrap(
+            spacing: 12.w,
+            children: [
+              ChoiceChip(
+                label: Text(l10n.settingsThemeLight),
+                selected: _themeMode == ThemeMode.light,
+                onSelected: (_) => setState(() => _themeMode = ThemeMode.light),
+              ),
+              ChoiceChip(
+                label: Text(l10n.settingsThemeDark),
+                selected: _themeMode == ThemeMode.dark,
+                onSelected: (_) => setState(() => _themeMode = ThemeMode.dark),
+              ),
+              ChoiceChip(
+                label: Text(l10n.settingsThemeSystem),
+                selected: _themeMode == ThemeMode.system,
+                onSelected: (_) => setState(() => _themeMode = ThemeMode.system),
+              ),
+            ],
+          ),
+          SizedBox(height: 24.h),
+          _buildSectionTitle(l10n.settingsTranslationSection),
+          SizedBox(height: 12.h),
+          Wrap(
+            spacing: 12.w,
+            children: [
+              ChoiceChip(
+                label: Text(l10n.settingsTranslationDeepSeek),
+                selected: _translationProvider == TranslationProvider.deepseek,
+                onSelected: (_) => setState(
+                  () => _translationProvider = TranslationProvider.deepseek,
                 ),
-                ChoiceChip(
-                  label: Text(l10n.languagePersian),
-                  selected: _languageCode == 'fa',
-                  onSelected: (_) => setState(() => _languageCode = 'fa'),
+              ),
+              ChoiceChip(
+                label: Text(l10n.settingsTranslationGoogle),
+                selected: _translationProvider == TranslationProvider.google,
+                onSelected: (_) => setState(
+                  () => _translationProvider = TranslationProvider.google,
                 ),
-              ],
-            ),
-            SizedBox(height: 24.h),
-            _buildSectionTitle(l10n.settingsThemeSection),
-            SizedBox(height: 12.h),
-            Wrap(
-              spacing: 12.w,
-              children: [
-                ChoiceChip(
-                  label: Text(l10n.settingsThemeLight),
-                  selected: _themeMode == ThemeMode.light,
-                  onSelected: (_) => setState(() => _themeMode = ThemeMode.light),
+              ),
+            ],
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            l10n.settingsTranslationHint,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.white70,
                 ),
-                ChoiceChip(
-                  label: Text(l10n.settingsThemeDark),
-                  selected: _themeMode == ThemeMode.dark,
-                  onSelected: (_) => setState(() => _themeMode = ThemeMode.dark),
+          ),
+          SizedBox(height: 24.h),
+          _buildSectionTitle(l10n.settingsApiSection),
+          SizedBox(height: 12.h),
+          _isLoadingKeys
+              ? const Padding(
+                  padding: EdgeInsets.all(12),
+                  child: LoadingIndicator(size: 28),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _InfoTile(
+                      title: l10n.settingsScopusStatus,
+                      value: _scopusEnabled ? l10n.settingsScopusEnabled : l10n.settingsScopusDisabled,
+                      icon: _scopusEnabled ? Icons.verified_outlined : Icons.visibility_off_outlined,
+                    ),
+                    SizedBox(height: 12.h),
+                    _InfoTile(
+                      title: l10n.settingsElsevierKey,
+                      value: _maskKey(_elsevierKey, l10n),
+                      icon: Icons.key_outlined,
+                    ),
+                    SizedBox(height: 12.h),
+                    _InfoTile(
+                      title: l10n.settingsCrossrefMailto,
+                      value: _crossrefMailto ?? l10n.settingsValueNotSet,
+                      icon: Icons.email_outlined,
+                    ),
+                    SizedBox(height: 16.h),
+                    Text(
+                      l10n.settingsApiHint,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70),
+                    ),
+                  ],
                 ),
-                ChoiceChip(
-                  label: Text(l10n.settingsThemeSystem),
-                  selected: _themeMode == ThemeMode.system,
-                  onSelected: (_) => setState(() => _themeMode = ThemeMode.system),
-                ),
-              ],
-            ),
-            SizedBox(height: 24.h),
-            _buildSectionTitle(l10n.settingsApiSection),
-            SizedBox(height: 12.h),
-            _isLoadingKeys
-                ? const Padding(
-                    padding: EdgeInsets.all(12),
-                    child: LoadingIndicator(size: 28),
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _InfoTile(
-                        title: l10n.settingsScopusStatus,
-                        value: _scopusEnabled ? l10n.settingsScopusEnabled : l10n.settingsScopusDisabled,
-                        icon: _scopusEnabled ? Icons.verified_outlined : Icons.visibility_off_outlined,
-                      ),
-                      SizedBox(height: 12.h),
-                      _InfoTile(
-                        title: l10n.settingsElsevierKey,
-                        value: _maskKey(_elsevierKey, l10n),
-                        icon: Icons.key_outlined,
-                      ),
-                      SizedBox(height: 12.h),
-                      _InfoTile(
-                        title: l10n.settingsCrossrefMailto,
-                        value: _crossrefMailto ?? l10n.settingsValueNotSet,
-                        icon: Icons.email_outlined,
-                      ),
-                      SizedBox(height: 16.h),
-                      Text(
-                        l10n.settingsApiHint,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70),
-                      ),
-                    ],
-                  ),
-            SizedBox(height: 32.h),
-            CustomButton(
-              label: l10n.settingsSave,
-              onPressed: _isSaving ? null : () => _save(context),
-              icon: _isSaving ? const LoadingIndicator(size: 22) : null,
-            ),
-            SizedBox(height: 16.h),
-            TextButton(
-              onPressed: _resetOnboarding,
-              child: Text(l10n.settingsResetOnboarding),
-            ),
-          ],
-        ),
+          SizedBox(height: 32.h),
+          CustomButton(
+            label: l10n.settingsSave,
+            onPressed: _isSaving ? null : () => _save(context),
+            icon: _isSaving ? const LoadingIndicator(size: 22) : null,
+          ),
+          SizedBox(height: 16.h),
+          TextButton(
+            onPressed: _resetOnboarding,
+            child: Text(l10n.settingsResetOnboarding),
+          ),
+        ],
       ),
     );
   }
@@ -179,6 +207,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     await prefs.setString(AppConstants.languageKey, _languageCode);
     await prefs.setString(AppConstants.themeModeKey, _themeMode.name);
+    await prefs.setString(
+      AppConstants.translationProviderKey,
+      _translationProvider.name,
+    );
 
     appState.updateLocale(Locale(_languageCode));
     appState.updateTheme(_themeMode);

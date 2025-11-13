@@ -24,7 +24,7 @@ import '../../features/review/presentation/stage_review_page.dart';
 import '../../features/review/presentation/viewmodel/stage_review_viewmodel.dart';
 import '../di/service_locator.dart';
 import '../theme/app_colors.dart';
-import '../../features/article_details/data/services/google_translate_service.dart';
+import '../../core/data/services/google_translate_service.dart';
 
 class AppRouter {
   static const String onboarding = '/';

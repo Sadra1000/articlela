@@ -16,7 +16,8 @@ class HomeScreen extends StatelessWidget {
     final l10n = context.l10n;
     final homeVm = context.watch<HomeViewModel>();
 
-    return SizedBox(
+    return Container(
+      padding:EdgeInsets.symmetric(horizontal: 32.w, vertical: 24.h),
       height: MediaQuery.of(context).size.height,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

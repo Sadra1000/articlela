@@ -18,48 +18,51 @@ class KeywordConfigScreen extends StatelessWidget {
     final l10n = context.l10n;
     final viewModel = context.watch<KeywordConfigViewModel>();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 8.h),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.keywordConfigTitle,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                  ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    l10n.keywordConfigSubtitle,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white70),
-                  ),
-                ],
+    return SingleChildScrollView(
+      padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 24.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 8.h),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.keywordConfigTitle,
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                    ),
+                    SizedBox(height: 8.h),
+                    Text(
+                      l10n.keywordConfigSubtitle,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white70),
+                    ),
+                  ],
+                ),
               ),
-            ),
-           ],
-        ),
-        SizedBox(height: 24.h),
-        _GroupList(viewModel: viewModel),
-        SizedBox(height: 24.h),
-        _FiltersSection(viewModel: viewModel),
-        SizedBox(height: 32.h),
-        Align(
-          alignment: Alignment.centerRight,
-          child: CustomButton(
-            label: l10n.keywordConfigNext,
-            onPressed: () => _handleNext(context, viewModel),
+             ],
           ),
-        ),
-      ],
+          SizedBox(height: 24.h),
+          _GroupList(viewModel: viewModel),
+          SizedBox(height: 24.h),
+          _FiltersSection(viewModel: viewModel),
+          SizedBox(height: 32.h),
+          Align(
+            alignment: Alignment.centerRight,
+            child: CustomButton(
+              label: l10n.keywordConfigNext,
+              onPressed: () => _handleNext(context, viewModel),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

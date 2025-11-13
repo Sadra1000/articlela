@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GradientScaffold extends StatelessWidget {
   const GradientScaffold({
@@ -8,14 +7,13 @@ class GradientScaffold extends StatelessWidget {
     required this.child,
     this.overlay,
     this.bottomBar,
-    this.padding,
+    
   });
 
   final Gradient gradient;
   final Widget child;
   final Widget? overlay;
   final Widget? bottomBar;
-  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +22,11 @@ class GradientScaffold extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(
-            child: SingleChildScrollView(
-              padding: padding ?? EdgeInsets.symmetric(horizontal: 32.w, vertical: 24.h),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
-                child: SafeArea(
-                  bottom: bottomBar == null,
-                  child: child,
-                ),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+              child: SafeArea(
+                bottom: bottomBar == null,
+                child: child,
               ),
             ),
           ),

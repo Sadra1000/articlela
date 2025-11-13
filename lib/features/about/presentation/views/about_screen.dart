@@ -35,52 +35,51 @@ class _AboutScreenState extends State<AboutScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 24.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: SizedBox(
-                height: 220.h,
-                child: Lottie.asset('assets/lottie/about.json'),
-              ),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 24.h),
+       
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+         Center(
+            child: SizedBox(
+              height: 220.h,
+              child: Lottie.asset('assets/lottie/coding.json'),
             ),
-            SizedBox(height: 24.h),
+          ),
+          SizedBox(height: 24.h),
+          Text(
+            l10n.aboutParagraphOne,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
+          ),
+          SizedBox(height: 12.h),
+          Text(
+            l10n.aboutParagraphTwo,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white70),
+          ),
+          SizedBox(height: 24.h),
+          if (_version != null)
             Text(
-              l10n.aboutParagraphOne,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
+              l10n.versionLabel(_version!),
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white70),
             ),
-            SizedBox(height: 12.h),
-            Text(
-              l10n.aboutParagraphTwo,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white70),
-            ),
-            SizedBox(height: 24.h),
-            if (_version != null)
-              Text(
-                l10n.versionLabel(_version!),
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white70),
+          SizedBox(height: 24.h),
+          Wrap(
+            spacing: 16.w,
+            runSpacing: 12.h,
+            children: [
+              CustomButton(
+                label: l10n.aboutContact,
+                onPressed: () => _launchUri(Uri.parse('mailto:team@articlela.app')),
               ),
-            SizedBox(height: 24.h),
-            Wrap(
-              spacing: 16.w,
-              runSpacing: 12.h,
-              children: [
-                CustomButton(
-                  label: l10n.aboutContact,
-                  onPressed: () => _launchUri(Uri.parse('mailto:team@articlela.app')),
-                ),
-                CustomButton(
-                  label: l10n.aboutSupport,
-                  isPrimary: false,
-                  onPressed: () => _launchUri(Uri.parse('https://www.buymeacoffee.com/articlela')),
-                ),
-              ],
-            ),
-          ],
-        ),
+              CustomButton(
+                label: l10n.aboutSupport,
+                isPrimary: false,
+                onPressed: () => _launchUri(Uri.parse('https://www.buymeacoffee.com/articlela')),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

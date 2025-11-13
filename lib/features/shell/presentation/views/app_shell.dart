@@ -13,13 +13,12 @@ class AppShell extends StatelessWidget {
     super.key,
     required this.child,
     this.preset,
-    this.titleBuilder,
+    this.titleBuilder
   });
 
   final Widget child;
   final GradientPreset? preset;
   final TitleBuilder? titleBuilder;
-
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -40,13 +39,13 @@ class AppShell extends StatelessWidget {
           Expanded(
             child: GradientScaffold(
               gradient: gradient,
-              padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 24.h),
-              child: AnimatedSwitcher(
+              
+               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
                 child: Directionality(
                   key: ValueKey<String>(l10n.locale.languageCode + routeName),
                   textDirection: l10n.isRtl ? TextDirection.rtl : TextDirection.ltr,
-                  child: child,
+                  child:child
                 ),
               ),
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../../data/services/abstract_fetcher.dart';
-import '../../data/services/google_translate_service.dart';
+import '../../../../core/data/services/google_translate_service.dart';
 
 class ArticleDetailsViewModel extends ChangeNotifier {
   ArticleDetailsViewModel(this._fetcher, this._translator);

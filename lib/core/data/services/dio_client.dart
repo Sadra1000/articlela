@@ -69,4 +69,18 @@ class DioClient {
       options: Options(headers: headers),
     );
   }
+
+  Future<Response<dynamic>> post(
+    String path, {
+    Object? data,
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
+  }) {
+    return _dio.post<dynamic>(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: Options(headers: headers),
+    );
+  }
 }

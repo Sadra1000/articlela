@@ -135,6 +135,14 @@ class AppLocalizations {
   String get settingsThemeLight => _strings['settingsThemeLight'] ?? '';
   String get settingsThemeDark => _strings['settingsThemeDark'] ?? '';
   String get settingsThemeSystem => _strings['settingsThemeSystem'] ?? '';
+  String get settingsTranslationSection =>
+      _strings['settingsTranslationSection'] ?? '';
+  String get settingsTranslationGoogle =>
+      _strings['settingsTranslationGoogle'] ?? '';
+  String get settingsTranslationDeepSeek =>
+      _strings['settingsTranslationDeepSeek'] ?? '';
+  String get settingsTranslationHint =>
+      _strings['settingsTranslationHint'] ?? '';
   String get settingsCrossrefMailto => _strings['settingsCrossrefMailto'] ?? '';
   String get settingsCrossrefMailtoHint =>
       _strings['settingsCrossrefMailtoHint'] ?? '';

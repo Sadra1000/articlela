@@ -62,17 +62,21 @@ class _PdfReaderScreenState extends State<PdfReaderScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: 16.h),
+
                   _Header(onPickPdf: _pickPdf),
                   SizedBox(height: 16.h),
                   Expanded(
                     child: Consumer<PdfReaderViewModel>(
                       builder: (context, viewModel, _) {
                         if (!viewModel.hasDocument) {
-                          return _EmptyState(
-                            title: l10n.pdfReaderEmptyTitle,
-                            description: l10n.pdfReaderEmptyDescription,
-                            dropHint: l10n.pdfReaderDropHint,
-                            isHovering: _isDragHovering,
+                          return Center(
+                            child: _EmptyState(
+                              title: l10n.pdfReaderEmptyTitle,
+                              description: l10n.pdfReaderEmptyDescription,
+                              dropHint: l10n.pdfReaderDropHint,
+                              isHovering: _isDragHovering,
+                            ),
                           );
                         }
                         return _buildViewer(context, viewModel);
@@ -217,14 +221,25 @@ class _PdfReaderScreenState extends State<PdfReaderScreen> {
     }
     _focusNode.requestFocus();
     final l10n = context.l10n;
+    final overlay = Overlay.of(context).context.findRenderObject() as RenderBox?;
+    final tapPosition = details.globalPosition;
+    final menuPosition = overlay != null
+        ? RelativeRect.fromRect(
+            Rect.fromPoints(
+              overlay.globalToLocal(tapPosition),
+              overlay.globalToLocal(tapPosition),
+            ),
+            Offset.zero & overlay.size,
+          )
+        : RelativeRect.fromLTRB(
+            tapPosition.dx,
+            tapPosition.dy,
+            tapPosition.dx,
+            tapPosition.dy,
+          );
     final selected = await showMenu<String>(
       context: context,
-      position: RelativeRect.fromLTRB(
-        details.globalPosition.dx,
-        details.globalPosition.dy,
-        details.globalPosition.dx,
-        details.globalPosition.dy,
-      ),
+      position: menuPosition,
       items: [
         PopupMenuItem(
           value: 'translate',
@@ -401,56 +416,60 @@ class _Header extends StatelessWidget {
     final theme = Theme.of(context);
     final fileName = viewModel.fileName;
 
-    return Row(
-      children: [
-        CustomButton(
-          label: viewModel.hasDocument
-              ? l10n.pdfReaderPickAnother
-              : l10n.pdfReaderSelectFile,
-          onPressed: viewModel.isPickingFile ? null : onPickPdf,
-          icon: const Icon(Icons.picture_as_pdf),
-        ),
-        SizedBox(width: 16.w),
-        if (fileName != null)
-          Expanded(
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 240),
-              child: Container(
-                key: ValueKey(fileName),
-                padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 10.h),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(20.r),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.35),
+    return Padding(
+      padding:  EdgeInsets.only(left: 16.w),
+      child: Row(
+        children: [
+          
+          CustomButton(
+            label: viewModel.hasDocument
+                ? l10n.pdfReaderPickAnother
+                : l10n.pdfReaderSelectFile,
+            onPressed: viewModel.isPickingFile ? null : onPickPdf,
+            icon: const Icon(Icons.picture_as_pdf),
+          ),
+          SizedBox(width: 16.w),
+          if (fileName != null)
+            Expanded(
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 240),
+                child: Container(
+                  key: ValueKey(fileName),
+                  padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 10.h),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(20.r),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.35),
+                    ),
                   ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.insert_drive_file,
-                      size: 18.w,
-                      color: Colors.white.withValues(alpha: 0.9),
-                    ),
-                    SizedBox(width: 10.w),
-                    Expanded(
-                      child: Text(
-                        l10n.pdfReaderSelectedFile(fileName),
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.insert_drive_file,
+                        size: 18.w,
+                        color: Colors.white.withValues(alpha: 0.9),
                       ),
-                    ),
-                  ],
+                      SizedBox(width: 10.w),
+                      Expanded(
+                        child: Text(
+                          l10n.pdfReaderSelectedFile(fileName),
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -656,6 +675,8 @@ class _EmptyState extends StatelessWidget {
         : theme.colorScheme.onInverseSurface;
 
     return AnimatedContainer(
+      height: 700.h,
+      width: 700.w,
       duration: const Duration(milliseconds: 220),
       curve: Curves.easeOutCubic,
       decoration: BoxDecoration(
@@ -663,7 +684,6 @@ class _EmptyState extends StatelessWidget {
         borderRadius: BorderRadius.circular(32.r),
         border: Border.all(color: borderColor, width: 2),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 48.h),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 520),

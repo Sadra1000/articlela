@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/data/services/dio_client.dart';
+import '../../core/data/services/deepseek_service.dart';
 import '../../core/data/services/env_config.dart';
 import '../../core/data/services/file_exporter.dart';
 import '../../core/data/services/in_memory_article_cache.dart';
@@ -14,7 +16,7 @@ import '../../features/keyword_config/presentation/viewmodels/keyword_config_vie
 import '../../features/onboarding/domain/usecases/set_language_usecase.dart';
 import '../../features/onboarding/presentation/viewmodels/onboarding_viewmodel.dart';
 import '../../features/article_details/data/services/abstract_fetcher.dart';
-import '../../features/article_details/data/services/google_translate_service.dart';
+import '../../core/data/services/google_translate_service.dart';
 import '../../features/article_details/presentation/viewmodels/article_details_viewmodel.dart';
 import '../../features/search_results/data/datasources/crossref_api_datasource.dart';
 import '../../features/search_results/data/datasources/openalex_api_datasource.dart';
@@ -27,17 +29,32 @@ import '../../features/search_results/presentation/viewmodels/search_results_vie
 final getIt = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
+  await dotenv.load(fileName: 'assets/.env');
   final sharedPrefs = await SharedPreferences.getInstance();
 
+  getIt.registerSingleton<DotEnv>(dotenv);
   getIt.registerSingleton<SharedPreferences>(sharedPrefs);
-  getIt.registerLazySingleton<EnvConfig>(() => EnvConfig(getIt<SharedPreferences>()));
+  getIt.registerLazySingleton<EnvConfig>(
+    () => EnvConfig(getIt<SharedPreferences>(), getIt<DotEnv>()),
+  );
   getIt.registerLazySingleton<KeyStore>(() => KeyStoreImpl(getIt<SharedPreferences>()));
   getIt.registerLazySingleton<Dio>(() => Dio());
   getIt.registerLazySingleton<DioClient>(() => DioClient(getIt<Dio>(), getIt<KeyStore>()));
+  getIt.registerLazySingleton<DeepSeekService>(
+    () => DeepSeekService(getIt<DioClient>(), getIt<EnvConfig>()),
+  );
   getIt.registerLazySingleton<FileExporter>(FileExporter.new);
   getIt.registerLazySingleton<InMemoryArticleCache>(InMemoryArticleCache.new);
   getIt.registerLazySingleton<IAbstractFetcher>(() => AbstractFetcher(getIt<DioClient>()));
-  getIt.registerLazySingleton<ArticleTranslator>(() => GoogleTranslateService(getIt<DioClient>()));
+  getIt.registerLazySingleton(() => GoogleTranslateService(getIt<DioClient>()));
+  getIt.registerLazySingleton(() => DeepSeekTranslateService(getIt<DeepSeekService>()));
+  getIt.registerLazySingleton<ArticleTranslator>(
+    () => ConfigurableArticleTranslator(
+      preferences: getIt<SharedPreferences>(),
+      googleService: getIt<GoogleTranslateService>(),
+      deepSeekService: getIt<DeepSeekTranslateService>(),
+    ),
+  );
 
   getIt.registerLazySingleton<CrossrefApiDatasource>(
     () => CrossrefApiDatasource(getIt<DioClient>()),

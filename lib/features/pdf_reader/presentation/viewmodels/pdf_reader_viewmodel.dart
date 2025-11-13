@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../../article_details/data/services/google_translate_service.dart';
+import '../../../../core/data/services/google_translate_service.dart';
 
 class PdfReaderViewModel extends ChangeNotifier {
   PdfReaderViewModel(this._translator);
