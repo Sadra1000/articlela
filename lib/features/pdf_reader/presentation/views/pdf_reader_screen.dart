@@ -417,7 +417,7 @@ class _Header extends StatelessWidget {
     final fileName = viewModel.fileName;
 
     return Padding(
-      padding:  EdgeInsets.only(left: 16.w),
+      padding:  EdgeInsets.symmetric(horizontal: 16.w),
       child: Row(
         children: [
           

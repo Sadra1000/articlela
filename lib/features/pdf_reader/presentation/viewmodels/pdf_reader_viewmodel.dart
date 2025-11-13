@@ -91,9 +91,11 @@ class PdfReaderViewModel extends ChangeNotifier {
       return;
     }
 
+
     _selectedText = cleaned;
     _isTranslating = false;
     notifyListeners();
+    print(_selectedText);
   }
 
   bool get hasSelection => (_selectedText ?? '').isNotEmpty;
@@ -105,6 +107,7 @@ class PdfReaderViewModel extends ChangeNotifier {
   }
 
   Future<String> translateSelection() async {
+      print(_selectedText);
     final text = _selectedText;
     if (text == null || text.isEmpty) {
       throw StateError('No selection available for translation');
@@ -117,6 +120,7 @@ class PdfReaderViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
+      print(text);
       final translated = await _translator.translate(text: text);
       return translated.trim();
     } finally {
@@ -141,6 +145,6 @@ class PdfReaderViewModel extends ChangeNotifier {
     if (normalized.isEmpty) {
       return null;
     }
-    return normalized.length > 120 ? normalized.substring(0, 120) : normalized;
+    return normalized;
   }
 }

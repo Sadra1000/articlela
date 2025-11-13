@@ -123,6 +123,7 @@ class DeepSeekTranslateService implements ArticleTranslator {
   Future<String> translate({
     required String text,
   }) async {
+
     final trimmed = text.trim();
     if (trimmed.isEmpty) {
       throw ArgumentError('text cannot be empty');
@@ -130,18 +131,21 @@ class DeepSeekTranslateService implements ArticleTranslator {
 
     try {
       final response = await _deepSeekService.createChatCompletion(
-        messages: <DeepSeekMessage>[
-          const DeepSeekMessage(
-            role: 'system',
-            content:
-                'You are a professional translator that rewrites academic content from English to Persian while preserving meaning, tone, and inline formatting.',
-          ),
-          DeepSeekMessage(
-            role: 'user',
-            content:
-                'Translate the following text to Persian. Respond only with the translated text:\n\n$trimmed',
-          ),
-        ],
+        DeepSeekChatCompletionRequest(
+          messages: <DeepSeekMessage>[
+            const DeepSeekMessage(
+              role: 'system',
+              content:
+                  'You are a professional translator that rewrites academic content from English to Persian while preserving meaning, tone, and inline formatting.',
+            ),
+            DeepSeekMessage(
+              role: 'user',
+              content:
+                  'Translate the following text to Persian. Respond only with the translated text:\n\n$trimmed',
+            ),
+          ],
+          temperature: 0.2,
+        ),
       );
 
       final translated = response.firstMessageContent;
