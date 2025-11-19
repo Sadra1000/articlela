@@ -25,10 +25,37 @@
     "homeAbout":  "About",
     "homeSettings":  "Settings",
     "homePdfReader":  "Article reader",
+    "pdfReaderTitle":  "Article reader",
+    "pdfReaderSelectFile":  "Select PDF",
+    "pdfReaderPickAnother":  "Change PDF",
+    "pdfReaderEmptyTitle":  "Choose a PDF to start",
+    "pdfReaderEmptyDescription":  "Open a PDF document to read it here, translate words, and follow reference links instantly.",
+    "pdfReaderSelectedFile":  "Selected file: {name}",
+    "@pdfReaderSelectedFile":  {
+                                   "placeholders":  {
+                                                        "name":  {
+                                                                     "type":  "String"
+                                                                 }
+                                                    }
+                               },
+    "pdfReaderReferenceHint":  "Tap reference links to open them in your browser.",
+    "pdfReaderTranslationTitle":  "Translation",
+    "pdfReaderTranslationWord":  "Selected word",
+    "pdfReaderTranslationLoading":  "Translating...",
+    "pdfReaderTranslationError":  "We couldn't translate this selection. Try again.",
+    "pdfReaderCloseTranslation":  "Close translation",
     "pdfReaderDropHint":  "Drag \u0026 drop a PDF anywhere on this window to open it instantly.",
     "pdfReaderTranslationShortcut":  "Select text, then press Ctrl + T or use the context menu to translate.",
     "pdfReaderContextTranslate":  "Translate selection",
     "pdfReaderTranslationPrompt":  "Select text and translate when you are ready.",
+    "pdfReaderContextExplain":  "Explain with AI",
+    "pdfReaderExplanationTitle":  "AI explanation",
+    "pdfReaderExplainShortcut":  "Select text, then press Ctrl + E for an AI explanation.",
+    "pdfReaderExplanationSelection":  "Selected text",
+    "pdfReaderExplanationLabel":  "AI insight",
+    "pdfReaderExplanationPrompt":  "Select text and ask the assistant when you're ready.",
+    "pdfReaderExplanationError":  "We couldn't explain this selection. Try again.",
+    "pdfReaderCloseExplanation":  "Close explanation",
     "aboutTitle":  "About",
     "aboutParagraphOne":  "ArticleLA accelerates literature reviews with powerful multi-source searching, filtering, and export tools.",
     "aboutParagraphTwo":  "Connect Crossref, Scopus, and OpenAlex, build reusable keyword groups, and keep your team aligned on the latest publications.",

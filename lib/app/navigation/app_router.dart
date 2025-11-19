@@ -24,6 +24,7 @@ import '../../features/review/presentation/stage_review_page.dart';
 import '../../features/review/presentation/viewmodel/stage_review_viewmodel.dart';
 import '../di/service_locator.dart';
 import '../theme/app_colors.dart';
+import '../../core/data/services/article_explainer.dart';
 import '../../core/data/services/google_translate_service.dart';
 
 class AppRouter {
@@ -147,7 +148,10 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (context) => ChangeNotifierProvider(
-            create: (_) => PdfReaderViewModel(getIt<ArticleTranslator>()),
+            create: (_) => PdfReaderViewModel(
+              getIt<ArticleTranslator>(),
+              getIt<ArticleExplainer>(),
+            ),
             child: AppShell(
               preset: GradientPreset.reader,
               titleBuilder: (l10n) => l10n.pdfReaderTitle,

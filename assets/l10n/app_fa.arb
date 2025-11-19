@@ -1,244 +1,270 @@
-﻿{
-  "@@locale": "fa",
-  "appTitle": "Ø¢Ø±ØªÛŒÚ©Ù„â€ŒØ§ÙÙ„â€ŒØ§ÛŒ",
-  "appTagline": "Ú©Ø´Ù Ù‡ÙˆØ´Ù…Ù†Ø¯ Ø¨Ø±Ø§ÛŒ ØªÛŒÙ…â€ŒÙ‡Ø§ÛŒ Ù¾Ú˜ÙˆÙ‡Ø´ÛŒ.",
-  "onboardingHeadline": "Ø³Ø±ÛŒØ¹â€ŒØªØ± Ø¨Ù‡ Ù…Ù†Ø¨Ø¹ Ø¨Ø¹Ø¯ÛŒ Ø¨Ø±Ø³ÛŒØ¯.",
-  "onboardingDescription": "Ø²Ø¨Ø§Ù† Ø±Ø§ ØªÙ†Ø¸ÛŒÙ… Ú©Ù†ÛŒØ¯ Ùˆ Ø¬Ø³ØªØ¬ÙˆÙ‡Ø§ÛŒ ØªØ±Ú©ÛŒØ¨ÛŒ Ú©Ø±Ø§Ø³â€ŒØ±ÙØŒ Ø§Ø³Ú©ÙˆÙ¾ÙˆØ³ Ùˆ Ø§ÙˆÙ¾Ù†â€ŒØ§Ù„Ú©Ø³ Ø±Ø§ Ø¢Ù…Ø§Ø¯Ù‡ Ø³Ø§Ø²ÛŒØ¯.",
-  "onboardingSelectLanguage": "Ø²Ø¨Ø§Ù† Ø®ÙˆØ¯ Ø±Ø§ Ø§Ù†ØªØ®Ø§Ø¨ Ú©Ù†ÛŒØ¯",
-  "onboardingContinue": "Ø§Ø¯Ø§Ù…Ù‡",
-  "onboardingKeysTitle": "Ø§ØªØµØ§Ù„ Ø¨Ù‡ Ù…Ù†Ø§Ø¨Ø¹ Ø¯Ø§Ø¯Ù‡",
-  "onboardingKeysDescription": "Ø¨Ø±Ø§ÛŒ Ø¬Ø³ØªØ¬ÙˆÛŒ Ù…ÙˆØ¯Ø¨Ø§Ù†Ù‡ Ú†Ù†Ø¯Ù…Ù†Ø¨Ø¹ÛŒØŒ Ø¯Ø± ØµÙˆØ±Øª ØªÙ…Ø§ÛŒÙ„ Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ø±Ø§ ÙˆØ§Ø±Ø¯ Ú©Ù†ÛŒØ¯.",
-  "onboardingScopusToggle": "ÙØ¹Ø§Ù„â€ŒØ³Ø§Ø²ÛŒ Ø§Ø³Ú©ÙˆÙ¾ÙˆØ³ (Ù†ÛŒØ§Ø²Ù…Ù†Ø¯ Ú©Ù„ÛŒØ¯ Ø§Ù„Ø²ÙˆÛŒØ±)",
-  "onboardingScopusHint": "Ø¯Ø± ØµÙˆØ±Øª ØºÛŒØ±ÙØ¹Ø§Ù„ Ø¨ÙˆØ¯Ù†ØŒ Ø¬Ø³ØªØ¬ÙˆÛŒ Ø§Ø³Ú©ÙˆÙ¾ÙˆØ³ Ø§Ù†Ø¬Ø§Ù… Ù†Ù…ÛŒâ€ŒØ´ÙˆØ¯.",
-  "onboardingElsevierLabel": "Ú©Ù„ÛŒØ¯ API Ø§Ù„Ø²ÙˆÛŒØ±",
-  "onboardingElsevierHint": "Ú©Ù„ÛŒØ¯ Ø§Ù„Ø²ÙˆÛŒØ± Ø±Ø§ ÙˆØ§Ø±Ø¯ Ú©Ù†ÛŒØ¯",
-  "onboardingElsevierHelper": "Ø§ÛŒÙ† Ú©Ù„ÛŒØ¯ ÙÙ‚Ø· Ø±ÙˆÛŒ Ù‡Ù…ÛŒÙ† Ø¯Ø³ØªÚ¯Ø§Ù‡ Ø°Ø®ÛŒØ±Ù‡ Ù…ÛŒâ€ŒØ´ÙˆØ¯.",
-  "onboardingScopusDisabledHelper": "Ø§Ø³Ú©ÙˆÙ¾ÙˆØ³ ØºÛŒØ±ÙØ¹Ø§Ù„ Ø§Ø³Øª. Ø¨Ø¹Ø¯Ø§Ù‹ Ø§Ø² Ø·Ø±ÛŒÙ‚ Ø¨Ø§Ø²Ù†Ø´Ø§Ù†ÛŒ Ø¢Ù†â€ŒØ¨ÙˆØ±Ø¯ÛŒÙ†Ú¯ Ù…ÛŒâ€ŒØªÙˆØ§Ù†ÛŒØ¯ Ú©Ù„ÛŒØ¯ Ø§Ø¶Ø§ÙÙ‡ Ú©Ù†ÛŒØ¯.",
-  "onboardingCrossrefLabel": "Ø§ÛŒÙ…ÛŒÙ„ ØªÙ…Ø§Ø³ Ú©Ø±Ø§Ø³â€ŒØ±Ù",
-  "onboardingFinish": "Ø´Ø±ÙˆØ¹ Ø¬Ø³ØªØ¬Ùˆ",
-  "onboardingCompleteMessage": "Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ø°Ø®ÛŒØ±Ù‡ Ø´Ø¯. Ø¨Ø¹Ø¯Ø§Ù‹ Ø¯Ø± ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ù‚Ø§Ø¨Ù„ ØªØºÛŒÛŒØ± Ø§Ø³Øª.",
-  "languageEnglish": "Ø§Ù†Ú¯Ù„ÛŒØ³ÛŒ",
-  "languagePersian": "ÙØ§Ø±Ø³ÛŒ",
-  "homeTitle": "Ø®Ø§Ù†Ù‡",
-  "homeSubtitle": "Ø¬Ø³ØªØ¬ÙˆÙ‡Ø§ÛŒ Ú†Ù†Ø¯Ù…Ù†Ø¨Ø¹ÛŒ Ø®ÙˆØ¯ Ø±Ø§ Ù‡Ù…ÛŒÙ† Ø­Ø§Ù„Ø§ Ø¨Ø³Ø§Ø²ÛŒØ¯.",
-  "homeStart": "Ø´Ø±ÙˆØ¹",
-  "homeAbout": "Ø¯Ø±Ø¨Ø§Ø±Ù‡",
-  "homeSettings": "ØªÙ†Ø¸ÛŒÙ…Ø§Øª",
-  "aboutTitle": "Ø¯Ø±Ø¨Ø§Ø±Ù‡",
-  "aboutParagraphOne": "ArticleLA Ø±ÙˆÙ†Ø¯ Ù…Ø±ÙˆØ± Ø§Ø¯Ø¨ÛŒØ§Øª Ø±Ø§ Ø¨Ø§ Ø¬Ø³ØªØ¬ÙˆØŒ ÙÛŒÙ„ØªØ± Ùˆ Ø®Ø±ÙˆØ¬ÛŒ Ú¯Ø±ÙØªÙ† Ø§Ø² Ú†Ù†Ø¯ÛŒÙ† Ù…Ù†Ø¨Ø¹ ØªØ³Ø±ÛŒØ¹ Ù…ÛŒâ€ŒÚ©Ù†Ø¯.",
-  "aboutParagraphTwo": "Ú©Ø±Ø§Ø³â€ŒØ±ÙØŒ Ø§Ø³Ú©ÙˆÙ¾ÙˆØ³ Ùˆ Ø§ÙˆÙ¾Ù†â€ŒØ§Ù„Ú©Ø³ Ø±Ø§ Ù…ØªØµÙ„ Ú©Ù†ÛŒØ¯ØŒ Ú¯Ø±ÙˆÙ‡â€ŒÙ‡Ø§ÛŒ Ú©Ù„ÛŒØ¯ÙˆØ§Ú˜Ù‡ Ø¨Ø³Ø§Ø²ÛŒØ¯ Ùˆ ØªÛŒÙ… Ø®ÙˆØ¯ Ø±Ø§ Ø¨Ø§ ØªØ§Ø²Ù‡â€ŒØªØ±ÛŒÙ† Ù…Ù‚Ø§Ù„Ø§Øª Ù‡Ù…Ø³Ùˆ Ù†Ú¯Ù‡ Ø¯Ø§Ø±ÛŒØ¯.",
-  "aboutContact": "Ø§Ø±ØªØ¨Ø§Ø· Ø¨Ø§ Ù…Ø§",
-  "aboutSupport": "Ø®Ø±ÛŒØ¯ ÛŒÚ© Ù‚Ù‡ÙˆÙ‡",
-  "settingsTitle": "ØªÙ†Ø¸ÛŒÙ…Ø§Øª",
-  "settingsLanguageSection": "Ø²Ø¨Ø§Ù†",
-  "settingsApiSection": "Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ú©Ø§Ø±Ø¨Ø±ÛŒ API",
-  "settingsThemeSection": "ØªÙ…",
-  "settingsThemeLight": "Ø±ÙˆØ´Ù†",
-  "settingsThemeDark": "ØªØ§Ø±ÛŒÚ©",
-  "settingsThemeSystem": "Ø³ÛŒØ³ØªÙ…ÛŒ",
-  "settingsTranslationSection": "ترجمه",
-  "settingsTranslationGoogle": "Google Translate",
-  "settingsTranslationDeepSeek": "DeepSeek",
-  "settingsTranslationHint": "موتور ترجمه برای خلاصه‌ها و متن‌های انتخاب‌شده را مشخص کنید. برای فعال‌سازی DeepSeek مقدار DEEPSEEK_API_KEY را در فایل assets/.env قرار دهید.",
-  "settingsCrossrefMailto": "Ø§ÛŒÙ…ÛŒÙ„ ØªÙ…Ø§Ø³ Ú©Ø±Ø§Ø³â€ŒØ±Ù",
-  "settingsCrossrefMailtoHint": "name@example.com",
-  "settingsElsevierKey": "Ú©Ù„ÛŒØ¯ API Ø§Ù„Ø²ÙˆÛŒØ±",
-  "settingsElsevierKeyHint": "Ú©Ù„ÛŒØ¯ Ø±Ø§ ÙˆØ§Ø±Ø¯ Ú©Ù†ÛŒØ¯",
-  "settingsSave": "Ø°Ø®ÛŒØ±Ù‡ ØªØºÛŒÛŒØ±Ø§Øª",
-  "settingsSavedMessage": "ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ø¨Ø§ Ù…ÙˆÙÙ‚ÛŒØª Ø°Ø®ÛŒØ±Ù‡ Ø´Ø¯.",
-  "settingsScopusStatus": "ÙˆØ¶Ø¹ÛŒØª Ø§Ø³Ú©ÙˆÙ¾ÙˆØ³",
-  "settingsScopusEnabled": "ÙØ¹Ø§Ù„",
-  "settingsScopusDisabled": "ØºÛŒØ±ÙØ¹Ø§Ù„",
-  "settingsValueNotSet": "ØªØ¹Ø±ÛŒÙ Ù†Ø´Ø¯Ù‡",
-  "settingsApiHint": "Ø¨Ø±Ø§ÛŒ ØªØºÛŒÛŒØ± Ø§Ø·Ù„Ø§Ø¹Ø§Øª APIØŒ Ø¢Ù†â€ŒØ¨ÙˆØ±Ø¯ÛŒÙ†Ú¯ Ø±Ø§ Ø¨Ø§Ø²Ù†Ø´Ø§Ù†ÛŒ Ú©Ù†ÛŒØ¯.",
-  "settingsResetOnboarding": "Ø¨Ø§Ø²Ù†Ø´Ø§Ù†ÛŒ Ø¢Ù†â€ŒØ¨ÙˆØ±Ø¯ÛŒÙ†Ú¯",
-  "settingsResetOnboardingMessage": "Ø¢Ù†â€ŒØ¨ÙˆØ±Ø¯ÛŒÙ†Ú¯ Ø¯Ø± Ø§Ø¬Ø±Ø§ÛŒ Ø¨Ø¹Ø¯ÛŒ Ø¯ÙˆØ¨Ø§Ø±Ù‡ Ù†Ù…Ø§ÛŒØ´ Ø¯Ø§Ø¯Ù‡ Ù…ÛŒâ€ŒØ´ÙˆØ¯.",
-  "keywordConfigTitle": "Ø³Ø§Ø²Ù†Ø¯Ù‡ Ú©Ù„ÛŒØ¯ÙˆØ§Ú˜Ù‡",
-  "keywordConfigSubtitle": "Ú¯Ø±ÙˆÙ‡â€ŒÙ‡Ø§ÛŒ Ú©Ù„ÛŒØ¯ÙˆØ§Ú˜Ù‡ Ø¨Ø³Ø§Ø²ÛŒØ¯ Ùˆ Ø¨Ø§ Ù…Ù†Ø·Ù‚ AND/OR ØªØ±Ú©ÛŒØ¨ Ú©Ù†ÛŒØ¯.",
-  "keywordConfigAddGroup": "Ø§ÙØ²ÙˆØ¯Ù† Ú¯Ø±ÙˆÙ‡",
-  "keywordConfigRenameGroup": "ØªØºÛŒÛŒØ± Ù†Ø§Ù…",
-  "keywordConfigRemoveGroup": "Ø­Ø°Ù",
-  "keywordConfigAddKeyword": "Ø§ÙØ²ÙˆØ¯Ù† Ú©Ù„ÛŒØ¯ÙˆØ§Ú˜Ù‡",
-  "keywordConfigRemoveKeyword": "Ø­Ø°Ù",
-  "keywordConfigKeywordHint": "Ú©Ù„ÛŒØ¯ÙˆØ§Ú˜Ù‡",
-  "keywordConfigYearRange": "Ø¨Ø§Ø²Ù‡ Ø³Ø§Ù„ Ø§Ù†ØªØ´Ø§Ø±",
-  "keywordConfigDocTypes": "Ù†ÙˆØ¹ Ø³Ù†Ø¯",
-  "keywordConfigSources": "Ù…Ù†Ø§Ø¨Ø¹",
-  "keywordConfigNext": "Ø¬Ø³ØªØ¬Ùˆ",
-  "keywordConfigErrorEmpty": "Ø¯Ø± Ù‡Ø± Ú¯Ø±ÙˆÙ‡ Ø¯Ø³Øªâ€ŒÚ©Ù… ÛŒÚ© Ú©Ù„ÛŒØ¯ÙˆØ§Ú˜Ù‡ Ø§Ø¶Ø§ÙÙ‡ Ú©Ù†ÛŒØ¯.",
-  "keywordConfigErrorNoGroups": "Ù¾ÛŒØ´ Ø§Ø² Ø¬Ø³ØªØ¬Ùˆ Ø­Ø¯Ø§Ù‚Ù„ ÛŒÚ© Ú¯Ø±ÙˆÙ‡ Ø¨Ø³Ø§Ø²ÛŒØ¯.",
-  "keywordConfigErrorNoSources": "Ø­Ø¯Ø§Ù‚Ù„ ÛŒÚ© Ù…Ù†Ø¨Ø¹ Ø±Ø§ Ø§Ù†ØªØ®Ø§Ø¨ Ú©Ù†ÛŒØ¯.",
-  "keywordConfigScopusDisabledHint": "Ù¾Ø³ Ø§Ø² Ø§ÙØ²ÙˆØ¯Ù† Ú©Ù„ÛŒØ¯ Ø§Ù„Ø²ÙˆÛŒØ±ØŒ Ø¢Ù†â€ŒØ¨ÙˆØ±Ø¯ÛŒÙ†Ú¯ Ø±Ø§ Ø¨Ø±Ø§ÛŒ ÙØ¹Ø§Ù„â€ŒØ³Ø§Ø²ÛŒ Ø§Ø³Ú©ÙˆÙ¾ÙˆØ³ Ø¨Ø§Ø²Ù†Ø´Ø§Ù†ÛŒ Ú©Ù†ÛŒØ¯.",
-  "keywordConfigSourceOpenAlex": "Ø§ÙˆÙ¾Ù†â€ŒØ§Ù„Ú©Ø³",
-  "keywordConfigGroupName": "Ú¯Ø±ÙˆÙ‡ {index}",
-  "@keywordConfigGroupName": {
-    "placeholders": {
-      "index": {
-        "type": "int"
-      }
-    }
-  },
-  "searchResultsTitle": "Ù†ØªØ§ÛŒØ¬",
-  "searchResultsEmpty": "Ù‡Ù†ÙˆØ² Ù…Ù‚Ø§Ù„Ù‡â€ŒØ§ÛŒ ÛŒØ§ÙØª Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª. Ø¬Ø³ØªØ¬ÙˆÛŒ Ø¬Ø¯ÛŒØ¯ÛŒ Ø§Ù†Ø¬Ø§Ù… Ø¯Ù‡ÛŒØ¯.",
-  "searchResultsEmptyAfterFetch": "Ù…Ù‚Ø§Ù„Ù‡â€ŒØ§ÛŒ Ø¨Ø§ ÙÛŒÙ„ØªØ±Ù‡Ø§ÛŒ Ø´Ù…Ø§ ÛŒØ§ÙØª Ù†Ø´Ø¯.",
-  "searchResultsLoading": "Ø¯Ø± Ø­Ø§Ù„ Ø¯Ø±ÛŒØ§ÙØª Ù…Ù‚Ø§Ù„Ø§Øª...",
-  "searchResultsExport": "Ø®Ø±ÙˆØ¬ÛŒ CSV",
-  "searchResultsTotal": "{count} Ù…Ù‚Ø§Ù„Ù‡",
-  "@searchResultsTotal": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      }
-    }
-  },
-  "searchResultsSort": "Ù…Ø±ØªØ¨â€ŒØ³Ø§Ø²ÛŒ",
-  "searchResultsSortNameAsc": "Ù†Ø§Ù… (Ø§Ù„Ù ØªØ§ ÛŒ)",
-  "searchResultsSortNameDesc": "Ù†Ø§Ù… (ÛŒ ØªØ§ Ø§Ù„Ù)",
-  "searchResultsSortYearAsc": "Ø³Ø§Ù„ (ØµØ¹ÙˆØ¯ÛŒ)",
-  "searchResultsSortYearDesc": "Ø³Ø§Ù„ (Ù†Ø²ÙˆÙ„ÛŒ)",
-  "searchResultsDocumentType": "Ù†ÙˆØ¹ Ø³Ù†Ø¯",
-  "searchResultsSource": "Ù…Ù†Ø¨Ø¹",
-  "searchResultsYear": "Ø³Ø§Ù„",
-  "searchResultsOpenLink": "Ø¨Ø§Ø² Ú©Ø±Ø¯Ù† Ù„ÛŒÙ†Ú©",
-  "searchResultsOpenDoi": "Ø¨Ø§Ø² Ú©Ø±Ø¯Ù† DOI",
-  "searchResultsNoAbstract": "Ú†Ú©ÛŒØ¯Ù‡ Ù…ÙˆØ¬ÙˆØ¯ Ù†ÛŒØ³Øª.",
-  "searchResultsSourceCrossref": "Ú©Ø±Ø§Ø³â€ŒØ±Ù",
-  "searchResultsSourceScopus": "Ø§Ø³Ú©ÙˆÙ¾ÙˆØ³",
-  "searchResultsCombinedProgress": "ØªØ§ Ø§ÛŒÙ† Ù„Ø­Ø¸Ù‡ {count} Ù…Ù‚Ø§Ù„Ù‡ Ø¯Ø±ÛŒØ§ÙØª Ø´Ø¯",
-  "@searchResultsCombinedProgress": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      }
-    }
-  },
-  "searchResultsFetching": "Ø¯Ø± Ø­Ø§Ù„ Ø¯Ø±ÛŒØ§ÙØª...",
-  "searchResultsSourceProgress": "{source}: {count} Ù…Ù‚Ø§Ù„Ù‡ (Ø¯Ø± {pages} ØµÙØ­Ù‡)",
-  "@searchResultsSourceProgress": {
-    "placeholders": {
-      "source": {
-        "type": "String"
-      },
-      "count": {
-        "type": "int"
-      },
-      "pages": {
-        "type": "int"
-      }
-    }
-  },
-  "searchResultsSourceStatus": "{completed} Ø§Ø² {total} Ù…Ù†Ø¨Ø¹ Ú©Ø§Ù…Ù„ Ø´Ø¯",
-  "@searchResultsSourceStatus": {
-    "placeholders": {
-      "completed": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
-  "searchResultsShowMore": "Ù†Ù…Ø§ÛŒØ´ {count} Ù…ÙˆØ±Ø¯ Ø¨Ø¹Ø¯ÛŒ",
-  "@searchResultsShowMore": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "searchResultsShowingLimited": "{visible} Ù…ÙˆØ±Ø¯ Ø§Ø² {total} Ù…ÙˆØ±Ø¯ Ù†Ù…Ø§ÛŒØ´ Ø¯Ø§Ø¯Ù‡ Ø´Ø¯Ù‡ Ø§Ø³Øª. Ø¨Ø±Ø§ÛŒ Ù…Ø´Ø§Ù‡Ø¯Ù‡ Ú†Ú©ÛŒØ¯Ù‡â€ŒÙ‡Ø§ ÙˆØ§Ø±Ø¯ ØµÙØ­Ù‡ Ø¬Ø²Ø¦ÛŒØ§Øª Ø´ÙˆÛŒØ¯.",
-  "@searchResultsShowingLimited": {
-    "placeholders": {
-      "visible": {
-        "type": "String"
-      },
-      "total": {
-        "type": "String"
-      }
-    }
-  },
-  "stageReview.button": "??????? ????????",
-  "stageReview.back": "??????",
-  "stageReview.nextRemove": "???? ? ???",
-  "stageReview.nextAdd": "???? ? ??????",
-  "stageReview.progress": "{current} / {total}",
-  "@stageReview.progress": {
-    "placeholders": {
-      "current": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
-  "stageReview.summary.title": "????? ???????",
-  "stageReview.summary.selected": "{count} ???? ???? ????? ?????? ??",
-  "@stageReview.summary.selected": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "stageReview.summary.export": "?????",
-  "stageReview.summary.restart": "???? ?????? ???????",
-  "stageReview.summary.close": "????",
-  "stageReview.summary.noneSelected": "???? ????? ????? ?? ????? ?????? ????.",
-  "errorGeneric": "Ø®Ø·Ø§ÛŒÛŒ Ø±Ø® Ø¯Ø§Ø¯. Ø¯ÙˆØ¨Ø§Ø±Ù‡ ØªÙ„Ø§Ø´ Ú©Ù†ÛŒØ¯.",
-  "errorMissingKeys": "Ø¨Ø±Ø§ÛŒ Ø§Ø¯Ø§Ù…Ù‡ Ú©Ù„ÛŒØ¯Ù‡Ø§ÛŒ API Ø±Ø§ Ø¯Ø± ØªÙ†Ø¸ÛŒÙ…Ø§Øª ÙˆØ§Ø±Ø¯ Ú©Ù†ÛŒØ¯.",
-  "retry": "ØªÙ„Ø§Ø´ Ø¯ÙˆØ¨Ø§Ø±Ù‡",
-  "back": "Ø¨Ø§Ø²Ú¯Ø´Øª",
-  "themeAutoLabel": "Ù¾ÛŒØ±ÙˆÛŒ Ø§Ø² Ø³ÛŒØ³ØªÙ…",
-  "snackbarLanguageSaved": "Ø²Ø¨Ø§Ù† Ø¨Ù‡â€ŒØ±ÙˆØ²Ø±Ø³Ø§Ù†ÛŒ Ø´Ø¯.",
-  "snackbarSettingsSaved": "ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ø°Ø®ÛŒØ±Ù‡ Ø´Ø¯.",
-  "csvExportSuccess": "ÙØ§ÛŒÙ„ CSV Ø¯Ø± Ù¾ÙˆØ´Ù‡ Downloads Ø°Ø®ÛŒØ±Ù‡ Ø´Ø¯.",
-  "csvExportFailure": "Ø®Ø±ÙˆØ¬ÛŒ CSV Ø§Ù†Ø¬Ø§Ù… Ù†Ø´Ø¯. Ø¯Ø³ØªØ±Ø³ÛŒ Ø°Ø®ÛŒØ±Ù‡â€ŒØ³Ø§Ø²ÛŒ Ø±Ø§ Ø¨Ø±Ø±Ø³ÛŒ Ú©Ù†ÛŒØ¯.",
-  "docTypePrePrint": "Ù¾ÛŒØ´ Ø§Ù†ØªØ´Ø§Ø±",
-  "docTypeJournalArticle": "Ù…Ù‚Ø§Ù„Ù‡ Ù…Ø¬Ù„Ù‡",
-  "docTypeReview": "Ù…Ø±ÙˆØ±",
-  "docTypeBook": "Ú©ØªØ§Ø¨",
-  "docTypeConference": "Ù…Ù‚Ø§Ù„Ù‡ Ú©Ù†ÙØ±Ø§Ù†Ø³",
-  "docTypeReport": "Ú¯Ø²Ø§Ø±Ø´",
-  "docTypeThesis": "Ù¾Ø§ÛŒØ§Ù†â€ŒÙ†Ø§Ù…Ù‡",
-  "docTypeOther": "Ø³Ø§ÛŒØ±",
-  "versionLabel": "Ù†Ø³Ø®Ù‡ {version}",
-  "@versionLabel": {
-    "placeholders": {
-      "version": {
-        "type": "String"
-      }
-    }
-  },
-  "settingsSourceEnv": "Ø¨Ø§Ø±Ú¯ÛŒØ±ÛŒ Ø´Ø¯Ù‡ Ø§Ø² .env",
-  "articleDetailsTitle": "Ø¬Ø²Ø¦ÛŒØ§Øª Ù…Ù‚Ø§Ù„Ù‡",
-  "articleDetailsOpenDoi": "Ø¨Ø§Ø² Ú©Ø±Ø¯Ù† DOI",
-  "articleDetailsCopyLink": "Ú©Ù¾ÛŒ Ù„ÛŒÙ†Ú©",
-  "articleDetailsCopied": "Ù„ÛŒÙ†Ú© Ø¯Ø± Ø­Ø§ÙØ¸Ù‡ Ú©Ù¾ÛŒ Ø´Ø¯.",
-  "articleDetailsMissingDoi": "Ø¨Ø±Ø§ÛŒ Ø§ÛŒÙ† Ù…Ù‚Ø§Ù„Ù‡ DOI Ù…ÙˆØ¬ÙˆØ¯ Ù†ÛŒØ³Øª.",
-  "articleDetailsNoAbstract": "Ú†Ú©ÛŒØ¯Ù‡â€ŒØ§ÛŒ Ø§Ø² Ø³ÙˆÛŒ Ø§Ø±Ø§Ø¦Ù‡â€ŒØ¯Ù‡Ù†Ø¯Ú¯Ø§Ù† Ø¯Ø± Ø¯Ø³ØªØ±Ø³ Ù†ÛŒØ³Øª.",
-  "articleDetailsAbstractLabel": "Ù…Ù†Ø¨Ø¹ Ú†Ú©ÛŒØ¯Ù‡: {source}",
-  "@articleDetailsAbstractLabel": {
-    "placeholders": {
-      "source": {
-        "type": "String"
-      }
-    }
-  },
-  "articleDetailsTranslate": "ØªØ±Ø¬Ù…Ù‡ Ø¨Ù‡ ÙØ§Ø±Ø³ÛŒ",
-  "articleDetailsTranslationLabel": "ØªØ±Ø¬Ù…Ù‡ ÙØ§Ø±Ø³ÛŒ",
-  "articleDetailsTranslationError": "Ø§Ù…Ú©Ø§Ù† ØªØ±Ø¬Ù…Ù‡ Ú†Ú©ÛŒØ¯Ù‡ ÙˆØ¬ÙˆØ¯ Ù†Ø¯Ø§Ø±Ø¯. Ù„Ø·ÙØ§Ù‹ Ø¨Ø¹Ø¯Ø§Ù‹ Ø¯ÙˆØ¨Ø§Ø±Ù‡ ØªÙ„Ø§Ø´ Ú©Ù†ÛŒØ¯.",
-  "articleDetailsSourceSemanticScholar": "Semantic Scholar",
-  "articleDetailsSourceOpenAlex": "OpenAlex",
-  "articleDetailsSourceCrossref": "Crossref",
-  "articleDetailsSourceNone": "Ù†Ø§Ù…Ø´Ø®Øµ",
-  "articleDetailsAuthors": "Ù†ÙˆÛŒØ³Ù†Ø¯Ú¯Ø§Ù†",
-  "articleDetailsVenue": "Ù…Ø­Ù„ Ø§Ù†ØªØ´Ø§Ø±"
+{
+    "@@locale":  "fa",
+    "appTitle":  "ArticleLA",
+    "appTagline":  "کشف هوشمندانه برای تیم‌های پژوهشی.",
+    "onboardingHeadline":  "ارجاع بعدی را سریع‌تر پیدا کنید.",
+    "onboardingDescription":  "ترجیحات زبان را تنظیم کنید و جستجوهای چندمنبعه اختصاصی را در Crossref، Scopus و OpenAlex آماده کنید.",
+    "onboardingSelectLanguage":  "زبان خود را انتخاب کنید",
+    "onboardingContinue":  "ادامه",
+    "onboardingKeysTitle":  "به منابع داده متصل شوید",
+    "onboardingKeysDescription":  "برای فعال‌سازی جستجوهای مودبانه چندمنبعه، اعتبارنامه‌های اختیاری را وارد کنید.",
+    "onboardingScopusToggle":  "فعال‌سازی Scopus (نیازمند کلید API الزویر)",
+    "onboardingScopusHint":  "در صورت غیرفعال بودن، کوئری‌های Scopus اجرا نمی‌شوند.",
+    "onboardingElsevierLabel":  "کلید API الزویر (Scopus)",
+    "onboardingElsevierHint":  "کلید الزویر خود را وارد کنید",
+    "onboardingElsevierHelper":  "کلید فقط به شکل امن روی همین دستگاه ذخیره می‌شود.",
+    "onboardingScopusDisabledHelper":  "Scopus غیرفعال است. می‌توانید بعداً از بازنشانی راه‌اندازی اولیه کلید را اضافه کنید.",
+    "onboardingCrossrefLabel":  "ایمیل تماس Crossref",
+    "onboardingFinish":  "شروع اکتشاف",
+    "onboardingCompleteMessage":  "اعتبارنامه‌ها ذخیره شد. بعداً می‌توانید در تنظیمات به‌روزرسانی کنید.",
+    "languageEnglish":  "انگلیسی",
+    "languagePersian":  "فارسی",
+    "homeTitle":  "خانه",
+    "homeSubtitle":  "جستجوی مقالات چندمنبعه را شروع کنید.",
+    "homeStart":  "شروع",
+    "homeAbout":  "درباره",
+    "homeSettings":  "تنظیمات",
+    "homePdfReader":  "خواندن مقاله",
+    "pdfReaderTitle":  "خواننده مقاله",
+    "pdfReaderSelectFile":  "انتخاب PDF",
+    "pdfReaderPickAnother":  "تغییر PDF",
+    "pdfReaderEmptyTitle":  "برای شروع یک PDF انتخاب کنید",
+    "pdfReaderEmptyDescription":  "یک فایل PDF باز کنید تا بتوانید متن را اینجا بخوانید، کلمات را ترجمه کنید و لینک‌های مرجع را فوری دنبال کنید.",
+    "pdfReaderSelectedFile":  "فایل انتخاب‌شده: {name}",
+    "@pdfReaderSelectedFile":  {
+                                   "placeholders":  {
+                                                        "name":  {
+                                                                     "type":  "String"
+                                                                 }
+                                                    }
+                               },
+    "pdfReaderReferenceHint":  "روی لینک‌های مرجع بزنید تا در مرورگر باز شوند.",
+    "pdfReaderTranslationTitle":  "ترجمه",
+    "pdfReaderTranslationWord":  "کلمه انتخاب‌شده",
+    "pdfReaderTranslationLoading":  "در حال ترجمه...",
+    "pdfReaderTranslationError":  "نتوانستیم این انتخاب را ترجمه کنیم. دوباره تلاش کنید.",
+    "pdfReaderCloseTranslation":  "بستن ترجمه",
+    "pdfReaderDropHint":  "یک PDF را هر جای این پنجره بکشید و رها کنید تا فوری باز شود.",
+    "pdfReaderTranslationShortcut":  "متن را انتخاب کنید و سپس Ctrl + T بزنید یا از منوی راست‌کلیک برای ترجمه استفاده کنید.",
+    "pdfReaderContextTranslate":  "ترجمه انتخاب",
+    "pdfReaderTranslationPrompt":  "متن را انتخاب کنید و هر زمان آماده بودید ترجمه کنید.",
+    "pdfReaderContextExplain":  "توضیح با هوش مصنوعی",
+    "pdfReaderExplanationTitle":  "توضیح هوش مصنوعی",
+    "pdfReaderExplainShortcut":  "متن را انتخاب کنید و سپس Ctrl + E بزنید تا توضیح هوش مصنوعی بگیرید.",
+    "pdfReaderExplanationSelection":  "متن انتخاب‌شده",
+    "pdfReaderExplanationLabel":  "بینش هوش مصنوعی",
+    "pdfReaderExplanationPrompt":  "متن را انتخاب کنید و هر وقت آماده بودید از دستیار بپرسید.",
+    "pdfReaderExplanationError":  "نتوانستیم این انتخاب را توضیح دهیم. دوباره تلاش کنید.",
+    "pdfReaderCloseExplanation":  "بستن توضیح",
+    "aboutTitle":  "درباره",
+    "aboutParagraphOne":  "ArticleLA مرور ادبیات را با جستجو، فیلتر و ابزارهای خروجی چندمنبعه قدرتمند سرعت می‌دهد.",
+    "aboutParagraphTwo":  "به Crossref، Scopus و OpenAlex وصل شوید، گروه‌های کلیدواژه قابل استفاده مجدد بسازید و تیم خود را با تازه‌ترین مقالات هماهنگ نگه دارید.",
+    "aboutContact":  "تماس با ما",
+    "aboutSupport":  "یک قهوه مهمانم کن",
+    "settingsTitle":  "تنظیمات",
+    "settingsLanguageSection":  "زبان",
+    "settingsApiSection":  "اعتبارنامه‌های API",
+    "settingsThemeSection":  "تم",
+    "settingsThemeLight":  "روشن",
+    "settingsThemeDark":  "تیره",
+    "settingsThemeSystem":  "سیستمی",
+    "settingsTranslationSection":  "ترجمه",
+    "settingsTranslationGoogle":  "Google Translate",
+    "settingsTranslationDeepSeek":  "DeepSeek AI",
+    "settingsTranslationHint":  "موتور ترجمه برای چکیده‌ها و انتخاب‌های PDF را انتخاب کنید. DeepSeek نیاز به DEEPSEEK_API_KEY در assets/.env دارد.",
+    "settingsCrossrefMailto":  "ایمیل تماس Crossref",
+    "settingsCrossrefMailtoHint":  "name@example.com",
+    "settingsElsevierKey":  "کلید API الزویر",
+    "settingsElsevierKeyHint":  "کلید خود را وارد کنید",
+    "settingsSave":  "ذخیره تغییرات",
+    "settingsSavedMessage":  "تنظیمات با موفقیت به‌روزرسانی شد.",
+    "settingsScopusStatus":  "وضعیت Scopus",
+    "settingsScopusEnabled":  "فعال",
+    "settingsScopusDisabled":  "غیرفعال",
+    "settingsValueNotSet":  "تنظیم نشده",
+    "settingsApiHint":  "برای تغییر اعتبارنامه‌های API، راه‌اندازی اولیه را بازنشانی کنید.",
+    "settingsResetOnboarding":  "بازنشانی راه‌اندازی اولیه",
+    "settingsResetOnboardingMessage":  "راه‌اندازی اولیه در اجرای بعدی دوباره انجام می‌شود.",
+    "keywordConfigTitle":  "سازنده کلیدواژه",
+    "keywordConfigSubtitle":  "گروه‌های کلیدواژه بسازید و با منطق AND/OR ترکیب کنید.",
+    "keywordConfigAddGroup":  "افزودن گروه",
+    "keywordConfigRenameGroup":  "تغییر نام",
+    "keywordConfigRemoveGroup":  "حذف",
+    "keywordConfigAddKeyword":  "افزودن کلیدواژه",
+    "keywordConfigRemoveKeyword":  "حذف",
+    "keywordConfigKeywordHint":  "کلیدواژه",
+    "keywordConfigYearRange":  "بازه سال انتشار",
+    "keywordConfigDocTypes":  "انواع سند",
+    "keywordConfigSources":  "منابع",
+    "keywordConfigNext":  "جستجو",
+    "keywordConfigErrorEmpty":  "حداقل یک کلیدواژه داخل هر گروه اضافه کنید.",
+    "keywordConfigErrorNoGroups":  "قبل از جستجو حداقل یک گروه بسازید.",
+    "keywordConfigErrorNoSources":  "حداقل یک منبع را انتخاب کنید.",
+    "keywordConfigScopusDisabledHint":  "پس از افزودن کلید الزویر، Scopus را در راه‌اندازی اولیه فعال کنید.",
+    "keywordConfigSourceOpenAlex":  "OpenAlex",
+    "keywordConfigGroupName":  "گروه {index}",
+    "@keywordConfigGroupName":  {
+                                    "placeholders":  {
+                                                         "index":  {
+                                                                       "type":  "int"
+                                                                   }
+                                                     }
+                                },
+    "searchResultsTitle":  "نتایج",
+    "searchResultsEmpty":  "هنوز مقاله‌ای نیست. یک جستجوی جدید شروع کنید.",
+    "searchResultsEmptyAfterFetch":  "هیچ مقاله‌ای با پرس‌وجوی شما مطابقت نداشت.",
+    "searchResultsLoading":  "در حال دریافت مقالات...",
+    "searchResultsExport":  "خروجی CSV",
+    "searchResultsTotal":  "{count} مقاله",
+    "@searchResultsTotal":  {
+                                "placeholders":  {
+                                                     "count":  {
+                                                                   "type":  "String"
+                                                               }
+                                                 }
+                            },
+    "searchResultsSort":  "مرتب‌سازی",
+    "searchResultsSortNameAsc":  "نام صعودی",
+    "searchResultsSortNameDesc":  "نام نزولی",
+    "searchResultsSortYearAsc":  "سال صعودی",
+    "searchResultsSortYearDesc":  "سال نزولی",
+    "searchResultsDocumentType":  "نوع سند",
+    "searchResultsSource":  "منبع",
+    "searchResultsYear":  "سال",
+    "searchResultsOpenLink":  "باز کردن لینک",
+    "searchResultsOpenDoi":  "باز کردن DOI",
+    "searchResultsNoAbstract":  "چکیده در دسترس نیست.",
+    "searchResultsSourceCrossref":  "Crossref",
+    "searchResultsSourceScopus":  "Scopus",
+    "searchResultsCombinedProgress":  "تاکنون {count} مقاله دریافت شد",
+    "@searchResultsCombinedProgress":  {
+                                           "placeholders":  {
+                                                                "count":  {
+                                                                              "type":  "String"
+                                                                          }
+                                                            }
+                                       },
+    "searchResultsFetching":  "دریافت در حال انجام...",
+    "searchResultsSourceProgress":  "{source}: {count} مقاله ({pages} صفحه)",
+    "@searchResultsSourceProgress":  {
+                                         "placeholders":  {
+                                                              "source":  {
+                                                                             "type":  "String"
+                                                                         },
+                                                              "count":  {
+                                                                            "type":  "int"
+                                                                        },
+                                                              "pages":  {
+                                                                            "type":  "int"
+                                                                        }
+                                                          }
+                                     },
+    "searchResultsSourceStatus":  "{completed} از {total} منبع تکمیل شد",
+    "@searchResultsSourceStatus":  {
+                                       "placeholders":  {
+                                                            "completed":  {
+                                                                              "type":  "int"
+                                                                          },
+                                                            "total":  {
+                                                                          "type":  "int"
+                                                                      }
+                                                        }
+                                   },
+    "searchResultsShowMore":  "نمایش {count} مورد بعدی",
+    "@searchResultsShowMore":  {
+                                   "placeholders":  {
+                                                        "count":  {
+                                                                      "type":  "int"
+                                                                  }
+                                                    }
+                               },
+    "searchResultsShowingLimited":  "در حال نمایش {visible} از {total}. از فیلترها استفاده کنید یا جزئیات را برای چکیده ببینید.",
+    "@searchResultsShowingLimited":  {
+                                         "placeholders":  {
+                                                              "visible":  {
+                                                                              "type":  "String"
+                                                                          },
+                                                              "total":  {
+                                                                            "type":  "String"
+                                                                        }
+                                                          }
+                                     },
+    "searchResultsExportHint":  "چکیده‌ها از صفحه جزئیات مقاله در دسترس هستند.",
+    "stageReview.button":  "مرور مرحله‌به‌مرحله",
+    "stageReview.back":  "بازگشت",
+    "stageReview.nextRemove":  "بعدی و حذف",
+    "stageReview.nextAdd":  "بعدی و افزودن",
+    "stageReview.progress":  "{current} / {total}",
+    "@stageReview.progress":  {
+                                  "placeholders":  {
+                                                       "current":  {
+                                                                       "type":  "int"
+                                                                   },
+                                                       "total":  {
+                                                                     "type":  "int"
+                                                                 }
+                                                   }
+                              },
+    "stageReview.summary.title":  "خلاصه مرور",
+    "stageReview.summary.selected":  "{count} مورد برای خروجی انتخاب شد",
+    "@stageReview.summary.selected":  {
+                                          "placeholders":  {
+                                                               "count":  {
+                                                                             "type":  "int"
+                                                                         }
+                                                           }
+                                      },
+    "stageReview.summary.export":  "خروجی",
+    "stageReview.summary.restart":  "شروع دوباره مرور",
+    "stageReview.summary.close":  "بستن",
+    "stageReview.summary.noneSelected":  "حداقل یک مقاله برای خروجی انتخاب کنید.",
+    "errorGeneric":  "خطایی رخ داد. لطفاً دوباره تلاش کنید.",
+    "errorMissingKeys":  "برای ادامه، اعتبارنامه‌های API را در تنظیمات اضافه کنید.",
+    "retry":  "تلاش مجدد",
+    "back":  "بازگشت",
+    "themeAutoLabel":  "پیروی از سیستم",
+    "snackbarLanguageSaved":  "زبان به‌روزرسانی شد.",
+    "snackbarSettingsSaved":  "تنظیمات ذخیره شد.",
+    "csvExportSuccess":  "فایل CSV در پوشه Downloads ذخیره شد.",
+    "csvExportFailure":  "صدور CSV انجام نشد. مجوزهای ذخیره‌سازی را بررسی کنید.",
+    "docTypePrePrint":  "پیش‌چاپ",
+    "docTypeJournalArticle":  "مقاله ژورنال",
+    "docTypeReview":  "مرور",
+    "docTypeBook":  "کتاب",
+    "docTypeConference":  "مقاله کنفرانس",
+    "docTypeReport":  "گزارش",
+    "docTypeThesis":  "پایان‌نامه",
+    "docTypeOther":  "سایر",
+    "versionLabel":  "نسخه {version}",
+    "@versionLabel":  {
+                          "placeholders":  {
+                                               "version":  {
+                                                               "type":  "String"
+                                                           }
+                                           }
+                      },
+    "settingsSourceEnv":  "از .env بارگذاری شد",
+    "articleDetailsTitle":  "جزئیات مقاله",
+    "articleDetailsOpenDoi":  "باز کردن DOI",
+    "articleDetailsCopyLink":  "کپی لینک",
+    "articleDetailsCopied":  "لینک در کلیپ‌بورد کپی شد.",
+    "articleDetailsMissingDoi":  "برای این مقاله DOI موجود نیست.",
+    "articleDetailsNoAbstract":  "چکیده از ارائه‌دهندگان در دسترس نیست.",
+    "articleDetailsAbstractLabel":  "منبع چکیده: {source}",
+    "@articleDetailsAbstractLabel":  {
+                                         "placeholders":  {
+                                                              "source":  {
+                                                                             "type":  "String"
+                                                                         }
+                                                          }
+                                     },
+    "articleDetailsTranslate":  "ترجمه به فارسی",
+    "articleDetailsTranslationLabel":  "ترجمه فارسی",
+    "articleDetailsTranslationError":  "نتوانستیم چکیده را ترجمه کنیم. کمی بعد دوباره تلاش کنید.",
+    "articleDetailsSourceSemanticScholar":  "Semantic Scholar",
+    "articleDetailsSourceOpenAlex":  "OpenAlex",
+    "articleDetailsSourceCrossref":  "Crossref",
+    "articleDetailsSourceNone":  "ناموجود",
+    "articleDetailsAuthors":  "نویسندگان",
+    "articleDetailsVenue":  "محل انتشار"
 }
-
-
-
-
-
-
-

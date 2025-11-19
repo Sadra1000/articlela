@@ -4,23 +4,29 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 
+import '../../../../core/data/services/article_explainer.dart';
 import '../../../../core/data/services/google_translate_service.dart';
 
 class PdfReaderViewModel extends ChangeNotifier {
-  PdfReaderViewModel(this._translator);
+  PdfReaderViewModel(this._translator, this._explainer);
 
   final ArticleTranslator _translator;
+  final ArticleExplainer _explainer;
 
   File? _document;
   bool _isPickingFile = false;
   bool _isTranslating = false;
+  bool _isExplaining = false;
   String? _selectedText;
+  String? _lastExplanation;
 
   File? get document => _document;
   bool get hasDocument => _document != null;
   bool get isPickingFile => _isPickingFile;
   bool get isTranslating => _isTranslating;
+  bool get isExplaining => _isExplaining;
   String? get selectedText => _selectedText;
+  String? get lastExplanation => _lastExplanation;
   bool get showTranslationSheet => (_selectedText ?? '').isNotEmpty;
 
   String? get fileName {
@@ -91,11 +97,14 @@ class PdfReaderViewModel extends ChangeNotifier {
       return;
     }
 
+    if (cleaned == _selectedText) {
+      return;
+    }
 
     _selectedText = cleaned;
     _isTranslating = false;
+    _clearExplanationState();
     notifyListeners();
-    print(_selectedText);
   }
 
   bool get hasSelection => (_selectedText ?? '').isNotEmpty;
@@ -103,11 +112,11 @@ class PdfReaderViewModel extends ChangeNotifier {
   void clearSelection() {
     _selectedText = null;
     _isTranslating = false;
+    _clearExplanationState();
     notifyListeners();
   }
 
   Future<String> translateSelection() async {
-      print(_selectedText);
     final text = _selectedText;
     if (text == null || text.isEmpty) {
       throw StateError('No selection available for translation');
@@ -120,7 +129,6 @@ class PdfReaderViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      print(text);
       final translated = await _translator.translate(text: text);
       return translated.trim();
     } finally {
@@ -129,9 +137,41 @@ class PdfReaderViewModel extends ChangeNotifier {
     }
   }
 
+  Future<String> explainSelection() async {
+    final text = _selectedText;
+    if (text == null || text.isEmpty) {
+      throw StateError('No selection available for explanation');
+    }
+    if (_isExplaining) {
+      throw StateError('Explanation already in progress');
+    }
+
+    _isExplaining = true;
+    notifyListeners();
+
+    try {
+      final explanation = await _explainer.explain(text: text);
+      final cleaned = explanation.trim();
+      if (cleaned.isEmpty) {
+        throw const FormatException('Empty explanation');
+      }
+      _lastExplanation = cleaned;
+      return cleaned;
+    } finally {
+      _isExplaining = false;
+      notifyListeners();
+    }
+  }
+
   void _clearTranslationState() {
     _selectedText = null;
     _isTranslating = false;
+    _clearExplanationState();
+  }
+
+  void _clearExplanationState() {
+    _isExplaining = false;
+    _lastExplanation = null;
   }
 
   String? _sanitizeSelection(String? raw) {

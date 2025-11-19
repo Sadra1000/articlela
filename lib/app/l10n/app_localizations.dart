@@ -1,4 +1,4 @@
-﻿import 'dart:convert';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -72,8 +72,7 @@ class AppLocalizations {
   String get homeStart => _strings['homeStart'] ?? '';
   String get homeAbout => _strings['homeAbout'] ?? '';
   String get homeSettings => _strings['homeSettings'] ?? '';
-  String get homePdfReader =>
-      _strings['homePdfReader'] ?? 'Article Reader';
+  String get homePdfReader => _strings['homePdfReader'] ?? 'Article Reader';
   String get pdfReaderTitle => _strings['pdfReaderTitle'] ?? 'Article Reader';
   String get pdfReaderSelectFile =>
       _strings['pdfReaderSelectFile'] ?? 'Select PDF';
@@ -113,8 +112,27 @@ class AppLocalizations {
       'Select text and translate when you are ready.';
   String get pdfReaderContextTranslate =>
       _strings['pdfReaderContextTranslate'] ?? 'Translate selection';
+  String get pdfReaderContextExplain =>
+      _strings['pdfReaderContextExplain'] ?? 'Explain with AI';
+  String get pdfReaderExplanationTitle =>
+      _strings['pdfReaderExplanationTitle'] ?? 'AI explanation';
+  String get pdfReaderExplainShortcut =>
+      _strings['pdfReaderExplainShortcut'] ??
+      'Select text, then press Ctrl + E for an AI explanation.';
+  String get pdfReaderExplanationSelection =>
+      _strings['pdfReaderExplanationSelection'] ?? 'Selected text';
+  String get pdfReaderExplanationLabel =>
+      _strings['pdfReaderExplanationLabel'] ?? 'AI insight';
+  String get pdfReaderExplanationPrompt =>
+      _strings['pdfReaderExplanationPrompt'] ??
+      "Select text and ask the assistant when you're ready.";
+  String get pdfReaderExplanationError =>
+      _strings['pdfReaderExplanationError'] ??
+      "We couldn't explain this selection. Try again.";
   String get pdfReaderCloseTranslation =>
       _strings['pdfReaderCloseTranslation'] ?? 'Close';
+  String get pdfReaderCloseExplanation =>
+      _strings['pdfReaderCloseExplanation'] ?? 'Close explanation';
   String get pdfReaderFileOpenError =>
       _strings['pdfReaderFileOpenError'] ??
       "We couldn't open that PDF. Please choose another file.";
@@ -385,4 +403,3 @@ extension AppLocalizationsExtension on BuildContext {
       Localizations.of<AppLocalizations>(this, AppLocalizations)!;
   bool get isRtl => l10n.isRtl;
 }
-

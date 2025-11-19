@@ -29,6 +29,7 @@ dependencies:
   window_manager: 0.5.1
   file_picker: ^10.3.3
   syncfusion_flutter_pdfviewer: ^31.2.5
+  flutter_markdown: ^0.7.3
 
 dev_dependencies:
   flutter_test:

@@ -17,6 +17,7 @@ import '../../features/onboarding/domain/usecases/set_language_usecase.dart';
 import '../../features/onboarding/presentation/viewmodels/onboarding_viewmodel.dart';
 import '../../features/article_details/data/services/abstract_fetcher.dart';
 import '../../core/data/services/google_translate_service.dart';
+import '../../core/data/services/article_explainer.dart';
 import '../../features/article_details/presentation/viewmodels/article_details_viewmodel.dart';
 import '../../features/search_results/data/datasources/crossref_api_datasource.dart';
 import '../../features/search_results/data/datasources/openalex_api_datasource.dart';
@@ -37,17 +38,28 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<EnvConfig>(
     () => EnvConfig(getIt<SharedPreferences>(), getIt<DotEnv>()),
   );
-  getIt.registerLazySingleton<KeyStore>(() => KeyStoreImpl(getIt<SharedPreferences>()));
+  getIt.registerLazySingleton<KeyStore>(
+    () => KeyStoreImpl(getIt<SharedPreferences>()),
+  );
   getIt.registerLazySingleton<Dio>(() => Dio());
-  getIt.registerLazySingleton<DioClient>(() => DioClient(getIt<Dio>(), getIt<KeyStore>()));
+  getIt.registerLazySingleton<DioClient>(
+    () => DioClient(getIt<Dio>(), getIt<KeyStore>()),
+  );
   getIt.registerLazySingleton<DeepSeekService>(
     () => DeepSeekService(getIt<DioClient>(), getIt<EnvConfig>()),
   );
   getIt.registerLazySingleton<FileExporter>(FileExporter.new);
   getIt.registerLazySingleton<InMemoryArticleCache>(InMemoryArticleCache.new);
-  getIt.registerLazySingleton<IAbstractFetcher>(() => AbstractFetcher(getIt<DioClient>()));
+  getIt.registerLazySingleton<IAbstractFetcher>(
+    () => AbstractFetcher(getIt<DioClient>()),
+  );
   getIt.registerLazySingleton(() => GoogleTranslateService(getIt<DioClient>()));
-  getIt.registerLazySingleton(() => DeepSeekTranslateService(getIt<DeepSeekService>()));
+  getIt.registerLazySingleton(
+    () => DeepSeekTranslateService(getIt<DeepSeekService>()),
+  );
+  getIt.registerLazySingleton<ArticleExplainer>(
+    () => DeepSeekArticleExplainer(getIt<DeepSeekService>()),
+  );
   getIt.registerLazySingleton<ArticleTranslator>(
     () => ConfigurableArticleTranslator(
       preferences: getIt<SharedPreferences>(),
@@ -74,12 +86,25 @@ Future<void> setupServiceLocator() async {
     ),
   );
 
-  getIt.registerLazySingleton(() => SetLanguageUseCase(getIt<SharedPreferences>()));
-  getIt.registerLazySingleton(() => SaveSearchPrefsUseCase(getIt<SharedPreferences>()));
-  getIt.registerLazySingleton(() => FetchArticlesUseCase(getIt<ArticleRepository>(), getIt<InMemoryArticleCache>()));
-  getIt.registerLazySingleton(() => ExportArticlesUseCase(getIt<FileExporter>()));
+  getIt.registerLazySingleton(
+    () => SetLanguageUseCase(getIt<SharedPreferences>()),
+  );
+  getIt.registerLazySingleton(
+    () => SaveSearchPrefsUseCase(getIt<SharedPreferences>()),
+  );
+  getIt.registerLazySingleton(
+    () => FetchArticlesUseCase(
+      getIt<ArticleRepository>(),
+      getIt<InMemoryArticleCache>(),
+    ),
+  );
+  getIt.registerLazySingleton(
+    () => ExportArticlesUseCase(getIt<FileExporter>()),
+  );
 
-  getIt.registerFactory(() => OnboardingViewModel(getIt<SetLanguageUseCase>(), getIt<KeyStore>()));
+  getIt.registerFactory(
+    () => OnboardingViewModel(getIt<SetLanguageUseCase>(), getIt<KeyStore>()),
+  );
   getIt.registerFactory(() => HomeViewModel());
   getIt.registerFactory(
     () => KeywordConfigViewModel(
@@ -93,5 +118,10 @@ Future<void> setupServiceLocator() async {
       exportArticlesUseCase: getIt<ExportArticlesUseCase>(),
     ),
   );
-  getIt.registerFactory(() => ArticleDetailsViewModel(getIt<IAbstractFetcher>(), getIt<ArticleTranslator>()));
+  getIt.registerFactory(
+    () => ArticleDetailsViewModel(
+      getIt<IAbstractFetcher>(),
+      getIt<ArticleTranslator>(),
+    ),
+  );
 }
